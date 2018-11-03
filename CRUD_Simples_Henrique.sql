@@ -1,3 +1,33 @@
+SET SQL_SAFE_UPDATES=0;
+
+-- TELEFONES
+
+INSERT
+INTO Telefones(Numero)
+VALUES (17991524609);
+
+UPDATE TelefoneS
+SET Numero = 17991524602
+WHERE Numero = 17991524609;
+
+
+DELETE
+FROM Telefones
+WHERE Numero = 17991524608;
+
+SELECT *
+FROM Telefones;
+
+-- Telefone_Cliente
+
+INSERT
+INTO Telefone_Cliente(Num_Telefone, CPF_Cliente)
+VALUES (17991524608, 41199288888);
+
+SELECT C.Nome, TC.CPF_Cliente, TC.Num_Telefone
+FROM Telefone_Cliente TC, Clientes C
+WHERE TC.CPF_Cliente = C.CPF;
+
 -- CATEGORIA
 
 INSERT 
@@ -102,8 +132,8 @@ WHERE P.ID_fornecedor = 26;
 -- VENDAS
 
 INSERT
-INTO Vendas(Codigo, CPF_cliente, CPF_atendente, CPF_freteiro, Tel_cliente)
-VALUES (12, 41199288888, );
+INTO Vendas(Codigo, CPF_cliente, CPF_atendente, CPF_freteiro)
+VALUES (12, 41199288888, ?????, ?????);
 
 UPDATE Vendas
 SET CPF_atendente = ???, CPF_freteiro = ??
@@ -140,6 +170,10 @@ WHERE V.CPF_freteiro = ??;
 SELECT *
 FROM Vendas V
 WHERE Codigo = ??;
+
+SELECT V.Codigo, C.Nome, V.CPF_cliente, V.Tel_cliente, F1.Nome, F2.Nome
+FROM Vendas V, Clientes C, Funcionarios F1, Funcionarios F2
+WHERE V.CPF_cliente = C.CPF AND F1.CPF = V.CPF_atendente AND F2.CPF = V.CPF_freteiro;
 
 -- QTD VENDIDA
 
