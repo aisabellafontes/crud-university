@@ -1,6 +1,6 @@
-create database Agropec;
+-- create database Agropec2;
 
-use Agropec;
+use Agropec2;
 
 
 
@@ -45,7 +45,8 @@ CREATE TABLE Estancia(
  );
  
  CREATE TABLE Funcionarios(
-	CPF CHAR(11) PRIMARY KEY
+	CPF CHAR(11) PRIMARY KEY,
+    Nome VARCHAR(155)
  );
  
 CREATE TABLE Supervisor(
@@ -59,14 +60,14 @@ CREATE TABLE Supervisor(
 
 CREATE TABLE Atendente(
 	CPF_Atendente CHAR(11) PRIMARY KEY,
-    Nome VARCHAR(155),
+    Nro_Vendas INTEGER,
     
     FOREIGN KEY (CPF_Atendente) REFERENCES Funcionarios(CPF)
 );
 
 CREATE TABLE Freteiro(
 	CPF_Freteiro CHAR(11) PRIMARY KEY,
-    Nome VARCHAR(155),
+    Nro_Entregas INTEGER,
     
     FOREIGN KEY (CPF_Freteiro) REFERENCES Funcionarios(CPF)
 );
@@ -106,6 +107,7 @@ CREATE TABLE Vendas(
     CPF_cliente CHAR(11),
     CPF_atendente CHAR(11),
     CPF_freteiro CHAR(11),
+    Data_venda DATE,
     Tel_cliente VARCHAR(15),
     
     FOREIGN KEY (CPF_cliente) REFERENCES Clientes(CPF),
