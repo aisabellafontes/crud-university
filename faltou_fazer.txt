@@ -1,0 +1,10 @@
+TELA CLIENTE:
+	Botão de adicionar vários telefones não está funcionando.
+
+TELA FUNCIONÁRIOS:
+	Fazer sub-menu para cadastrar Funcionários do Tipo Freteiro e Atendente (São iguais) e Supervisor (são diferentes).
+
+
+GERAIS:
+	Telefone e CPF, arrumar o tipo, para não aparecer as setas do lado extremo direito.
+
