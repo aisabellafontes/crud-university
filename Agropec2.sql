@@ -26,7 +26,7 @@ CREATE TABLE Clientes(
 CREATE TABLE Estancia(
 	Nome_Estancia VARCHAR(155) PRIMARY KEY,
     CPF_propietario CHAR(11),
-	Endereco VARCHAR(155),
+	Referencia VARCHAR(155),
     
     FOREIGN KEY (CPF_propietario) REFERENCES Clientes(CPF)
 );
