@@ -1,0 +1,14 @@
+{
+  "name": "agropec2018",
+  "version": "1.0.0",
+  "description": "Trabalho de BD 2018-2",
+  "main": "servidor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "mysql": "^2.16.0"
+  }
+}
