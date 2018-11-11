@@ -1,6 +1,5 @@
 -- create database Agropec2;
-
-use Agropec2;
+use Agropec;
 
 
 
