@@ -11,13 +11,13 @@ con.connect(function(err) {
   if (err) throw err;  
   console.log("Connected!");
   
-  var sql = "INSERT INTO Atendente (CPF_Atendente,Nro_Vendas) VALUES (8494847494,9)";
+  var sql = "INSERT INTO Atendente (CPF_Atendente,Nro_Vendas) VALUES (41199288871,9)";
   con.query(sql, function (err, result) {
     if (err) throw err;
     console.log("1 record inserted", result);
   });
 
-  var sql = "UPDATE Atendente SET Nro_Vendas = 10 WHERE CPF_Antendente = 8494847494";
+  var sql = "UPDATE Atendente SET Nro_Vendas = 10 WHERE CPF_Atendente = 41199288871";
   con.query(sql, function (err, result) {
     if (err) throw err;
     console.log(result.affectedRows + " record(s) updated", result);

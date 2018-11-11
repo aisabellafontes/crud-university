@@ -11,17 +11,17 @@ con.connect(function(err) {
   if (err) throw err;  
   console.log("Connected!");
   
-  var sql = "INSERT INTO Clientes (CPF, Nome) VALUES ('41199288888', 'Henrique Marcuzzo')";
+  var sql = "INSERT INTO Clientes (CPF, Nome) VALUES ('48491201808', 'Matheus Batistelas')";
   con.query(sql, function (err, result) {
     if (err) throw err;
     console.log("1 record inserted", result);
   });
 
-  var sql = "UPDATE Clientes SET Nome = 'Henrique Souza Marcuzzo' WHERE CPF = '41199288888'";
-  con.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log(result.affectedRows + " record(s) updated", result);
-  });
+  // var sql = "UPDATE Clientes SET Nome = 'Matheus Henrique' WHERE CPF = '48491201807'";
+  // con.query(sql, function (err, result) {
+  //   if (err) throw err;
+  //   console.log(result.affectedRows + " record(s) updated", result);
+  // });
 
 //   var sql = "DELETE FROM Clientes WHERE CPF = '41199288888'";
 //   con.query(sql, function (err, result) {

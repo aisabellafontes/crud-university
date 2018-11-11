@@ -11,19 +11,19 @@ con.connect(function(err) {
   if (err) throw err;  
   console.log("Connected!");
   
-  var sql = "INSERT INTO Freteiro (CPF_Freteiro,Nro_Entregas) VALUES (41199288889, 12)";
-  con.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log("1 record inserted", result);
-  });
+   var sql = "INSERT INTO Freteiro (CPF_Freteiro,Nro_Entregas) VALUES (41199288872, 12)";
+   con.query(sql, function (err, result) {
+     if (err) throw err;
+     console.log("1 record inserted", result);
+   });
 
-  var sql = "UPDATE Freteiro SET Nro_Entregas = 10 WHERE CPF_Freteiro = 41199288889";
-  con.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log(result.affectedRows + " record(s) updated", result);
-  });
+//    var sql = "UPDATE Freteiro SET Nro_Entregas = 10 WHERE CPF_Freteiro = 41199288889";
+//    con.query(sql, function (err, result) {
+//      if (err) throw err;
+//      console.log(result.affectedRows + " record(s) updated", result);
+//   });
 
-//   var sql = "DELETE FROM Freteiro WHERE CPF = '41199288889'";
+//   var sql = "DELETE FROM Freteiro WHERE CPF_Freteiro = '411992888889'";
 //   con.query(sql, function (err, result) {
 //     if (err) throw err;
 //     console.log("Number of records deleted: " + result.affectedRows);
