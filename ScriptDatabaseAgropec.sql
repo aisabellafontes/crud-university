@@ -1,6 +1,10 @@
 DROP DATABASE IF EXISTS Agropec;
 CREATE DATABASE IF NOT EXISTS Agropec;
 
+CREATE USER 'agropec.admin'@'localhost' IDENTIFIED BY 'admin'; 
+ALTER USER 'agropec.admin'@'localhost' IDENTIFIED WITH mysql_native_password BY 'admin'; 
+GRANT ALL PRIVILEGES ON Agropec.* TO 'agropec.admin'@'localhost';
+
 use Agropec;
 
 DROP TABLE IF EXISTS QTDE_Vendida;
