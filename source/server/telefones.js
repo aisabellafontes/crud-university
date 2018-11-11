@@ -23,4 +23,11 @@ con.connect(function(err) {
     console.log(result.affectedRows + " record(s) updated", result);
   });
 
+  // var sql = "DELETE FROM Telefones WHERE Numero = 4417981844399 ";
+  // con.query(sql, function (err, result) {
+  //   if (err) throw err;
+  //   console.log("Number of records deleted: " + result.affectedRows);
+  // });  
+
+
 });
