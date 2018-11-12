@@ -218,42 +218,46 @@
                     </aside>
                 <aside class="menu-area">
                 <nav class="menu">
-                        <a href="http://localhost:8000/api/inicio"><i class="fas fa-home"></i> Início</a>
-                        <a href="http://localhost:8000/api/cliente"><i class="fas fa-users"></i> Clientes</a>
-                        <a href="http://localhost:8000/api/estancia"><i class="fas fa-warehouse"></i> Estância</a>
-                        <a href="http://localhost:8000/api/funciorario.html"><i class="fas fa-user-cog"></i> Funcionários</a>
-                        <a href="http://localhost:8000/api/produto"><i class="fas fa-box-open"></i> Produtos</a>
-                        <a href="http://localhost:8000/api/venda"><i class="fas fa-money-check-alt"></i> Vendas</a>
-                        <a href="http://localhost:8000/api/categoria"><i class="fas fa-tags"></i> Categorias</a>
-                        <a href="http://localhost:8000/api/fornecedor"><i class="fas fa-truck"></i> Fornecedores</a>
+                    <a href="http://localhost:8000/api/inicio"><i class="fas fa-home"></i> Início</a>
+                    <a href="http://localhost:8000/api/cliente"><i class="fas fa-users"></i> Clientes</a>
+                    <a href="http://localhost:8000/api/estancia"><i class="fas fa-warehouse"></i> Estância</a>
+                    <a href="http://localhost:8000/api/funciorario.html"><i class="fas fa-user-cog"></i> Funcionários</a>
+                    <a href="http://localhost:8000/api/produto"><i class="fas fa-box-open"></i> Produtos</a>
+                    <a href="http://localhost:8000/api/venda"><i class="fas fa-money-check-alt"></i> Vendas</a>
+                    <a href="http://localhost:8000/api/categoria"><i class="fas fa-tags"></i> Categorias</a>
+                    <a href="http://localhost:8000/api/fornecedor"><i class="fas fa-truck"></i> Fornecedores</a>
                 </nav>
             </aside>
-           <header class="header d-none d-sm-flex flex-column">
-              <h1 class="mt-3"><i class="fas fa-users"></i> Clientes</h1>
-              <p class="lead text-muted">Cadastro de clientes da loja</p>
-           </header>
-           <main class="content container-fluid">
-              <div class="p-3 mt-3">
-                 <div class="form">
-                   <form method="post" action="" id="the-form">
-                        <div class="row">
-                       <div class="col-12 col-md-6">
-                          <div class="form-group"><label>Nome</label><input type="text" class="form-control" name="nome" placeholder="Informe o nome do cliente..." value="" charCounter" maxlength="155"></div>
-                       </div>                       
-                        <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>CPF</label>
-                                    <input type="number" class="form-control" name="cpf" placeholder="Informe o CPF do cliente..." value="" charCounter" maxlength="11">
-                                </div>
-                           </div>
-                            <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label>Telefone</label>
-                                        <input type="number" class="form-control" name="tel_cliente" placeholder="Informe o telefone do cliente..." value="" charCounter" maxlength="15">    
-                                        <i class="fas fa-plus-square mu-2"></i>
-                                    </div>
-                               </div>
-                        </div>
+            <header class="header d-none d-sm-flex flex-column">
+                    <h1 class="mt-3"><i class="fas fa-money-check-alt"></i> Vendas</h1>
+                    <p class="lead text-muted"> Gerenciamentos das vendas realizadas</p>
+                 </header>
+                 <main class="content container-fluid">
+                    <div class="p-3 mt-3">
+                       <div class="form">
+                          <div class="row">
+                             <div class="col-12 col-md-6">
+                                <div class="form-group"><label>Código</label><input type="number" class="form-control" name="cod_venda" placeholder="Informe o código da venda..." value="" data-ls-module="charCounter" maxlength="6"></div>
+                             </div>
+                             <div class="col-12 col-md-6">
+                                 <div class="form-group"><label>CPF Cliente</label><input type="number" class="form-control" name="cpf_cliente_venda" placeholder="Informe o CPF do comprador..." value="" data-ls-module="charCounter" maxlength="11"> </div>
+                              </div>
+                             <div class="col-12 col-md-6">
+                                <div class="form-group"><label>CPF Atendente</label><input type="number" class="form-control" name="cpf_atendente_venda" placeholder="Informe o CPF do atendente..." value="" data-ls-module="charCounter" maxlength="11"></div>
+                             </div>
+                             <div class="col-12 col-md-6">
+                                 <div class="form-group"><label>Telefone do destinatário</label><input type="tel" class="form-control" name="telefone" placeholder="Informe o telefone de quem irá receber..." value="" charCounter" maxlength="15"></div>
+                              </div>
+                              <div class="col-12 col-md-6">
+                                 <div class="form-group"><label>CPF Freteiro</label><input type="number" class="form-control" name="cpf_freteiro" placeholder="Informe o CPF do entregador..." value="" charCounter" maxlength="11"></div>
+                              </div>
+                              <div class="col-12 col-md-6">
+                                 <div class="form-group"><label>Data</label><input type="date" class="form-control" name="data_venda" placeholder="Informe a data da venda..." value=""></div>
+                              </div>
+                              <div class="col-12 col-md-6">
+                                 <div class="form-group"><label>Quantidade</label><input type="number" class="form-control" name="qtd_vendida" placeholder="Informe a quantidade vendida..." value=""></div>
+                              </div>
+                          </div>
                         <hr>
                         <div class="mensagem" style="display: none;">
                             <label>Registro salvo com sucesso</label>
@@ -261,8 +265,8 @@
                         <div class="row">
                             <div class="col-12 d-flex justify-content-end">
                                 <button class="btn btn-success ml-2">Pesquisar</button>
-                                <button class="btn btn-primary ml-2" onClick="salvarCliente()">Adicionar</button>
-                                <button class="btn btn-danger ml-2">Cancelar</button>
+                                <button class="btn btn-primary ml-2" onClick="salvarVenda()">Adicionar</button>
+                                <button class="btn btn-danger ml-2" onClick="limparCampos()">Cancelar</button>
                             </div>
                         </div>
                     </form>
@@ -271,10 +275,14 @@
                  <table class="table mt-4">
                     <thead>
                        <tr>
-                          <th>CPF</th>
-                          <th>Nome</th>
-                          <th>Telefone</th>
-                          <th>Ações</th>
+                            <th>COD</th>
+                            <th>Cliente</th>
+                            <th>Atendente</th>
+                            <th>Telefone</th>
+                            <th>Freteiro</th>
+                            <th>Data</th>
+                            <th>Quantidade</th>
+                            <th>Ações</th>
                        </tr>
                     </thead>
                     <tbody>
@@ -282,12 +290,16 @@
 
                         for(var i = 0;i < data.length;i++) { %>                        
                         <tr>
-                            <td><%=data[i].CPF%></td>
-                            <td><%=data[i].Nome%></td>
+                            <td><%=data[i].Codigo%></td>
+                            <td><%=data[i].CPF_cliente%></td>
+                            <td><%=data[i].CPF_atendente%></td>
+                            <td><%=data[i].Tel_cliente%></td>
+                            <td><%=data[i].CPF_freteiro%></td>
+                            <td><%=data[i].Data_venda%></td>
                             <td>-</td>
                             <td>
-                                <a class="btn btn-warning ml-0" href="/api/cliente/<%=data[i].CPF%>"><i class="fas fa-pen"></i></a>
-                                <a class="btn btn-danger ml-0" href="javascript:void(0)" onClick="deleteCliente(<%=data[i].CPF%>)"><i class="fas fa-trash-alt"></i></a>
+                                <a class="btn btn-warning ml-0" href="/api/venda/<%=data[i].Codigo%>"><i class="fas fa-pen"></i></a>
+                                <a class="btn btn-danger ml-0" href="javascript:void(0)" onClick="deleteVenda(<%=data[i].Codigo%>)"><i class="fas fa-trash-alt"></i></a>
                                 
                             </td>
                         </tr>
@@ -307,16 +319,16 @@
      </div>
      
      <script>
-         function editarCliente(){
+         function editarVenda(){
            
            $.ajax({
             
-            url:"/api/cliente/"+<%=data[0].cpf%>,
+            url:"/api/venda/"+<%=data[0].Codigo%>,
             type:"put",
             data:$("#the-form").serialize(),
             success:function(res){
                 
-                window.location.href = '/api/cliente';
+                window.location.href = '/api/venda';
                 return false;
             },
             error:function(xhr, status, error){
@@ -334,11 +346,11 @@
            });
         }
 
-            function salvarUsuario(){
+            function salvarVenda(){
                               
                $.ajax({
                 
-                url:"/api/cliente",
+                url:"/api/venda",
                 type:"post",
                 data:$("#the-form").serialize(),
                 success:function(res){                    
@@ -361,10 +373,10 @@
                });
             }
             
-            function deleteCliente(cpf){
+            function deleteVenda(Codigo){
             
                 $.ajax({
-                    url:"/api/cliente/"+cpf,
+                    url:"/api/venda/"+Codigo,
                     type: 'DELETE',
                     success: function(res) {
                         

@@ -218,42 +218,35 @@
                     </aside>
                 <aside class="menu-area">
                 <nav class="menu">
-                        <a href="http://localhost:8000/api/inicio"><i class="fas fa-home"></i> Início</a>
-                        <a href="http://localhost:8000/api/cliente"><i class="fas fa-users"></i> Clientes</a>
-                        <a href="http://localhost:8000/api/estancia"><i class="fas fa-warehouse"></i> Estância</a>
-                        <a href="http://localhost:8000/api/funciorario.html"><i class="fas fa-user-cog"></i> Funcionários</a>
-                        <a href="http://localhost:8000/api/produto"><i class="fas fa-box-open"></i> Produtos</a>
-                        <a href="http://localhost:8000/api/venda"><i class="fas fa-money-check-alt"></i> Vendas</a>
-                        <a href="http://localhost:8000/api/categoria"><i class="fas fa-tags"></i> Categorias</a>
-                        <a href="http://localhost:8000/api/fornecedor"><i class="fas fa-truck"></i> Fornecedores</a>
+                    <a href="http://localhost:8000/api/inicio"><i class="fas fa-home"></i> Início</a>
+                    <a href="http://localhost:8000/api/cliente"><i class="fas fa-users"></i> Clientes</a>
+                    <a href="http://localhost:8000/api/estancia"><i class="fas fa-warehouse"></i> Estância</a>
+                    <a href="http://localhost:8000/api/funciorario.html"><i class="fas fa-user-cog"></i> Funcionários</a>
+                    <a href="http://localhost:8000/api/produto"><i class="fas fa-box-open"></i> Produtos</a>
+                    <a href="http://localhost:8000/api/venda"><i class="fas fa-money-check-alt"></i> Vendas</a>
+                    <a href="http://localhost:8000/api/categoria"><i class="fas fa-tags"></i> Categorias</a>
+                    <a href="http://localhost:8000/api/fornecedor"><i class="fas fa-truck"></i> Fornecedores</a>
                 </nav>
             </aside>
-           <header class="header d-none d-sm-flex flex-column">
-              <h1 class="mt-3"><i class="fas fa-users"></i> Clientes</h1>
-              <p class="lead text-muted">Cadastro de clientes da loja</p>
-           </header>
-           <main class="content container-fluid">
-              <div class="p-3 mt-3">
-                 <div class="form">
-                   <form method="post" action="" id="the-form">
-                        <div class="row">
-                       <div class="col-12 col-md-6">
-                          <div class="form-group"><label>Nome</label><input type="text" class="form-control" name="nome" placeholder="Informe o nome do cliente..." value="" charCounter" maxlength="155"></div>
-                       </div>                       
-                        <div class="col-12 col-md-6">
-                                <div class="form-group">
-                                    <label>CPF</label>
-                                    <input type="number" class="form-control" name="cpf" placeholder="Informe o CPF do cliente..." value="" charCounter" maxlength="11">
-                                </div>
-                           </div>
-                            <div class="col-12 col-md-6">
-                                    <div class="form-group">
-                                        <label>Telefone</label>
-                                        <input type="number" class="form-control" name="tel_cliente" placeholder="Informe o telefone do cliente..." value="" charCounter" maxlength="15">    
-                                        <i class="fas fa-plus-square mu-2"></i>
-                                    </div>
-                               </div>
-                        </div>
+            <header class="header d-none d-sm-flex flex-column">
+                    <h1 class="mt-3"><i class="fas fa-truck"></i> Fornecedores</h1>
+                    <p class="lead text-muted">Registro de Fornecedores</p>
+                 </header>
+                 <main class="content container-fluid">
+                    <div class="p-3 mt-3">
+                       <div class="form">
+                          <div class="row">
+                             <div class="col-12 col-md-6">
+                                <div class="form-group"><label>ID</label><input type="number" class="form-control" name="id_fornecedor" placeholder="Informe a indentificação do fornecedor..." value="" charCounter" maxlength="6"></div>
+                             </div>
+                             <div class="col-12 col-md-6">
+                                <div class="form-group"><label>Nome</label><input type="text" class="form-control" name="nome_fornecedor" placeholder="Informe o nome do fornecedor..." value="" charCounter" maxlength="155"></div>
+                             </div>
+                             <div class="col-12 col-md-6">
+                                 <div class="form-group"><label>Telefone</label><input type="number" class="form-control" name="tel_fornecedor" placeholder="Informe o telefone do fornecedor..." value="" charCounter" maxlength="15"></div>
+                              </div>
+                             
+                          </div>
                         <hr>
                         <div class="mensagem" style="display: none;">
                             <label>Registro salvo com sucesso</label>
@@ -261,8 +254,8 @@
                         <div class="row">
                             <div class="col-12 d-flex justify-content-end">
                                 <button class="btn btn-success ml-2">Pesquisar</button>
-                                <button class="btn btn-primary ml-2" onClick="salvarCliente()">Adicionar</button>
-                                <button class="btn btn-danger ml-2">Cancelar</button>
+                                <button class="btn btn-primary ml-2" onClick="salvarFornecedor()">Adicionar</button>
+                                <button class="btn btn-danger ml-2" onClick="limparCampos()">Cancelar</button>
                             </div>
                         </div>
                     </form>
@@ -271,7 +264,7 @@
                  <table class="table mt-4">
                     <thead>
                        <tr>
-                          <th>CPF</th>
+                          <th>ID</th>
                           <th>Nome</th>
                           <th>Telefone</th>
                           <th>Ações</th>
@@ -282,12 +275,13 @@
 
                         for(var i = 0;i < data.length;i++) { %>                        
                         <tr>
-                            <td><%=data[i].CPF%></td>
+                            <td><%=data[i].ID%></td>
                             <td><%=data[i].Nome%></td>
+                            <td><%=data[i].Tel%></td>
                             <td>-</td>
                             <td>
-                                <a class="btn btn-warning ml-0" href="/api/cliente/<%=data[i].CPF%>"><i class="fas fa-pen"></i></a>
-                                <a class="btn btn-danger ml-0" href="javascript:void(0)" onClick="deleteCliente(<%=data[i].CPF%>)"><i class="fas fa-trash-alt"></i></a>
+                                <a class="btn btn-warning ml-0" href="/api/fornecedor/<%=data[i].ID%>"><i class="fas fa-pen"></i></a>
+                                <a class="btn btn-danger ml-0" href="javascript:void(0)" onClick="deleteFornecedor(<%=data[i].ID%>)"><i class="fas fa-trash-alt"></i></a>
                                 
                             </td>
                         </tr>
@@ -307,16 +301,16 @@
      </div>
      
      <script>
-         function editarCliente(){
+         function editarFornecedor(){
            
            $.ajax({
             
-            url:"/api/cliente/"+<%=data[0].cpf%>,
+            url:"/api/fornecedor/"+<%=data[0].ID%>,
             type:"put",
             data:$("#the-form").serialize(),
             success:function(res){
                 
-                window.location.href = '/api/cliente';
+                window.location.href = '/api/fornecedor';
                 return false;
             },
             error:function(xhr, status, error){
@@ -334,11 +328,11 @@
            });
         }
 
-            function salvarUsuario(){
+            function salvarFornecedor(){
                               
                $.ajax({
                 
-                url:"/api/cliente",
+                url:"/api/fornecedor",
                 type:"post",
                 data:$("#the-form").serialize(),
                 success:function(res){                    
@@ -361,10 +355,10 @@
                });
             }
             
-            function deleteCliente(cpf){
+            function deleteFornecedor(id){
             
                 $.ajax({
-                    url:"/api/cliente/"+cpf,
+                    url:"/api/fornecedor/"+id,
                     type: 'DELETE',
                     success: function(res) {
                         
