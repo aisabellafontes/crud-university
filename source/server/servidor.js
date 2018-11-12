@@ -338,7 +338,6 @@ venda.post(function(req, res, next){
     req.assert('CPF_atendente','A valid CPF_atendente is required').notEmpty();
     req.assert('Tel_cliente','A valid Tel_cliente is required').notEmpty();
     req.assert('CPF_freteiro','A valid CPF_freteiro is required').notEmpty();
-    req.assert('Data_venda','A valid Data_venda is required').notEmpty();
     
     var errors = req.validationErrors();
     if(errors){
@@ -352,8 +351,7 @@ venda.post(function(req, res, next){
         CPF_cliente:req.body.CPF_cliente,
         CPF_atendente:req.body.CPF_atendente,
         Tel_cliente:req.body.Tel_cliente,
-        CPF_freteiro:req.body.CPF_freteiro,
-        Data_venda:req.body.Data_venda
+        CPF_freteiro:req.body.CPF_freteiro
      };
 
     //inserting into mysql
@@ -388,7 +386,6 @@ venda_edit.put(function(req,res,next){
     req.assert('CPF_atendente','A valid CPF_atendente is required').notEmpty();
     req.assert('Tel_cliente','A valid Tel_cliente is required').notEmpty();
     req.assert('CPF_freteiro','A valid CPF_freteiro is required').notEmpty();
-    req.assert('Data_venda','A valid Data_venda is required').notEmpty();
 
     var errors = req.validationErrors();
     if(errors){
@@ -403,7 +400,6 @@ venda_edit.put(function(req,res,next){
         CPF_atendente:req.body.CPF_atendente,
         Tel_cliente:req.body.Tel_cliente,
         CPF_freteiro:req.body.CPF_freteiro,
-        Data_venda:req.body.Data_venda
      };
 
     //inserting into mysql
