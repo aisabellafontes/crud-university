@@ -20,7 +20,7 @@
          work correctly both with client-side routing and a non-root public URL.
          Learn how to configure a non-root public URL by running `npm run build`.
          -->
-      <title>Cadastro</title>
+      <title>Clientes</title>
       <style type="text/css">body {
          margin: 0;
          padding: 0;
@@ -218,68 +218,70 @@
                     </aside>
                 <aside class="menu-area">
                 <nav class="menu">
-                    <a href="http://localhost:8000/inicio.html"><i class="fas fa-home"></i> Início</a>
-                    <a href="http://localhost:8000/cliente.html"><i class="fas fa-users"></i> Clientes</a>
-                    <a href="http://localhost:8000/estancia.html"><i class="fas fa-warehouse"></i> Estância</a>
-                    <a href="http://localhost:8000/funciorario.html"><i class="fas fa-user-cog"></i> Funcionários</a>
-                    <a href="http://localhost:8000/produto.html"><i class="fas fa-box-open"></i> Produtos</a>
-                    <a href="http://localhost:8000/venda.html"><i class="fas fa-money-check-alt"></i> Vendas</a>
-                    <a href="http://localhost:8000/categoria.html"><i class="fas fa-tags"></i> Categorias</a>
-                    <a href="http://localhost:8000/fornecedor.html"><i class="fas fa-truck"></i> Fornecedores</a>
+                    <a href="http://localhost:8000/api/inicio"><i class="fas fa-home"></i> Início</a>
+                    <a href="http://localhost:8000/api/cliente"><i class="fas fa-users"></i> Clientes</a>
+                    <a href="http://localhost:8000/api/estancia"><i class="fas fa-warehouse"></i> Estância</a>
+                    <a href="http://localhost:8000/api/funciorario"><i class="fas fa-user-cog"></i> Funcionários</a>
+                    <a href="http://localhost:8000/api/produto"><i class="fas fa-box-open"></i> Produtos</a>
+                    <a href="http://localhost:8000/api/venda"><i class="fas fa-money-check-alt"></i> Vendas</a>
+                    <a href="http://localhost:8000/api/categoria"><i class="fas fa-tags"></i> Categorias</a>
+                    <a href="http://localhost:8000/api/fornecedor"><i class="fas fa-truck"></i> Fornecedores</a>
                 </nav>
             </aside>
-           <header class="header d-none d-sm-flex flex-column">
-              <h1 class="mt-3"><i class="fas fa-user-cog"></i> Funcionários</h1>
-              <p class="lead text-muted">Cadastro dos funcionários da loja</p>
-           </header>
-           <main class="content container-fluid">
-              <div class="p-3 mt-3">
-                 <div class="form">
-                <div class="row">
-                    <div class="col-12 col-md-6">
-                            <div class="form-group"><label>CPF</label><input type="number" class="form-control" name="CPF" placeholder="Informe o CPF do funcionário..." value=""data-ls-module="charCounter" maxlength="11"></div>
+            <header class="header d-none d-sm-flex flex-column">
+               <h1 class="mt-3"><i class="fas fa-warehouse"></i> Estância</h1>
+               <p class="lead text-muted">Registrar os locais de entrega dos produtos</p>
+            </header>
+                 <main class="content container-fluid">  
+                    <div class="p-3 mt-3">
+                       <div class="form">
+                          <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group"><label>Nome</label><input type="text" class="form-control" name="Nome_Estancia" placeholder="Informe o nome da Instância..." value="" charCounter" maxlength="155"></div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                <div class="form-group"><label>Referencia</label><input type="text" class="form-control" name="Referencia" placeholder="Informe a referência do local..." value="" charCounter" maxlength="155"></div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group"><label>CPF Proprietário</label><input type="number" class="form-control" name="CPF_propietario" placeholder="Informe o CPF do proprietário..." value="" charCounter" maxlength="11"></div>
+                                    </div>
+                          </div>
+                        <hr>
+                        <div class="mensagem" style="display: none;">
+                            <label>Registro salvo com sucesso</label>
                         </div>
-                       <div class="col-12 col-md-6">
-                          <div class="form-group"><label>Nome</label><input type="text" class="form-control" name="name" placeholder="Informe o nome do funcionário.." value="" charCounter" maxlength="155"></div>
-                       </div>
-                       <div class="col-12 col-md-6">
-                            <div class="form-group "><label>Cargo </label> <select name="tipos">
-                            <option value="sup">Supervisor</option>
-                            <option value="ate">Atendente</option>
-                            <option value="fret">Freteiro</option>
-                            </select></div>
-                    </div>                    
-                       <div class="col-12 col-md-6">
-                        <div class="form-group"><label>Supervisor</label><input type="text" class="form-control" name="name" placeholder="Informe o CPF do supervisor.." value="" charCounter" maxlength="155"></div>
-                     </div>
-                          
-                    </div>
-                    <hr>
-                    <div class="row">
-                       <div class="col-12 d-flex justify-content-end">
-                            <button class="btn btn-success ml-2">Pesquisar</button>
-                           <button class="btn btn-primary ml-2"onClick="salvarFuncionario()">Adicionar</button>
-                           <button class="btn btn-danger ml-2">Cancelar</button>
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-end">
+                                <button class="btn btn-success ml-2">Pesquisar</button>
+                                <button class="btn btn-primary ml-2" onClick="salvarEstancia()">Adicionar</button>
+                                <button class="btn btn-danger ml-2" onClick="limparCampos()">Cancelar</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
+                    
                  </div>
                  <table class="table mt-4">
                     <thead>
                        <tr>
-                          <th>CPF</th>
-                          <th>Nome</th>
-                        </tr>
+                            <th>Nome</th>
+                           <th>Referência</th>
+                           <th>Proprietário</th>
+                           <th>CPF Proprietário</th>
+                           <th>Ações</th>
+                       </tr>
                     </thead>
                     <tbody>
                     <% if(data.length){         
 
                         for(var i = 0;i < data.length;i++) { %>                        
                         <tr>
-                            <td><%=data[i].CPF%></td>
+                            <td><%=data[i].Nome_Estancia%></td>
+                            <td><%=data[i].Referencia%></td>
+                            <td><%=data[i].CPF_atendente%></td>
                             <td><%=data[i].Nome%></td>
                             <td>
-                                    <a class="btn btn-warning ml-0" href="/api/funcionario/<%=data[i].CPF%>"><i class="fas fa-pen"></i></a>
-                                    <a class="btn btn-danger ml-0" href="javascript:void(0)" onClick="deleteFuncionario(<%=data[i].CPF%>)"><i class="fas fa-trash-alt"></i></a>
+                                <a class="btn btn-warning ml-0" href="/api/estancia/<%=data[i].Nome_Estancia%>"><i class="fas fa-pen"></i></a>
+                                <a class="btn btn-danger ml-0" href="javascript:void(0)" onClick="deleteEstancia(<%=data[i].Nome_Estancia%>)"><i class="fas fa-trash-alt"></i></a>
                                 
                             </td>
                         </tr>
@@ -297,41 +299,40 @@
            <footer class="footer"><span>Desenvolvido pela dupla <strong>Matheus B. e Henrique M.</strong></span></footer>
         </div>
      </div>
-
-
+     
      <script>
-            function editarFuncionario(){
-              
-              $.ajax({
-               
-               url:"/api/funcionario/"+<%=data[0].CPF%>,
-               type:"put",
-               data:$("#the-form").serialize(),
-               success:function(res){
-                   
-                   window.location.href = '/api/funcionario';
-                   return false;
-               },
-               error:function(xhr, status, error){
-                   
-                   console.log(xhr.responseText);
-                   var err = '';
-                   $.each(JSON.parse(xhr.responseText) , function(i, item) {
-                      
-                        err +='<li>'+item.msg+'</li>';
-                   });
-                   $(".err-area").html(err);    
-                   return false;
-               }
-               
-              });
-           }
-   
-               function salvarFuncionario(){
-                              
-                $.ajax({
+         function editarEstancia(){
+           
+           $.ajax({
+            
+            url:"/api/estancia/"+<%=data[0].Codigo%>,
+            type:"put",
+            data:$("#the-form").serialize(),
+            success:function(res){
                 
-                url:"/api/funcionario",
+                window.location.href = '/api/estancia';
+                return false;
+            },
+            error:function(xhr, status, error){
+                
+                console.log(xhr.responseText);
+                var err = '';
+                $.each(JSON.parse(xhr.responseText) , function(i, item) {
+                   
+                     err +='<li>'+item.msg+'</li>';
+                });
+                $(".err-area").html(err);    
+                return false;
+            }
+            
+           });
+        }
+
+            function salvarEstancia(){
+                              
+               $.ajax({
+                
+                url:"/api/estancia",
                 type:"post",
                 data:$("#the-form").serialize(),
                 success:function(res){                    
@@ -353,24 +354,28 @@
                 
                });
             }
-               
-               function deleteFuncionario(CPF){
-               
-                   $.ajax({
-                       url:"/api/funcionario/"+CPF,
-                       type: 'DELETE',
-                       success: function(res) {
-                           
-                           window.location.reload();
-                           return false;
-                       },
-                       error:function(xhr, status, error){
-                       
-                           console.log(xhr.responseText);
-                           alert("Error deleting");
-                           return false;
-                       }
-                   });
-               }
-           
-           </script>
+            
+            function deleteEstancia(Codigo){
+            
+                $.ajax({
+                    url:"/api/estancia/"+Nome_Estancia,
+                    type: 'DELETE',
+                    success: function(res) {
+                        
+                        window.location.reload();
+                        return false;
+                    },
+                    error:function(xhr, status, error){
+                    
+                        console.log(xhr.responseText);
+                        alert("Error deleting");
+                        return false;
+                    }
+                });
+            }
+        
+        </script>
+
+    </body>
+</html>
+

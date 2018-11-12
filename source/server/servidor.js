@@ -327,6 +327,19 @@ venda.get(function(req,res,next){
 
     });
 
+    var query2 = conn.query('SELECT Dia_venda, Qtde FROM QTDE_Vendida', function(err,rows){
+
+        if(err){
+            console.log(err);
+            return next("Mysql error, check your query2");
+        }
+
+        res.render('venda',{title:"RESTful Crud Example",data:rows});
+
+     });
+
+});
+
 });
 
 /* ADD VENDA */
@@ -354,6 +367,13 @@ venda.post(function(req, res, next){
         CPF_freteiro:req.body.CPF_freteiro
      };
 
+     var data2 = {
+        Cod_produto:req.body.Cod_produto,
+        Cod_venda:req.body.Cod_venda,
+        Dia_venda:req.body.Dia_venda,
+        Qtde:req.body.Qtde
+     };
+
     //inserting into mysql
     req.getConnection(function (err, conn){
 
@@ -369,6 +389,17 @@ venda.post(function(req, res, next){
           res.sendStatus(200);
 
         });
+
+        var query2 = conn.query("INSERT INTO QTDE_Vendida set ? ", data2, function(err, rows){
+
+            if(err){
+                 console.log(err);
+                 return next("Mysql error, check your query2");
+            }
+ 
+           res.sendStatus(200);
+ 
+         });
 
      });
 
@@ -580,6 +611,432 @@ categoria_edit.delete(function(req,res,next){
 
      });
 });
+
+
+var estancia = router.route('/estancia');
+/* LIST ESTÂNCIA */
+estancia.get(function(req,res,next){
+
+
+    req.getConnection(function(err,conn){
+
+        if (err) return next("Cannot Connect");
+
+        var query = conn.query('SELECT * FROM Estancia', function(err,rows){
+
+            if(err){
+                console.log(err);
+                return next("Mysql error, check your query");
+            }
+
+            res.render('estancia',{title:"RESTful Crud Example",data:rows});
+
+         });
+
+         var query2 = conn.query('SELECT C.Nome FROM Clientes C, Estancia E  WHERE C.CPF = E.CPF_propietario', function(err,rows){
+
+            if(err){
+                console.log(err);
+                return next("Mysql error, check your query2");
+            }
+
+            res.render('estancia',{title:"RESTful Crud Example",data:rows});
+
+         });
+
+    });
+
+});
+
+/* ADD ESTÂNCIA */
+estancia.post(function(req, res, next){
+
+    //validation    
+    req.assert('Nome_Estancia','Nome_Estancia is required').notEmpty();
+    req.assert('CPF_propietario','A valid CPF_propietario is required').notEmpty();
+    req.assert('Referencia','A valid Referencia is required').notEmpty();
+
+    var errors = req.validationErrors();
+    if(errors){
+        res.status(422).json(errors);
+        return;
+    }
+
+    //get data
+    var data = {
+        Nome_Estancia:req.body.Nome_Estancia,
+        CPF_propietario:req.body.CPF_propietario,
+        Referencia:req.body.Referencia
+     };
+
+    //inserting into mysql
+    req.getConnection(function (err, conn){
+
+        if (err) return next("Cannot Connect");
+
+        var query = conn.query("INSERT INTO Estancia set ? ", data, function(err, rows){
+
+           if(err){
+                console.log(err);
+                return next("Mysql error, check your query");
+           }
+
+          res.sendStatus(200);
+
+        });
+
+     });
+
+});
+
+var estancia_edit = router.route('/estancia/:cpf');
+
+/* EDIT ESTÂNCIA */
+estancia_edit.put(function(req,res,next){
+    var user_id = req.params.cpf;
+
+    //validation
+    req.assert('Nome_Estancia','Nome_Estancia is required').notEmpty();
+    req.assert('CPF_propietario','A valid CPF_propietario is required').notEmpty();
+    req.assert('Referencia','A valid Referencia is required').notEmpty();
+
+    var errors = req.validationErrors();
+    if(errors){
+        res.status(422).json(errors);
+        return;
+    }
+
+    //get data
+    var data = {
+        Nome_Estancia:req.body.Nome_Estancia,
+        CPF_propietario:req.body.CPF_propietario,
+        Referencia:req.body.Referencia
+     };
+
+    //inserting into mysql
+    req.getConnection(function (err, conn){
+
+        if (err) return next("Cannot Connect");
+
+        var query = conn.query("UPDATE Estancia set ? WHERE Nome_Estancia = ? ",[data,Nome_Estancia], function(err, rows){
+
+           if(err){
+                console.log(err);
+                return next("Mysql error, check your query");
+           }
+
+          res.sendStatus(200);
+
+        });
+
+     });
+
+});
+
+/* DELETE ESTÂNCIA */
+estancia_edit.delete(function(req,res,next){
+
+    var Nome_Estancia = req.params.Nome_Estancia;
+
+     req.getConnection(function (err, conn) {
+
+        if (err) return next("Cannot Connect");
+
+        var query = conn.query("DELETE FROM estancias  WHERE Nome_Estancia = ? ",[Nome_Estancia], function(err, rows){
+
+             if(err){
+                console.log(err);
+                return next("Mysql error, check your query");
+             }
+
+             res.sendStatus(200);
+
+        });
+        //console.log(query.sql);
+
+     });
+});
+
+
+// var funcionario = router.route('/funcionario');
+// /* LIST FUNCIONARIO*/
+// cliente.get(function(req,res,next){
+
+
+//     req.getConnection(function(err,conn){
+
+//         if (err) return next("Cannot Connect");
+
+//         var query = conn.query('SELECT * FROM Funcionarios', function(err,rows){
+
+//             if(err){
+//                 console.log(err);
+//                 return next("Mysql error, check your query");
+//             }
+
+//             res.render('funcionario',{title:"RESTful Crud Example",data:rows});
+
+//          });
+
+//     });
+
+// });
+
+// /* ADD FUNCIONARIO*/
+// cliente.post(function(req, res, next){
+
+//     //validation    
+//     req.assert('nome','Nome is required').notEmpty();
+//     req.assert('cpf','A valid CPF is required').notEmpty();
+
+//     var errors = req.validationErrors();
+//     if(errors){
+//         res.status(422).json(errors);
+//         return;
+//     }
+
+//     //get data
+//     var data = {
+//         nome:req.body.nome,
+//         cpf:req.body.cpf
+//      };
+
+//     //inserting into mysql
+//     req.getConnection(function (err, conn){
+
+//         if (err) return next("Cannot Connect");
+
+//         var query = conn.query("INSERT INTO Funcionarios set ? ", data, function(err, rows){
+
+//            if(err){
+//                 console.log(err);
+//                 return next("Mysql error, check your query");
+//            }
+
+//           res.sendStatus(200);
+
+//         });
+
+//      });
+
+// });
+
+// var funcionarios_edit = router.route('/funcionario/:cpf');
+
+// /* EDIT FUNCIONARIO */
+// cliente_edit.put(function(req,res,next){
+//     var user_id = req.params.cpf;
+
+//     //validation
+//     req.assert('nome','Name is required').notEmpty();
+//     req.assert('cpf','A valid cpf is required').notEmpty();
+
+//     var errors = req.validationErrors();
+//     if(errors){
+//         res.status(422).json(errors);
+//         return;
+//     }
+
+//     //get data
+//     var data = {
+//         nome:req.body.nome,
+//         cpf:req.body.cpf
+//      };
+
+//     //inserting into mysql
+//     req.getConnection(function (err, conn){
+
+//         if (err) return next("Cannot Connect");
+
+//         var query = conn.query("UPDATE Funcionarios set ? WHERE cpf = ? ",[data,cpf], function(err, rows){
+
+//            if(err){
+//                 console.log(err);
+//                 return next("Mysql error, check your query");
+//            }
+
+//           res.sendStatus(200);
+
+//         });
+
+//      });
+
+// });
+
+// /* DELETE FUNCIONARIOS */
+// cliente_edit.delete(function(req,res,next){
+
+//     var cpf = req.params.cpf;
+
+//      req.getConnection(function (err, conn) {
+
+//         if (err) return next("Cannot Connect");
+
+//         var query = conn.query("DELETE FROM Funcionarios  WHERE cpf = ? ",[cpf], function(err, rows){
+
+//              if(err){
+//                 console.log(err);
+//                 return next("Mysql error, check your query");
+//              }
+
+//              res.sendStatus(200);
+
+//         });
+//         //console.log(query.sql);
+
+//      });
+// });
+
+// var produto = router.route('/produto');
+// /* LIST PRODUTO */
+// venda.get(function(req,res,next){
+    
+    
+//     req.getConnection(function(err,conn){
+
+//         if (err) return next("Cannot Connect");
+
+//         var query = conn.query('SELECT * FROM Produtos', function(err,rows){
+
+//             if(err){
+//                 console.log(err);
+//                 return next("Mysql error, check your query");
+//             }
+
+//             res.render('produto',{title:"RESTful Crud Example",data:rows});
+
+//          });
+
+//     });
+
+// });
+
+// /* ADD PRODTUTO */
+// venda.post(function(req, res, next){
+
+//     //validation  
+//     req.assert('Codigo','Codigo is required').notEmpty();  
+//     req.assert('Nome','A valid Nome is required').notEmpty();
+//     req.assert('Preco','A valid Preco is required').notEmpty();
+//     req.assert('Descricao','A valid Descricao is required').notEmpty();
+//     req.assert('ID_categoria','A valid ID_categoria is required').notEmpty();
+//     req.assert('ID_fornecedor','A valid ID_fornecedor is required').notEmpty();
+//     req.assert('QTD_Estoque','A valid QTD_Estoque is required').notEmpty();
+    
+//     var errors = req.validationErrors();
+//     if(errors){
+//         res.status(422).json(errors);
+//         return;
+//     }
+
+//     //get data
+//     var data = {
+//         Codigo:req.body.Codigo,
+//         Nome:req.body.Nome,
+//         Preco:req.body.Preco,
+//         Descricao:req.body.Descricao,
+//         ID_categoria:req.body.ID_categoria,
+//         ID_fornecedor:req.body.ID_fornecedor,
+//         QTD_Estoque:req.body.QTD_Estoque
+
+
+//      };
+
+//     //inserting into mysql
+//     req.getConnection(function (err, conn){
+
+//         if (err) return next("Cannot Connect");
+
+//         var query = conn.query("INSERT INTO Produtos set ? ", data, function(err, rows){
+
+//            if(err){
+//                 console.log(err);
+//                 return next("Mysql error, check your query");
+//            }
+
+//           res.sendStatus(200);
+
+//         });
+
+//      });
+
+// });
+
+// var PRODUTOS_edit = router.route('/venda/:Codigo');
+
+// /* EDIT PRODUTOS */
+// venda_edit.put(function(req,res,next){
+//     var venda_codigo = req.params.codigo;
+
+//     //validation
+//     req.assert('Codigo','Codigo is required').notEmpty();  
+//     req.assert('Nome','A valid Nome is required').notEmpty();
+//     req.assert('Preco','A valid Preco is required').notEmpty();
+//     req.assert('Descricao','A valid Descricao is required').notEmpty();
+//     req.assert('ID_categoria','A valid ID_categoria is required').notEmpty();
+//     req.assert('ID_fornecedor','A valid ID_fornecedor is required').notEmpty();
+//     req.assert('QTD_Estoque','A valid QTD_Estoque is required').notEmpty();
+
+//     var errors = req.validationErrors();
+//     if(errors){
+//         res.status(422).json(errors);
+//         return;
+//     }
+
+//     //get data
+//     var data = {
+//         Codigo:req.body.Codigo,
+//         Nome:req.body.Nome,
+//         Preco:req.body.Preco,
+//         Descricao:req.body.Descricao,
+//         ID_categoria:req.body.ID_categoria,
+//         ID_fornecedor:req.body.ID_fornecedor,
+//         QTD_Estoque:req.body.QTD_Estoque
+//      };
+
+//     //inserting into mysql
+//     req.getConnection(function (err, conn){
+
+//         if (err) return next("Cannot Connect");
+
+//         var query = conn.query("UPDATE Prdoutos set ? WHERE Codigo = ? ",[data,Codigo], function(err, rows){
+
+//            if(err){
+//                 console.log(err);
+//                 return next("Mysql error, check your query");
+//            }
+
+//           res.sendStatus(200);
+
+//         });
+
+//      });
+
+// });
+
+// /* DELETE PRODUTOS */
+// venda_edit.delete(function(req,res,next){
+
+//     var Codigo = req.params.Codigo;
+
+//      req.getConnection(function (err, conn) {
+
+//         if (err) return next("Cannot Connect");
+
+//         var query = conn.query("DELETE FROM Produtos  WHERE Codigo = ? ",[Codigo], function(err, rows){
+
+//              if(err){
+//                 console.log(err);
+//                 return next("Mysql error, check your query");
+//              }
+
+//              res.sendStatus(200);
+
+//         });
+//         //console.log(query.sql);
+
+//      });
+// });
 
 //now we need to apply our router here
 app.use('/api', router);
