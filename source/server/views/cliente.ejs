@@ -284,7 +284,7 @@
                         <tr>
                             <td><%=data[i].CPF%></td>
                             <td><%=data[i].Nome%></td>
-                            <td>-</td>
+                            <td><%=data[i].Numero%></td>
                             <td>
                                 <a class="btn btn-warning ml-0" href="/api/cliente/<%=data[i].CPF%>"><i class="fas fa-pen"></i></a>
                                 <a class="btn btn-danger ml-0" href="javascript:void(0)" onClick="deleteCliente(<%=data[i].CPF%>)"><i class="fas fa-trash-alt"></i></a>

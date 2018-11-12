@@ -110,7 +110,6 @@ CREATE TABLE Vendas(
     CPF_cliente CHAR(11),
     CPF_atendente CHAR(11),
     CPF_freteiro CHAR(11),
-    Data_venda DATE,
     Tel_cliente VARCHAR(15),
     
     FOREIGN KEY (CPF_cliente) REFERENCES Clientes(CPF),

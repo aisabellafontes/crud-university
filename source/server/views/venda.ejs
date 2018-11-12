@@ -296,7 +296,7 @@
                             <td><%=data[i].Tel_cliente%></td>
                             <td><%=data[i].CPF_freteiro%></td>
                             <td><%=data[i].Data_venda%></td>
-                            <td>-</td>
+                            <td><%=data[i].Qtde%></td>
                             <td>
                                 <a class="btn btn-warning ml-0" href="/api/venda/<%=data[i].Codigo%>"><i class="fas fa-pen"></i></a>
                                 <a class="btn btn-danger ml-0" href="javascript:void(0)" onClick="deleteVenda(<%=data[i].Codigo%>)"><i class="fas fa-trash-alt"></i></a>
