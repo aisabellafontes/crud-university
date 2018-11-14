@@ -139,9 +139,24 @@ module.exports = {
         let cpf = req.params.cpf;        
         var clientes = [];
         var message = '';
+        var telefone = '';
         console.log("Executar açao de remover  usuario CPF=", cpf);
-        var insert = "DELETE FROM Clientes  WHERE cpf = ? "; 
-        db.query(insert, [cpf], (err, result) => {            
+
+        var select_cliente = "SELECT Num_Telefone FROM Telefone_Cliente WHERE CPF_Cliente = ?";
+        db.query(select_cliente, [cpf], function(err, resultado){
+            if(!err){
+                telefone = resultado[0];
+            }
+        });
+        console.log("Selecionando Telefone Cliente");
+        var delete_telefone_cliente = "DELETE FROM Telefone_Cliente WHERE CPF_Cliente = ?"; 
+        db.query(delete_telefone_cliente, [cpf]); 
+        console.log("Apagando Telefone Cliente");
+        var delete_telefone = "DELETE FROM Telefones WHERE Numero = ?"; 
+        db.query(delete_telefone, [telefone]);
+        console.log("Apagando Telefone");
+        var delete_cliente = "DELETE FROM Clientes  WHERE CPF = ?"; 
+        db.query(delete_cliente, [cpf], (err, result) => {            
             if (err) {
                 message = "Não foi possivel remover o cliente";    
                 res.render('clientes.ejs', {
@@ -154,6 +169,7 @@ module.exports = {
                 });            
 
             }
+            console.log("Apagando Cliente");
             
             res.redirect('/clientes/');           
         });
