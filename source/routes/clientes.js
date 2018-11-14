@@ -1,4 +1,3 @@
-const fs = require('fs');
 const titulo = 'Clientes';
 const subtitulo = 'Gerenciamento de clientes da loja';
 const icone = 'fas fa-users';
@@ -9,17 +8,19 @@ module.exports = {
     listarClientes: (req, res) => {
 
         console.log("Executar açao de listar todos os usuarios");
-        let query = "SELECT * FROM Clientes";
-        db.query(query, (err, result) => {
+        // let query = "SELECT * FROM Clientes";
+        let query = "SELECT C.*, T.* FROM Clientes C, Telefones T, Telefone_Cliente TC WHERE TC.CPF_Cliente = C.CPF AND TC.Num_Telefone = T.Numero;";
+        db.query(query, (err, resultado) => {
             if (err) {
                 return res.status(500).send(err);
             }
+            console.log(resultado);
             res.render('clientes.ejs', {
                 subtitulo: subtitulo,
                 titulo: titulo,
                 message: '',
                 icone: icone,
-                clientes: result,
+                clientes: resultado,
                 cliente: null,
                 action: add
             });
@@ -31,17 +32,30 @@ module.exports = {
         var message = '';
         var nome = req.body.nome_cliente;
         var cpf = req.body.cpf_cliente;
+        var telefone_cliente = req.body.tel_cliente;
         
-        console.log(req.body, nome, cpf);
 
         //get data
-        var data = {
-            nome: nome,
-            cpf: cpf
+        var data_cliente = {
+            Nome: nome,
+            CPF: cpf
+        };
+
+        var data_telefone = {
+            Numero: telefone_cliente,
+        };
+
+        var data_telefone_cliente = {
+            Num_Telefone: telefone_cliente,
+            CPF_Cliente: cpf
         };
         
-        var insert = "INSERT INTO Clientes set ? "; 
-        db.query(insert, data, (err, result) => {            
+        var insert_cliente = "INSERT INTO Clientes set ? "; 
+        db.query(insert_cliente, data_cliente); 
+        var insert_telefone = "INSERT INTO Telefones set ? "; 
+        db.query(insert_telefone, data_telefone);
+        var insert_telefone_cliente = "INSERT INTO Telefone_Cliente set ? "; 
+        db.query(insert_telefone_cliente, data_telefone_cliente, (err, result) => {            
             if (err) {
                 message = "Não foi possivel adicionar o cliente";    
                 res.render('clientes.ejs', {
@@ -96,16 +110,19 @@ module.exports = {
         var clientes = [];
         console.log("Executar açao de editar  usuario CPF=", cpf);
 
-        var query = "SELECT * FROM Clientes";
+        var query = "SELECT C.*, T.* FROM Clientes C, Telefones T, Telefone_Cliente TC " + 
+        "WHERE TC.CPF_Cliente = C.CPF AND TC.Num_Telefone = T.Numero";
         db.query(query, (err, result) => {
             clientes = result;
         });
 
-        query = "SELECT * FROM Clientes WHERE CPF="+cpf;
+        query = "SELECT C.*, T.* FROM Clientes C, Telefones T, Telefone_Cliente TC " + 
+        "WHERE TC.CPF_Cliente = C.CPF AND TC.Num_Telefone = T.Numero AND C.CPF = '"+cpf+"'";
         db.query(query, (err, result) => {
             if (err) {
                 return res.status(500).send(err);
-            }            
+            }     
+            console.log(result);       
             res.render('clientes.ejs', {
                 subtitulo: subtitulo,
                 titulo: titulo,

@@ -43,7 +43,14 @@
                                         </div>
                                         <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label>Telefone</label><input type="number" class="form-control" name="tel_cliente" placeholder="Informe o telefone do cliente..." value="" charCounter" maxlength="15">    
+                                                    <label>Telefone</label>
+                                                    <% if(cliente){ %>
+                                                        <input type="number" class="form-control" name="tel_cliente" 
+                                                        placeholder="Informe o telefone do cliente..." value="<%=cliente.Numero%>" charCounter" maxlength="15">    
+                                                    <% } else{ %> 
+                                                        <input type="number" class="form-control" name="tel_cliente" 
+                                                        placeholder="Informe o telefone do cliente..." value="" charCounter" maxlength="15">
+                                                    <% } %>
                                                     <i class="fas fa-plus-square mu-2"></i>
                                                 </div>
                                             </div>
@@ -75,8 +82,8 @@
                                         <tr>                                            
                                             <td><i class="fas fa-users"></i></td>
                                             <td><%= cliente.CPF %></td>
-                                            <td><%= cliente.Nome %></td>                                            
-                                            <td>X</td>                                            
+                                            <td><%= cliente.Nome %></td>
+                                            <td><%= cliente.Numero %></td>                                                                                   
                                             <td>
                                                 <a href="/clientes/editar/<%=cliente.CPF%>" class="btn btn-sm btn-primary">Editar</a>
                                                 <a href="/clientes/remover/<%=cliente.CPF%>" class="btn btn-sm btn-danger">Remover</a>

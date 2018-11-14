@@ -1,5 +1,4 @@
 const express = require('express');
-const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const path = require('path');
@@ -13,9 +12,9 @@ const {listarClientes, adicionarCliente, atualizarCliente, detalharCliente, remo
 // connect to database
 const db = mysql.createConnection ({
     host: 'localhost',
-    user: 'root',
-    password: 'localadm',
-    database: 'agropec'
+    user: 'agropec.admin',
+    password: 'admin',
+    database: 'Agropec'
 });
 
 db.connect((err) => {
