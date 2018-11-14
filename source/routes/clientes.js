@@ -8,7 +8,6 @@ module.exports = {
     listarClientes: (req, res) => {
 
         console.log("Executar açao de listar todos os usuarios");
-        // let query = "SELECT * FROM Clientes";
         let query = "SELECT C.*, T.* FROM Clientes C, Telefones T, Telefone_Cliente TC WHERE TC.CPF_Cliente = C.CPF AND TC.Num_Telefone = T.Numero;";
         db.query(query, (err, resultado) => {
             if (err) {
@@ -33,7 +32,19 @@ module.exports = {
         var nome = req.body.nome_cliente;
         var cpf = req.body.cpf_cliente;
         var telefone_cliente = req.body.tel_cliente;
-        
+
+        console.log("nome, cpf",nome,cpf);
+        if(nome == null || nome == '' || cpf == null || cpf == ''){
+            res.render('clientes.ejs', {
+                subtitulo: subtitulo,
+                titulo: titulo,
+                message: "Prencher os campos obrigatórios(cpf,nome)",
+                icone: icone,
+                action: add,
+                clientes: [],
+                cliente: null,
+            });            
+        }
 
         //get data
         var data_cliente = {
@@ -173,5 +184,19 @@ module.exports = {
             
             res.redirect('/clientes/');           
         });
+    },
+
+    buscarCPF: (req, res) => {
+        let cpf = req.params.cpf;
+
+        console.log("buscando usuario por CPF",cpf);
+
+        var select_cliente = "SELECT CPF FROM Clientes WHERE CPF = ?";
+        var resultados = [];
+        db.query(select_cliente, [cpf], (err, result) => {
+            resultados = result;
+        });
+        return res.status(200).send(resultados);
+
     }
 };

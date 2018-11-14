@@ -6,7 +6,7 @@ const app = express();
 
 const port = 8000; //porta padrão
 const {getTelaInicial} = require('./routes/index');
-const {listarClientes, adicionarCliente, atualizarCliente, detalharCliente, removerCliente} = require('./routes/clientes');
+const {listarClientes, adicionarCliente, atualizarCliente, detalharCliente, removerCliente, buscarCPF} = require('./routes/clientes');
 
 
 // connect to database
@@ -45,6 +45,7 @@ app.post('/clientes/adicionar', adicionarCliente);
 app.get('/clientes/editar/:cpf', detalharCliente);
 app.post('/clientes/editar', atualizarCliente);
 app.get('/clientes/remover/:cpf', removerCliente);
+app.get('/clientes/buscarCPF/:cpf', buscarCPF);
 
 // //CRUD
 // app.get('/estancia', getTelaEstancia);
