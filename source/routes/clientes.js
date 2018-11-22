@@ -1,49 +1,56 @@
 const titulo = 'Clientes';
 const subtitulo = 'Gerenciamento de clientes da loja';
 const icone = 'fas fa-users';
-const add = '/clientes/adicionar/';
-const update = '/clientes/editar/'
+const url_list = '/clientes/';
+const url_add = '/clientes/adicionar/';
+const url_update = '/clientes/editar/'
+
+const dadosParaPagina = {
+    subtitulo: subtitulo,
+    titulo: titulo,
+    message: '',
+    icone: icone,
+    clientes: [],
+    cliente: null,
+    action: url_add
+}
 
 module.exports = {
     listarClientes: (req, res) => {
-
         console.log("Executar açao de listar todos os usuarios");
-        let query = "SELECT C.*, T.* FROM Clientes C, Telefones T, Telefone_Cliente TC WHERE TC.CPF_Cliente = C.CPF AND TC.Num_Telefone = T.Numero;";
-        db.query(query, (err, resultado) => {
-            if (err) {
-                return res.status(500).send(err);
+
+        var query_listar_clientes = " SELECT C.*, T.* "+ 
+                                    " FROM Clientes C, Telefones T, Telefone_Cliente TC " + 
+                                    " WHERE TC.CPF_Cliente = C.CPF AND TC.Num_Telefone = T.Numero;";
+        db.query(query_listar_clientes, function(sql_erro, sql_resultado){
+            console.log("Retorno da consulta SQL =", sql_resultado);
+
+            if (sql_erro){
+                dadosParaPagina.message = sql_erro;
             }
-            console.log(resultado);
-            res.render('clientes.ejs', {
-                subtitulo: subtitulo,
-                titulo: titulo,
-                message: '',
-                icone: icone,
-                clientes: resultado,
-                cliente: null,
-                action: add
-            });
+            
+            dadosParaPagina.clientes = sql_resultado;
+            dadosParaPagina.action = url_add;
+            res.render('clientes.ejs', dadosParaPagina);
+
         });
     },
 
+
     adicionarCliente: (req, res) => {
         console.log("Executar açao de adicionar novo usuario");
-        var message = '';
+        
+        // receber as variaveis do template ejs (html)
         var nome = req.body.nome_cliente;
         var cpf = req.body.cpf_cliente;
         var telefone_cliente = req.body.tel_cliente;
 
-        console.log("nome, cpf",nome,cpf);
+        console.log("Adicionar os registros:", cpf, nome, telefone_cliente);
+
         if(nome == null || nome == '' || cpf == null || cpf == ''){
-            res.render('clientes.ejs', {
-                subtitulo: subtitulo,
-                titulo: titulo,
-                message: "Prencher os campos obrigatórios(cpf,nome)",
-                icone: icone,
-                action: add,
-                clientes: [],
-                cliente: null,
-            });            
+            dadosParaPagina.message = "Prencher os campos obrigatórios(cpf,nome)";
+            dadosParaPagina.action = url_add;
+            res.render('clientes.ejs', dadosParaPagina);            
         }
 
         //get data
@@ -61,27 +68,29 @@ module.exports = {
             CPF_Cliente: cpf
         };
         
-        var insert_cliente = "INSERT INTO Clientes set ? "; 
-        db.query(insert_cliente, data_cliente); 
-        var insert_telefone = "INSERT INTO Telefones set ? "; 
-        db.query(insert_telefone, data_telefone);
-        var insert_telefone_cliente = "INSERT INTO Telefone_Cliente set ? "; 
-        db.query(insert_telefone_cliente, data_telefone_cliente, (err, result) => {            
-            if (err) {
-                message = "Não foi possivel adicionar o cliente";    
-                res.render('clientes.ejs', {
-                    subtitulo: subtitulo,
-                    titulo: titulo,
-                    message: message,
-                    icone: icone,
-                    clientes: [],
-                    cliente: null,
-                });            
+        res.redirect(url_list);
+        
+        // var insert_cliente = "INSERT INTO Clientes set ? "; 
+        // db.query(insert_cliente, data_cliente); 
+        // var insert_telefone = "INSERT INTO Telefones set ? "; 
+        // db.query(insert_telefone, data_telefone);
+        // var insert_telefone_cliente = "INSERT INTO Telefone_Cliente set ? "; 
+        // db.query(insert_telefone_cliente, data_telefone_cliente, (err, result) => {            
+        //     if (err) {
+        //         message = "Não foi possivel adicionar o cliente";    
+        //         res.render('clientes.ejs', {
+        //             subtitulo: subtitulo,
+        //             titulo: titulo,
+        //             message: message,
+        //             icone: icone,
+        //             clientes: [],
+        //             cliente: null,
+        //         });            
 
-            }
+        //     }
             
-            res.redirect('/clientes/');           
-        });
+        //     res.redirect('/clientes/');           
+        // });
 
     },
 

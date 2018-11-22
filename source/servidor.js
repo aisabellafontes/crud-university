@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname, 'public'))); // configure express to
 app.get('/', getTelaInicial);
 app.get('/inicio', getTelaInicial);
 
-// // CRUD Cliente
+// CRUD Cliente
 app.get('/clientes', listarClientes);
 app.post('/clientes/adicionar', adicionarCliente);
 app.get('/clientes/editar/:cpf', detalharCliente);

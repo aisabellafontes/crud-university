@@ -3,10 +3,11 @@ const titulo = 'Categorias';
 const subtitulo = 'Gerenciamento de categorias para produtos da loja';
 const icone = 'fas fa-tags';
 const add = '/categorias/adicionar/';
-const update = '/categorias/editar/'
+const update = '/categorias/editar/';
+const url = '/clientes/';
 
 module.exports = {
-    listarClientes: (req, res) => {
+    listar: (req, res) => {
 
         console.log("Executar açao de listar todos os usuarios");
         let query = "SELECT * FROM Clientes";
@@ -26,7 +27,7 @@ module.exports = {
         });
     },
 
-    adicionarCliente: (req, res) => {
+    adicionar: (req, res) => {
         console.log("Executar açao de adicionar novo usuario");
         var message = '';
         var nome = req.body.nome_cliente;
@@ -60,7 +61,7 @@ module.exports = {
 
     },
 
-    atualizarCliente: (req, res) => {
+    atualizar: (req, res) => {
         console.log("Executar açao de editar usuario");
         var message = '';
         var nome = req.body.nome_cliente;
@@ -91,7 +92,7 @@ module.exports = {
         });
     },
 
-    detalharCliente: (req, res) => {        
+    detalhars: (req, res) => {        
         let cpf = req.params.cpf;        
         var clientes = [];
         console.log("Executar açao de editar  usuario CPF=", cpf);
@@ -118,7 +119,7 @@ module.exports = {
         });
     },
     
-    removerCliente: (req, res) => {
+    remover: (req, res) => {
         let cpf = req.params.cpf;        
         var clientes = [];
         var message = '';
@@ -138,7 +139,7 @@ module.exports = {
 
             }
             
-            res.redirect('/clientes/');           
+            res.redirect(url);           
         });
     }
 };
