@@ -2,124 +2,136 @@ const fs = require('fs');
 const titulo = 'Categorias';
 const subtitulo = 'Gerenciamento de categorias para produtos da loja';
 const icone = 'fas fa-tags';
-const add = '/categorias/adicionar/';
-const update = '/categorias/editar/';
-const url = '/clientes/';
+const url_add = '/categorias/adicionar/';
+const url_update = '/categorias/editar/';
+const url = '/categorias/';
+
+const dadosParaPagina = {
+    subtitulo: subtitulo,
+    titulo: titulo,
+    message: '',
+    icone: icone,
+    categorias: [],
+    categoria: null,
+    action: url_add
+}
 
 module.exports = {
-    listar: (req, res) => {
+    listarCategoria: (req, res) => {
 
-        console.log("Executar açao de listar todos os usuarios");
-        let query = "SELECT * FROM Clientes";
-        db.query(query, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
+        console.log("Executar açao de listar todos as categorias");
+        let query = "SELECT * FROM Categoria";
+        db.query(query, (sql_erro, sql_resultado) => {
+            if (sql_erro){
+                dadosParaPagina.message = sql_erro;
             }
-            res.render('clientes.ejs', {
-                subtitulo: subtitulo,
-                titulo: titulo,
-                message: '',
-                icone: icone,
-                clientes: result,
-                cliente: null,
-                action: add
-            });
+            
+            dadosParaPagina.categorias = sql_resultado;
+            dadosParaPagina.action = url_add;
+            res.render('categorias.ejs', dadosParaPagina);
         });
     },
 
-    adicionar: (req, res) => {
-        console.log("Executar açao de adicionar novo usuario");
+    adicionarCategoria: (req, res) => {
+        console.log("Executar açao de adicionar nova categoria");
         var message = '';
-        var nome = req.body.nome_cliente;
-        var cpf = req.body.cpf_cliente;
+        var nome = req.body.nome_categoria;
+        var descricao = req.body.descricao_categoria;
         
-        console.log(req.body, nome, cpf);
-
         //get data
         var data = {
-            nome: nome,
-            cpf: cpf
+            Nome: nome,
+            Descricao: descricao
         };
-        
-        var insert = "INSERT INTO Clientes set ? "; 
+
+        var insert = "INSERT INTO Categoria set ? "; 
         db.query(insert, data, (err, result) => {            
             if (err) {
-                message = "Não foi possivel adicionar o cliente";    
-                res.render('clientes.ejs', {
-                    subtitulo: subtitulo,
-                    titulo: titulo,
-                    message: message,
-                    icone: icone,
-                    clientes: [],
-                    cliente: null,
-                });            
+                message = "Não foi possivel adicionar a categoria";    
+                dadosParaPagina.message = message;
+                res.render('clientes.ejs', dadosParaPagina);            
 
             }
             
-            res.redirect('/clientes/');           
+            res.redirect(url);           
         });
 
     },
 
-    atualizar: (req, res) => {
-        console.log("Executar açao de editar usuario");
+    atualizarCategoria: (req, res) => {
+        console.log("Executar açao de editar categoria");
+        let id = req.params.id;
         var message = '';
-        var nome = req.body.nome_cliente;
-        var cpf = req.body.cpf_cliente;
+        var nome = req.body.nome_categoria;
+        var descricao = req.body.descricao_categoria;
         
         //get data
         var data = {
-            nome: nome,
-            cpf: cpf
+            Nome: nome,
+            Descricao: descricao
         };
+        console.log(data, id);
+        res.redirect(url);
         
-        var insert = "UPDATE Clientes set ? WHERE cpf = ? "; 
-        db.query(insert, [data,cpf], (err, result) => {            
-            if (err) {
-                message = "Não foi possivel atualizar o cliente";    
-                res.render('clientes.ejs', {
-                    subtitulo: subtitulo,
-                    titulo: titulo,
-                    message: message,
-                    icone: icone,
-                    clientes: [],
-                    cliente: null,
-                });            
+        // var insert = "UPDATE Categoria set ? WHERE ID = ? "; 
+        // db.query(insert, [data,cpf], (err, result) => {            
+        //     if (err) {
+        //         message = "Não foi possivel atualizar a categoria";    
+        //         res.render('clientes.ejs', dadosParaPagina);            
 
-            }
+        //     }
             
-            res.redirect('/clientes/');           
-        });
+        //     res.redirect('/clientes/');           
+        // });
     },
 
-    detalhars: (req, res) => {        
-        let cpf = req.params.cpf;        
-        var clientes = [];
-        console.log("Executar açao de editar  usuario CPF=", cpf);
+    detalharCategoria: (req, res) => {        
+        console.log("Executar açao de editar categoria");
+        let id = req.params.id;
+        // var message = '';
+        // var nome = req.body.nome_categoria;
+        // var descricao = req.body.descricao_categoria;
+        
+        // //get data
+        // var data = {
+        //     Nome: nome,
+        //     Descricao: descricao
+        // };
+        // console.log(data, id);
 
-        var query = "SELECT * FROM Clientes";
-        db.query(query, (err, result) => {
-            clientes = result;
+        var query = "SELECT * FROM Categoria WHERE ID = ?";
+        db.query(query, [id], (err, result) => {
+            dadosParaPagina.categoria = result;
         });
+        dadosParaPagina.action = url_update;
+        res.render('categorias.ejs', dadosParaPagina);
+        // let cpf = req.params.cpf;        
+        // var clientes = [];
+        // console.log("Executar açao de editar  usuario CPF=", cpf);
 
-        query = "SELECT * FROM Clientes WHERE CPF="+cpf;
-        db.query(query, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }            
-            res.render('clientes.ejs', {
-                subtitulo: subtitulo,
-                titulo: titulo,
-                message: '',
-                icone: icone,
-                clientes: clientes,
-                cliente: result[0],
-                action: update
-            });
-        });
+        // var query = "SELECT * FROM Clientes";
+        // db.query(query, (err, result) => {
+        //     clientes = result;
+        // });
+
+        // query = "SELECT * FROM Clientes WHERE CPF="+cpf;
+        // db.query(query, (err, result) => {
+        //     if (err) {
+        //         return res.status(500).send(err);
+        //     }            
+        //     res.render('clientes.ejs', {
+        //         subtitulo: subtitulo,
+        //         titulo: titulo,
+        //         message: '',
+        //         icone: icone,
+        //         clientes: clientes,
+        //         cliente: result[0],
+        //         action: update
+        //     });
+        // });
     },
     
-    remover: (req, res) => {
+    removerCategoria: (req, res) => {
         let cpf = req.params.cpf;        
         var clientes = [];
         var message = '';

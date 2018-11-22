@@ -23,9 +23,10 @@
                                             <label>Nome</label>
                                             <% if(cliente){ %>
                                                 <input type="text" class="form-control" name="nome_cliente" placeholder="Informe o nome do cliente..." 
-                                                value="<%=cliente.Nome%>" charCounter" maxlength="155">
+                                                value="<%=cliente.Nome%>" charCounter maxlength="155">
                                               <% } else{ %>  
-                                                <input type="text" class="form-control" name="nome_cliente" placeholder="Informe o nome do cliente..." value="" charCounter" maxlength="155">
+                                                <input type="text" class="form-control" name="nome_cliente" placeholder="Informe o nome do cliente..." 
+                                                value="" charCounter maxlength="155">
                                              <% } %>   
                                             
                                         </div>
@@ -34,10 +35,10 @@
                                             <div class="form-group"><label>CPF</label>
                                                 <% if(cliente){ %>
                                                     <input type="number" class="form-control" name="cpf_cliente" id="cpf_cliente" placeholder="Informe o CPF do cliente..." 
-                                                value="<%=cliente.CPF%>" charCounter" maxlength="11" readonly>
+                                                value="<%=cliente.CPF%>" charCounter maxlength="11" readonly>
                                                   <% } else{ %>  
                                                     <input type="number" class="form-control" name="cpf_cliente" id="cpf_cliente" placeholder="Informe o CPF do cliente..." 
-                                                value="" charCounter" maxlength="11">
+                                                value="" charCounter maxlength="11">
                                                  <% } %>   
                                                 </div>
                                         </div>
@@ -46,10 +47,10 @@
                                                     <label>Telefone</label>
                                                     <% if(cliente){ %>
                                                         <input type="number" class="form-control" name="tel_cliente" 
-                                                        placeholder="Informe o telefone do cliente..." value="<%=cliente.Numero%>" charCounter" maxlength="15">    
+                                                        placeholder="Informe o telefone do cliente..." value="<%=cliente.Numero%>" charCounter maxlength="15">    
                                                     <% } else{ %> 
                                                         <input type="number" class="form-control" name="tel_cliente" 
-                                                        placeholder="Informe o telefone do cliente..." value="" charCounter" maxlength="15">
+                                                        placeholder="Informe o telefone do cliente..." value="" charCounter maxlength="15">
                                                     <% } %>
                                                     <i class="fas fa-plus-square mu-2"></i>
                                                 </div>

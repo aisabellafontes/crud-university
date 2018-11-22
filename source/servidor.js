@@ -7,7 +7,7 @@ const app = express();
 const port = 8000; //porta padrão
 const {getTelaInicial} = require('./routes/index');
 const {listarClientes, adicionarCliente, atualizarCliente, detalharCliente, removerCliente, buscarCPF} = require('./routes/clientes');
-
+const {listarCategoria, adicionarCategoria, atualizarCategoria, detalharCategoria, removerCategoria} = require('./routes/categorias');
 
 // connect to database
 const db = mysql.createConnection ({
@@ -46,6 +46,13 @@ app.get('/clientes/editar/:cpf', detalharCliente);
 app.post('/clientes/editar', atualizarCliente);
 app.get('/clientes/remover/:cpf', removerCliente);
 app.get('/clientes/buscarCPF/:cpf', buscarCPF);
+
+// CRUD Categorias
+app.get('/categorias', listarCategoria);
+app.post('/categorias/adicionar', adicionarCategoria);
+app.get('/categorias/editar/:id', detalharCategoria);
+app.post('/categorias/editar/:id', atualizarCategoria);
+app.get('/categorias/remover/:id', removerCategoria);
 
 // //CRUD
 // app.get('/estancia', getTelaEstancia);
