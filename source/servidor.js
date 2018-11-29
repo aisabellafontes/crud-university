@@ -62,6 +62,13 @@ app.get('/fornecedores/editar/:id', detalharFornecedor);
 app.post('/fornecedores/editar/', atualizarFornecedor);
 app.get('/fornecedores/remover/:id', removerFornecedor);
 
+//CRUD Funcionarios
+app.get('/fornecedores', listarFornecedor);
+app.post('/fornecedores/adicionar', adicionarFornecedor);
+app.get('/fornecedores/editar/:id', detalharFornecedor);
+app.post('/fornecedores/editar/', atualizarFornecedor);
+app.get('/fornecedores/remover/:id', removerFornecedor);
+
 
 // set the app to listen on the port
 app.listen(port, () => {
