@@ -22,6 +22,7 @@
                                         <div class="form-group">
                                             <label>Nome</label>
                                             <% if(categoria){ %>
+                                                <input type="hidden" name="id_categoria" id="id_categoria" value="<%=categoria.ID%>"/>
                                                 <input type="text" class="form-control" name="nome_categoria" placeholder="Informe o Nome da Categoria..." 
                                                 value="<%=categoria.Nome%>" charCounter maxlength="155">
                                               <% } else{ %>
@@ -91,7 +92,7 @@
 
         <script>
                
-                function submitForm() {
+                function submitForm() {                    
                     document.contact-form.submit();
                     document.contact-form.reset();
                 }

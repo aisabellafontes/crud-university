@@ -8,6 +8,7 @@ const port = 8000; //porta padrão
 const {getTelaInicial} = require('./routes/index');
 const {listarClientes, adicionarCliente, atualizarCliente, detalharCliente, removerCliente, buscarCPF} = require('./routes/clientes');
 const {listarCategoria, adicionarCategoria, atualizarCategoria, detalharCategoria, removerCategoria} = require('./routes/categorias');
+const {listarFornecedor, adicionarFornecedor, atualizarFornecedor, detalharFornecedor, removerFornecedor} = require('./routes/fornecedores');
 
 // connect to database
 const db = mysql.createConnection ({
@@ -51,16 +52,15 @@ app.get('/clientes/buscarCPF/:cpf', buscarCPF);
 app.get('/categorias', listarCategoria);
 app.post('/categorias/adicionar', adicionarCategoria);
 app.get('/categorias/editar/:id', detalharCategoria);
-app.post('/categorias/editar/:id', atualizarCategoria);
+app.post('/categorias/editar/', atualizarCategoria);
 app.get('/categorias/remover/:id', removerCategoria);
 
-// //CRUD
-// app.get('/estancia', getTelaEstancia);
-// app.get('/funcionarios', getTelaFuncionario);
-// app.get('/produtos', getTelaProduto);
-// app.get('/vendas', getTelaVenda);
-// app.get('/categorias', getTelaCategoria);
-// app.get('/fornecedores', getTelaFornecedor);
+//CRUD Fornecedores
+app.get('/fornecedores', listarFornecedor);
+app.post('/fornecedores/adicionar', adicionarFornecedor);
+app.get('/fornecedores/editar/:id', detalharFornecedor);
+app.post('/fornecedores/editar/', atualizarFornecedor);
+app.get('/fornecedores/remover/:id', removerFornecedor);
 
 
 // set the app to listen on the port
