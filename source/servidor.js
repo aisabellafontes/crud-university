@@ -9,7 +9,7 @@ const {getTelaInicial} = require('./routes/index');
 const {listarClientes, adicionarCliente, atualizarCliente, detalharCliente, removerCliente, buscarCPF} = require('./routes/clientes');
 const {listarCategoria, adicionarCategoria, atualizarCategoria, detalharCategoria, removerCategoria} = require('./routes/categorias');
 const {listarFornecedor, adicionarFornecedor, atualizarFornecedor, detalharFornecedor, removerFornecedor} = require('./routes/fornecedores');
-const {listarEstancia, adicionarEstancia, atualizarEstancia, detalharEstancia, removerEstancia} = require('./routes/estancia');
+const {listarEstancia, adicionarEstancia, atualizarEstancia, detalharEstancia, removerEstancia} = require('./routes/estancias');
 
 // connect to database
 const db = mysql.createConnection ({
@@ -64,11 +64,11 @@ app.post('/fornecedores/editar/', atualizarFornecedor);
 app.get('/fornecedores/remover/:id', removerFornecedor);
 
 //CRUD Estancia
-app.get('/estancia', listarEstancia);
-app.post('/estancia/adicionar', adicionarEstancia);
-app.get('/estancia/editar/:id', detalharEstancia);
-app.post('/estancia/editar/', atualizarEstancia);
-app.get('/estancia/remover/:id', removerEstancia);
+app.get('/estancias', listarEstancia);
+app.post('/estancias/adicionar', adicionarEstancia);
+app.get('/estancias/editar/:cpf', detalharEstancia);
+app.post('/estancias/editar/', atualizarEstancia);
+app.get('/estancias/remover/:cpf', removerEstancia);
 
 
 // set the app to listen on the port
