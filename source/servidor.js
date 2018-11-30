@@ -9,6 +9,7 @@ const {getTelaInicial} = require('./routes/index');
 const {listarClientes, adicionarCliente, atualizarCliente, detalharCliente, removerCliente, buscarCPF} = require('./routes/clientes');
 const {listarCategoria, adicionarCategoria, atualizarCategoria, detalharCategoria, removerCategoria} = require('./routes/categorias');
 const {listarFornecedor, adicionarFornecedor, atualizarFornecedor, detalharFornecedor, removerFornecedor} = require('./routes/fornecedores');
+const {listarEstancia, adicionarEstancia, atualizarEstancia, detalharEstancia, removerEstancia} = require('./routes/estancia');
 const {listarProduto, adicionarProduto, atualizarProduto, detalharProduto, removerProduto} = require('./routes/produtos');
 const {listarFuncionario, adicionarFuncionario, atualizarFuncionario, detalharFuncionario, removerFuncionario} = require('./routes/funcionarios');
 
@@ -63,6 +64,14 @@ app.post('/fornecedores/adicionar', adicionarFornecedor);
 app.get('/fornecedores/editar/:id', detalharFornecedor);
 app.post('/fornecedores/editar/', atualizarFornecedor);
 app.get('/fornecedores/remover/:id', removerFornecedor);
+
+//CRUD Estancia
+app.get('/estancia', listarEstancia);
+app.post('/estancia/adicionar', adicionarEstancia);
+app.get('/estancia/editar/:id', detalharEstancia);
+app.post('/estancia/editar/', atualizarEstancia);
+app.get('/estancia/remover/:id', removerEstancia);
+
 
 //CRUD Produtos
 app.get('/produtos', listarProduto);
