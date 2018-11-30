@@ -43,7 +43,7 @@ module.exports = {
         //get data
         var data = {
             Nome_Estancia: nome,
-            CPF_Propietario: cpf,
+            CPF_Propietario: cpfpropietario,
             Referencia: referencia
         };
 
@@ -78,7 +78,7 @@ module.exports = {
         // res.redirect(url);
         
         var insert = "UPDATE Estancia set ? WHERE CPF_propietario = ? "; 
-        db.query(insert, [data, id], (err, result) => {            
+        db.query(insert, [data, cpf], (err, result) => {            
             if (err) {
                 console.log("XIiiiiiii");
                 message = "Não foi possivel atualizar a categoria";    
@@ -96,13 +96,14 @@ module.exports = {
     detalharEstancia: (req, res) => {        
         console.log("Executar açao de listar a estancia selecionada!!!");
         let cpf = req.params.cpf;
+        console.log("cpf",cpf);
         
         var query = "SELECT * FROM Estancia WHERE CPF_propietario = "+ cpf;
         db.query(query, (err, resultado) => {
             if (err) {
                 return res.status(500).send(err);
             }            
-            dadosParaPagina.categoria = resultado[0];
+            dadosParaPagina.estancia = resultado[0];
             dadosParaPagina.action = url_update;       
             // console.log(dadosParaPagina);
             res.render('estancias.ejs', dadosParaPagina);
