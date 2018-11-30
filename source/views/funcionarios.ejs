@@ -43,9 +43,9 @@
                                        </div>
                                        <div class="col-12 col-md-6">
                                             <div class="form-group "><label>Cargo </label> <select name="cargos_funcionario">
-                                            <option value="supervisor">Supervisor</option>
-                                            <option value="atendente">Atendente</option>
-                                            <option value="freteiro">Freteiro</option>
+                                            <option value="Supervisor">Supervisor</option>
+                                            <option value="Atendente">Atendente</option>
+                                            <option value="Freteiro">Freteiro</option>
                                             </select></div>
                                     </div>                    
                                        <div class="col-12 col-md-6">
@@ -87,9 +87,9 @@
                                             <td><i class="fas fa-users"></i></td>
                                             <td><%= funcionario.CPF %></td>
                                             <td><%= funcionario.Nome %></td>
-                                            <td><%= funcionario.Cargo %></td>                                             
+                                            <td><%= funcionario.Tipo %></td>                                             
                                             <td><%= funcionario.Supervisor %></td>
-                                            <td><%= funcionario.QtdVE %></td>                                           
+                                            <td><%= funcionario.Qtde %></td>                                           
                                             <td>
                                                 <a href="/funcionarios/editar/<%=funcionario.CPF%>" class="btn btn-sm btn-primary">Editar</a>
                                                 <a href="/funcionarios/remover/<%=funcionario.CPF%>" class="btn btn-sm btn-danger">Remover</a>
