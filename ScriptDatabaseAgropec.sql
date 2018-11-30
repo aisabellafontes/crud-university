@@ -48,8 +48,11 @@ CREATE TABLE Estancia(
  );
  
  CREATE TABLE Funcionarios(
-	CPF CHAR(11) PRIMARY KEY,
-    Nome VARCHAR(155)
+	CPF CHAR(11) PRIMARY KEY NOT NULL,
+    Nome VARCHAR(155),
+    Tipo VARCHAR(50),
+    CPF_Supervisor CHAR(11),
+    FOREIGN KEY (CPF_Supervisor) REFERENCES Funcionarios(CPF)
  );
  
 CREATE TABLE Supervisor(
