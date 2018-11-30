@@ -9,6 +9,7 @@ const {getTelaInicial} = require('./routes/index');
 const {listarClientes, adicionarCliente, atualizarCliente, detalharCliente, removerCliente, buscarCPF} = require('./routes/clientes');
 const {listarCategoria, adicionarCategoria, atualizarCategoria, detalharCategoria, removerCategoria} = require('./routes/categorias');
 const {listarFornecedor, adicionarFornecedor, atualizarFornecedor, detalharFornecedor, removerFornecedor} = require('./routes/fornecedores');
+const {listarProduto, adicionarProduto, atualizarProduto, detalharProduto, removerProduto} = require('./routes/produtos');
 
 // connect to database
 const db = mysql.createConnection ({
@@ -61,6 +62,13 @@ app.post('/fornecedores/adicionar', adicionarFornecedor);
 app.get('/fornecedores/editar/:id', detalharFornecedor);
 app.post('/fornecedores/editar/', atualizarFornecedor);
 app.get('/fornecedores/remover/:id', removerFornecedor);
+
+//CRUD Produtos
+app.get('/produtos', listarProduto);
+app.post('/produtos/adicionar', adicionarProduto);
+app.get('/produtos/editar/:codigo', detalharProduto);
+app.post('/produtos/editar/', atualizarProduto);
+app.get('/produtos/remover/:codigo', removerProduto);
 
 
 // set the app to listen on the port
