@@ -90,7 +90,7 @@ CREATE TABLE Fornecedor(
 
 
 CREATE TABLE Produtos(
-	Codigo INTEGER PRIMARY KEY,
+	Codigo INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     Nome VARCHAR(155),
     Preco REAL,
     Descricao VARCHAR(255),
@@ -106,7 +106,7 @@ CREATE TABLE Produtos(
 
 
 CREATE TABLE Vendas(
-	Codigo INTEGER PRIMARY KEY,
+	Codigo INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
     CPF_cliente CHAR(11),
     CPF_atendente CHAR(11),
     CPF_freteiro CHAR(11),

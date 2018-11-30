@@ -10,6 +10,7 @@ const {listarClientes, adicionarCliente, atualizarCliente, detalharCliente, remo
 const {listarCategoria, adicionarCategoria, atualizarCategoria, detalharCategoria, removerCategoria} = require('./routes/categorias');
 const {listarFornecedor, adicionarFornecedor, atualizarFornecedor, detalharFornecedor, removerFornecedor} = require('./routes/fornecedores');
 const {listarProduto, adicionarProduto, atualizarProduto, detalharProduto, removerProduto} = require('./routes/produtos');
+const {listarFuncionario, adicionarFuncionario, atualizarFuncionario, detalharFuncionario, removerFuncionario} = require('./routes/funcionarios');
 
 // connect to database
 const db = mysql.createConnection ({
@@ -70,6 +71,12 @@ app.get('/produtos/editar/:codigo', detalharProduto);
 app.post('/produtos/editar/', atualizarProduto);
 app.get('/produtos/remover/:codigo', removerProduto);
 
+//CRUD Funcionarios
+app.get('/funcionarios', listarFuncionario);
+app.post('/funcionarios/adicionar', adicionarFuncionario);
+app.get('/funcionarios/editar/:id', detalharFuncionario);
+app.post('/funcionarios/editar/', atualizarFuncionario);
+app.get('/funcionarios/remover/:id', removerFuncionario);
 
 // set the app to listen on the port
 app.listen(port, () => {
