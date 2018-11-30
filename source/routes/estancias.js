@@ -43,7 +43,7 @@ module.exports = {
         //get data
         var data = {
             Nome_Estancia: nome,
-            CPF_Propietario: cpf,
+            CPF_Propietario: cpfpropietario,
             Referencia: referencia
         };
 

@@ -10,7 +10,6 @@ const {listarClientes, adicionarCliente, atualizarCliente, detalharCliente, remo
 const {listarCategoria, adicionarCategoria, atualizarCategoria, detalharCategoria, removerCategoria} = require('./routes/categorias');
 const {listarFornecedor, adicionarFornecedor, atualizarFornecedor, detalharFornecedor, removerFornecedor} = require('./routes/fornecedores');
 const {listarEstancia, adicionarEstancia, atualizarEstancia, detalharEstancia, removerEstancia} = require('./routes/estancias');
-const {listarEstancia, adicionarEstancia, atualizarEstancia, detalharEstancia, removerEstancia} = require('./routes/estancia');
 const {listarProduto, adicionarProduto, atualizarProduto, detalharProduto, removerProduto} = require('./routes/produtos');
 const {listarFuncionario, adicionarFuncionario, atualizarFuncionario, detalharFuncionario, removerFuncionario} = require('./routes/funcionarios');
 
