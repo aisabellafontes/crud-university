@@ -184,71 +184,80 @@ module.exports = {
     },
     
     removerFuncionario: (req, res) => {
+        /*
+        ATENÇÃO: AS CONSULTAS DEVEM SER FEITAS DENTRO DE DB.QUERY nesse caso.
+        Para remover o funcionario é necessario buscar todas as informacoes do mesmo
+        Após encontrar os dados do funcionarios:
+        - Armazenar o Tipo do Funcionario (Cargo)
+        - verificar em qual tabela precisa ser removido (de acordo com o cargo)
+        */
+
        let cpf = req.params.cpf;    
        console.log("Executar açao de remover funcionário por CPF =", cpf);
 
-       var cargo = "SELECT F1.Tipo FROM Funcionarios F1 WHERE F1.CPF = "+ cpf; 
-       db.query(cargo, [cpf], (err, resultado) =>{
-        if (err) {
-            message = "Não foi possivel achar o cargo do Funcionario";    
-            dadosParaPagina.message = message;                    
-            res.render('funcionarios.ejs', dadosParaPagina);
-        }
-        console.log(resultado);
-    });
+       var cargo = null;
+       var query_busca_funcionario = "SELECT F1.Tipo FROM Funcionarios F1 WHERE F1.CPF = "+ cpf; 
+       db.query(query_busca_funcionario, [cpf], (err, resultado) =>{
+            if (err) {
+                message = "Não foi possivel achar o cargo do Funcionario";    
+                dadosParaPagina.message = message;                    
+                res.render('funcionarios.ejs', dadosParaPagina);
+            }            
+            cargo = resultado[0].Tipo;
+            console.log("Identificado o Funcionario com Cargo =", cargo);
 
-     //TODO: Remover relacoes de vendas e funcionários
-    //    var select_produtos = "SELECT Codigo FROM produtos WHERE ID_Categoria =";
-    //    db.query(select_cliente, [cpf], function(err, resultado){
-    //        if(!err){
-    //            telefone = resultado[0];
-    //        }
-    //    });
-       
-        if(cargo === "Atendente"){
-            var query = "DELETE FROM Atendente WHERE CPF_Atendente ? "; 
-            db.query(query, [cpf], (err, resultado) =>{
-                if (err) {
-                    message = "Não foi possivel remover o Atendente";    
-                    dadosParaPagina.message = message;                    
-                    res.render('funcionarios.ejs', dadosParaPagina);
-                }
-                console.log(resultado);
-            });
-        }
-        else if(cargo === "Freteiro"){
-            var query = "DELETE FROM Freteiro WHERE CPF_Freteiro ? ";
-            db.query(query, [cpf], (err, resultado) =>{
-                if (err) {
-                    message = "Não foi possivel remover o Freteiro";                       
-                    dadosParaPagina.message = message;
-                    res.render('funcionarios.ejs', dadosParaPagina);
-                }
-                console.log(resultado);
-            });
-        }
-        else if(cargo === "Supervisor"){
-            var query = "DELETE FROM Supervisor WHERE CPF_Supervisionado ? ";   
-            db.query(query, [cpf], (err, resultado) =>{
-                if (err) {
-                    message = "Não foi possivel remover o Supervisor";                        
-                    dadosParaPagina.message = message;
-                    res.render('funcionarios.ejs', dadosParaPagina);
-                }
-                console.log(resultado);
-            });
-        }
+            /* Remover de acordo com o cargo */
+            if(cargo === "atendente"){
+                var query = "DELETE FROM Atendente WHERE CPF_Atendente= ? "; 
+                db.query(query, [cpf], (err, resultado) =>{
+                    if (err) {
+                        message = "Não foi possivel remover o Atendente";    
+                        dadosParaPagina.message = message;                    
+                        res.render('funcionarios.ejs', dadosParaPagina);
+                    }    
+                    console.log("Removido o atendente com sucesso.");
+                });
+            }
+            else if(cargo === "freteiro"){
+                var query = "DELETE FROM Freteiro WHERE CPF_Freteiro = ? ";
+                db.query(query, [cpf], (err, resultado) =>{
+                    if (err) {
+                        message = "Não foi possivel remover o Freteiro";                       
+                        dadosParaPagina.message = message;
+                        console.log(err);
+                        res.render('funcionarios.ejs', dadosParaPagina);
+                    }                    
+                    console.log("Removido o atendente com sucesso.");
+                });
+            }
+            else if(cargo === "supervisor"){
+                var query = "DELETE FROM Supervisor WHERE CPF_Supervisor = ? or CPF_Supervisonado = ? ";   
+                db.query(query, [cpf, cpf], (err, resultado) =>{
+                    if (err) {
+                        message = "Não foi possivel remover o Supervisor";                        
+                        dadosParaPagina.message = message;
+                        res.render('funcionarios.ejs', dadosParaPagina);
+                    }                    
+                    console.log("Removido o atendente com sucesso.");
+                });
+            }
 
-       var delete_data = "DELETE FROM Funcionarios  WHERE CPF = ?"; 
-       db.query(delete_data, [cpf], (err, result) => {            
-           if (err) {
-               message = "Não foi possivel remover o funcionário";    
-               dadosParaPagina.message = message;               
-               res.render('funcionarios.ejs', dadosParaPagina);            
+            /* Se nao houve erro, remover o funcionario finalmente */
+            var query_delete_funcionario = "DELETE FROM Funcionarios  WHERE CPF = ?"; 
+            db.query(query_delete_funcionario, [cpf], (err, result) => {            
+                if (err) {
+                    message = "Não foi possivel remover o funcionário";    
+                    dadosParaPagina.message = message;              
+                    console.log(err) ;
+                    res.render('funcionarios.ejs', dadosParaPagina);            
 
-           }
-           console.log("Apagado funcionário");            
-           res.redirect(url_list);           
-       });
+                }
+                console.log("Removido o funcionario com sucesso.");          
+                res.redirect(url_list);           
+            });
+
+        });
+
+
     }
 };
