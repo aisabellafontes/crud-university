@@ -74,9 +74,9 @@ app.get('/produtos/remover/:codigo', removerProduto);
 //CRUD Funcionarios
 app.get('/funcionarios', listarFuncionario);
 app.post('/funcionarios/adicionar', adicionarFuncionario);
-app.get('/funcionarios/editar/:id', detalharFuncionario);
+app.get('/funcionarios/editar/:cpf', detalharFuncionario);
 app.post('/funcionarios/editar/', atualizarFuncionario);
-app.get('/funcionarios/remover/:id', removerFuncionario);
+app.get('/funcionarios/remover/:cpf', removerFuncionario);
 
 // set the app to listen on the port
 app.listen(port, () => {
