@@ -1,7 +1,7 @@
 const fs = require('fs');
 const titulo = 'Fornecedores';
 const subtitulo = 'Gerenciamento de fornecedores para a loja';
-const icone = 'fas fa-tags';
+const icone = 'fas fa-truck';
 const url_add = '/fornecedores/adicionar/';
 const url_update = '/fornecedores/editar/';
 const url_list = '/fornecedores/';
