@@ -23,14 +23,15 @@ module.exports = {
                                     " FROM Clientes C, Telefones T, Telefone_Cliente TC " + 
                                     " WHERE TC.CPF_Cliente = C.CPF AND TC.Num_Telefone = T.Numero;";
         db.query(query_listar_clientes, function(sql_erro, sql_resultado){
-            console.log("Retorno da consulta SQL =", sql_resultado);
-
             if (sql_erro){
                 dadosParaPagina.message = sql_erro;
             }
             
-            dadosParaPagina.clientes = sql_resultado;
+            dadosParaPagina.clientes = sql_resultado; //mostrar a lista geral de clientes
             dadosParaPagina.action = url_add;
+            dadosParaPagina.cliente = null;
+            dadosParaPagina.message = '';
+            // console.log("Clientes para a tela=", dadosParaPagina);
             res.render('clientes.ejs', dadosParaPagina);
 
         });
@@ -68,29 +69,36 @@ module.exports = {
             CPF_Cliente: cpf
         };
         
-        res.redirect(url_list);
-        
-        // var insert_cliente = "INSERT INTO Clientes set ? "; 
-        // db.query(insert_cliente, data_cliente); 
-        // var insert_telefone = "INSERT INTO Telefones set ? "; 
-        // db.query(insert_telefone, data_telefone);
-        // var insert_telefone_cliente = "INSERT INTO Telefone_Cliente set ? "; 
-        // db.query(insert_telefone_cliente, data_telefone_cliente, (err, result) => {            
-        //     if (err) {
-        //         message = "Não foi possivel adicionar o cliente";    
-        //         res.render('clientes.ejs', {
-        //             subtitulo: subtitulo,
-        //             titulo: titulo,
-        //             message: message,
-        //             icone: icone,
-        //             clientes: [],
-        //             cliente: null,
-        //         });            
+        /*
+            Acoes a serem executadas no Banco de Dados
+            1 - Cadastrar novo Cliente
+            2 - Cadastrar telefone do novo Cliente
+            3 - Cadastrar relacao de cliente com telefone
+        */
+                
+        var insert_cliente = "INSERT INTO Clientes set ? "; 
+        db.query(insert_cliente, data_cliente); 
 
-        //     }
+        var insert_telefone = "INSERT INTO Telefones set ? "; 
+        db.query(insert_telefone, data_telefone);
+
+        var insert_telefone_cliente = "INSERT INTO Telefone_Cliente set ? "; 
+        db.query(insert_telefone_cliente, data_telefone_cliente, (err, result) => {            
+            if (err) {
+                message = "Não foi possivel adicionar o cliente";    
+                res.render('clientes.ejs', {
+                    subtitulo: subtitulo,
+                    titulo: titulo,
+                    message: message,
+                    icone: icone,
+                    clientes: [],
+                    cliente: null,
+                });            
+
+            }
             
-        //     res.redirect('/clientes/');           
-        // });
+            res.redirect(url_list);           
+        });
 
     },
 
@@ -107,55 +115,52 @@ module.exports = {
         };
         
         var insert = "UPDATE Clientes set ? WHERE cpf = ? "; 
-        db.query(insert, [data,cpf], (err, result) => {            
+        db.query(insert, [data,cpf], (err, resultado) => {            
             if (err) {
-                message = "Não foi possivel atualizar o cliente";    
-                res.render('clientes.ejs', {
-                    subtitulo: subtitulo,
-                    titulo: titulo,
-                    message: message,
-                    icone: icone,
-                    clientes: [],
-                    cliente: null,
-                });            
+                message = "Não foi possivel atualizar o cliente";   
+                dadosParaPagina.message = message;
+                dadosParaPagina.action = url_update;
+
+                res.render('clientes.ejs', dadosParaPagina);            
 
             }
             
-            res.redirect('/clientes/');           
+            console.log("Aehooooo Atualizou!!!");
+            res.redirect(url_list);           
         });
     },
 
-    detalharCliente: (req, res) => {        
+    detalharCliente: (req, res) => {   
+        /*
+            Para editar as informaçoes do Cliente
+            é necessario buscar primeiro as informaçoes no banco
+            e depois retornar para a pagina
+        */
         let cpf = req.params.cpf;        
         var clientes = [];
         console.log("Executar açao de editar  usuario CPF=", cpf);
 
-        var query = "SELECT C.*, T.* FROM Clientes C, Telefones T, Telefone_Cliente TC " + 
-        "WHERE TC.CPF_Cliente = C.CPF AND TC.Num_Telefone = T.Numero";
-        db.query(query, (err, result) => {
-            clientes = result;
-        });
-
         query = "SELECT C.*, T.* FROM Clientes C, Telefones T, Telefone_Cliente TC " + 
         "WHERE TC.CPF_Cliente = C.CPF AND TC.Num_Telefone = T.Numero AND C.CPF = '"+cpf+"'";
-        db.query(query, (err, result) => {
+        db.query(query, (err, resultado) => {
             if (err) {
                 return res.status(500).send(err);
             }     
-            console.log(result);       
-            res.render('clientes.ejs', {
-                subtitulo: subtitulo,
-                titulo: titulo,
-                message: '',
-                icone: icone,
-                clientes: clientes,
-                cliente: result[0],
-                action: update
-            });
+            // console.log("Retornar os dados:", resultado);
+            dadosParaPagina.cliente = resultado[0];
+            dadosParaPagina.action = url_update;       
+            // console.log(dadosParaPagina);
+            res.render('clientes.ejs', dadosParaPagina);
         });
     },
     
     removerCliente: (req, res) => {
+        /*
+            Para remover um cliente é necessario
+            1 - encontrar a relacao de cliente e telefone
+            2 - remover o telefone do cliente
+            3 - remover o cliente
+        */
         let cpf = req.params.cpf;        
         var clientes = [];
         var message = '';
@@ -179,19 +184,13 @@ module.exports = {
         db.query(delete_cliente, [cpf], (err, result) => {            
             if (err) {
                 message = "Não foi possivel remover o cliente";    
-                res.render('clientes.ejs', {
-                    subtitulo: subtitulo,
-                    titulo: titulo,
-                    message: message,
-                    icone: icone,
-                    clientes: [],
-                    cliente: null,
-                });            
+                dadosParaPagina.message = message;
+                
+                res.render('clientes.ejs', dadosParaPagina);            
 
             }
-            console.log("Apagando Cliente");
-            
-            res.redirect('/clientes/');           
+            console.log("Apagando Cliente");            
+            res.redirect(url_list);           
         });
     },
 
