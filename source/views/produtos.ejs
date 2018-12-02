@@ -1,19 +1,21 @@
 <!doctype html>
 <html lang="en">
 <% include partials/header.ejs %>
+<script>
+    function submitForm() {
+        form.submit();
+        form.reset();
+    }
+</script>
 
 <body>
     <div id="root">
         <div class="app">
             <% include partials/menu.ejs %>
 
-            <!--- INICIO DO CONTEUDO DA PAGINA -->
-
+            <!--- INICIO DO CONTEUDO CUSTOMIZADO DA PAGINA -->
             <main class="content container-fluid">
-
                 <div class="p-3 mt-3">
-
-                    <!-- INICIO DO FORMULARIO PARA ADD/UPDATE DADOS -->
                     <div class="container">
                         <!--- INICIO DA AREA RESERVADA PARA MENSAGENS -->
                         <% if (message_erro) { %>
@@ -29,6 +31,7 @@
                         <% } %>
                         <!--- FIM DA AREA RESERVADA PARA MENSAGENS -->
 
+                        <!-- INICIO DO FORMULARIO PARA ADD/UPDATE DADOS -->
                         <form action="<%=action%>" method="post">
 
                             <div class="form-group row">
@@ -120,18 +123,17 @@
                                 <div class="col-12 d-flex justify-content-end">
                                     <button class="btn btn-success ml-2">Pesquisar</button>
                                     <button class="btn btn-primary ml-2" type="submit" onclick="submitForm()">Salvar</button>
-                                    <button class="btn ml-2">Limpar</button>
+                                    <button class="btn ml-2" type="reset">Limpar</button>
                                 </div>
                             </div>
                         </form>
+                        <!-- FIM DO FORMULARIO PARA ADD/UPDATE DADOS -->
                     </div>
-                    <!-- FIM DO FORMULARIO PARA ADD/UPDATE DADOS -->
 
                     <!-- INICIO DA LISTAGEM GERAL DOS DADOS-->
                     <table class="table mt-10">
                         <thead>
                             <tr>
-                                <th></th>
                                 <th>Codigo</th>
                                 <th>Nome</th>
                                 <th>Descrição</th>
@@ -145,8 +147,8 @@
                         <tbody>
                             <% produtos.forEach(function(produto){ %>
                             <tr>
-                                <td><i class="fas fa-users"></i></td>
                                 <td>
+                                    <img class="card-img-top" src="/assets/images/buy.png" alt="Card image cap">
                                     <%= produto.Codigo %>
                                 </td>
                                 <td>
@@ -168,7 +170,7 @@
                                     <%= produto.QTD_Estoque %>
                                 </td>
                                 <td>
-                                    <a href="/produtos/editar/<%=produto.Codigo%>" class="btn btn-sm btn-primary">Editar</a>                                    
+                                    <a href="/produtos/editar/<%=produto.Codigo%>" class="btn btn-sm btn-primary">Editar</a>
                                     <a href="/produtos/remover/<%=produto.Codigo%>" class="btn btn-sm btn-danger">Remover</a>
                                 </td>
                             </tr>
@@ -179,21 +181,12 @@
 
                 </div>
             </main>
-
             <hr />
-
-            <!-- FIM DO CONTEUDO DA PAGINA -->
+            <!-- FIM DO CONTEUDO CUSTOMIZADO DA PAGINA -->
 
             <% include partials/footer.ejs %>
         </div>
     </div>
-
-    <script>
-        function submitForm() {
-            document.contact - form.submit();
-            document.contact - form.reset();
-        }
-    </script>
 </body>
 
 </html>
