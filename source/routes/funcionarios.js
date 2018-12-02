@@ -157,23 +157,6 @@ module.exports = {
             Tipo: cargo,
             CPF_Supervisor: cpf_supervisor
         };
-        // console.log(data, id);
-        // res.redirect(url);
-
-       var cargo1 = null;
-        var query_busca_funcionario = "SELECT Tipo FROM Funcionarios WHERE CPF = "+ cpf; 
-        db.query(query_busca_funcionario, [cpf], (err, resultado) =>{
-             if (err) {
-                 message = "Não foi possivel achar o cargo do Funcionario";    
-                 dadosParaPagina.message = message;                    
-                 res.render('funcionarios.ejs', dadosParaPagina);
-             }
-        });            
-        cargo1 = resultado[0].Tipo;
-        console.log("Identificado o Funcionario com Cargo =", cargo1);
-
-
-        // Tenta fazer o UPDATE!
         
         var insert = "UPDATE Funcionarios set ? WHERE CPF = ? "; 
         db.query(insert, [data, cpf], function (erro, resultado) {  
@@ -182,9 +165,6 @@ module.exports = {
                 dadosParaPagina.action = url_update;
                 res.render('fornecedores.ejs', dadosParaPagina);
             }
-            console.log("deu bom!");
-            dadosParaPagina.action = url_add;
-            dadosParaPagina.message = '';      
             res.redirect(url_list);
         });
 
@@ -379,11 +359,6 @@ module.exports = {
 
             /* Se nao houve erro, remover o funcionario finalmente */
             var query_delete_funcionario = "DELETE FROM Funcionarios  WHERE CPF = ?"; 
-            db.query(query_delete_funcionario, [cpf], (err, result) => {            
-                if (err) {
-                    message = "Não foi possivel remover o Funcionário";    
-                    dadosParaPagina.message = message;              
-                    console.log(err) ;
             db.query(query_delete_funcionario, [cpf], function (erro, resultado){            
                 if (erro) {
                     message = "Não foi possivel remover o funcionário" + erro;    
