@@ -28,15 +28,15 @@ module.exports = {
         dadosParaPagina.message_erro = '';
 
         let query_categorias = "SELECT * FROM Categoria";
-        db.query(query_categorias, function (err, resultado) {
-            if (!err) {
+        db.query(query_categorias, function (erro, resultado) {
+            if (!erro) {
                 dadosParaPagina.categorias = resultado;
             }
         });
 
         let query_fornecedores = "SELECT * FROM Fornecedor";
-        db.query(query_fornecedores, function (err, resultado) {
-            if (!err) {
+        db.query(query_fornecedores, function (erro, resultado) {
+            if (!erro) {
                 dadosParaPagina.fornecedores = resultado;
             }
         });
@@ -44,13 +44,14 @@ module.exports = {
         let query_produtos = "select p.*, f.Nome as Nome_Fornecedor, c.Nome as Nome_Categoria " +
             "from produtos p, fornecedor f, categoria c " +
             "where p.ID_categoria = c.ID and p.ID_fornecedor = f.ID";
-        db.query(query_produtos, function (err, resultado) {
-            if (!err) {
+        db.query(query_produtos, function (erro, resultado) {
+            if (!erro) {
                 dadosParaPagina.produtos = resultado;
                 dadosParaPagina.produto = null;
-                dadosParaPagina.action = url_add;
                 res.render('produtos.ejs', dadosParaPagina);
             }
+
+
         });
 
     },
@@ -78,8 +79,8 @@ module.exports = {
         };
 
         var query_insert = "INSERT INTO Produtos set ? ";
-        db.query(query_insert, data, function (err, result) {
-            if (!err) {
+        db.query(query_insert, data, function (erro, resultado) {
+            if (!erro) {
                 res.redirect(url_list);
             }
 
@@ -113,8 +114,8 @@ module.exports = {
         };
 
         var insert = "UPDATE Produtos set ? WHERE Codigo = ? ";
-        db.query(insert, [data, codigo], (err, result) => {
-            if (err) {
+        db.query(insert, [data, codigo], function (erro, resultado) {
+            if (erro) {
                 message = "Não foi possivel atualizar produto";
                 dadosParaPagina.message_erro = message + err;
                 res.render('produtos.ejs', dadosParaPagina);
@@ -133,15 +134,15 @@ module.exports = {
 
         console.log("Codigo=", codigo);
         let query_categorias = "SELECT * FROM Categoria";
-        db.query(query_categorias, function (err, resultado) {
-            if (!err) {
+        db.query(query_categorias, function (erro, resultado) {
+            if (!erro) {
                 dadosParaPagina.categorias = resultado;
             }
         });
 
         let query_fornecedores = "SELECT * FROM Fornecedor";
-        db.query(query_fornecedores, function (err, resultado) {
-            if (!err) {
+        db.query(query_fornecedores, function (erro, resultado) {
+            if (!erro) {
                 dadosParaPagina.fornecedores = resultado;
             }
         });
@@ -149,15 +150,15 @@ module.exports = {
         let query_produtos = "select p.*, f.Nome as Nome_Fornecedor, c.Nome as Nome_Categoria " +
             "from produtos p, fornecedor f, categoria c " +
             "where p.ID_categoria = c.ID and p.ID_fornecedor = f.ID";
-        db.query(query_produtos, function (err, resultado) {
-            if (!err) {
+        db.query(query_produtos, function (erro, resultado) {
+            if (!erro) {
                 dadosParaPagina.produtos = resultado;
             }
         });
 
         var query_produto = "SELECT * FROM Produtos WHERE Codigo = " + codigo;
-        db.query(query_produto, function (err, resultado) {
-            if (!err) {
+        db.query(query_produto, function (erro, resultado) {
+            if (!erro) {
                 dadosParaPagina.produto = resultado[0];
                 dadosParaPagina.action = url_update;
                 res.render('produtos.ejs', dadosParaPagina);
@@ -178,14 +179,14 @@ module.exports = {
         */
 
         var query_vendas = "SELECT COUNT(*) as Total_Vendas FROM QTDE_Vendida WHERE Cod_produto = " + codigo;
-        db.query(query_vendas, function (err, resultado) {
+        db.query(query_vendas, function (erro, resultado) {
             if (resultado) {
                 dadosParaPagina.message_erro = "Não será possivel porque foi encontrado "
                     + resultado[0].Total_Vendas;
                 + " vendas relacionadas";
             }
 
-            if (err) {
+            if (erro) {
                 message = "Não foi possivel remover o produto " + codigo;
                 dadosParaPagina.message_erro = message + err;
                 res.render('produtos.ejs', dadosParaPagina);
@@ -195,8 +196,8 @@ module.exports = {
 
 
         var query_produto = "DELETE FROM Produtos WHERE Codigo = " + codigo;
-        db.query(query_produto, function (err, resultado) {
-            if (err) {
+        db.query(query_produto, function (erro, resultado) {
+            if (erro) {
                 message = "Não foi possivel remover o produto " + codigo;
                 dadosParaPagina.message_erro = message + err;
                 res.render('produtos.ejs', dadosParaPagina);

@@ -1,161 +1,205 @@
 <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="theme-color" content="#000000">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
-        <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet">
-        
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="theme-color" content="#000000">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
+   <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet">
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous">
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"></script>
 
-        <title><%=titulo%></title>
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        <style type="text/css">
-               body {
-                  margin: 0;
-                  padding: 0;
-                  font-family: sans-serif;
-               }
-               
-               :root {
-                  --bg-dark: #1A2F3A;
-                  --logo-height: 100px;
-                  --header-height: 100px;
-                  --menu-top-height: 70px;
-                  --aside-width: 225px;
-                  --footer-height: 40px;
-                  --shadow: 0 2px 23px 0 rgba(0, 0, 0, 0.1), 0 2px 49px 0 rgba(0, 0, 0, 0.06);
-               }
-               * {
-                  -webkit-box-sizing: border-box;
-                  box-sizing: border-box;
-                  font-family: 'Montserrat', sans-serif;
-               }
-               /* Layout em Grid */
-               .app {
-                  margin: 0px;
-                  display: grid;
-                  grid-template-columns: var(--aside-width) 1fr;
-                  grid-template-rows: var(--header-height) 1fr var(--footer-height);
-                  grid-template-areas: "logo header" "menu content" "menu footer";
-                  height: 100vh;
-                  background-color: #F5F5F5;
-               }
-               aside.logo {
-                  grid-area: logo;
-               }
-               header.header {
-                  grid-area: header;
-               }
-               aside.menu-area {
-                  grid-area: menu;
-               }
-               main.content {
-                  grid-area: content;
-               }
-               footer.footer {
-                  grid-area: footer;
-               }
-               @media(max-width: 768px) {
-                  .app {
-                        grid-template-rows: var(--header-height) var(--menu-top-height) 1fr var(--footer-height);
-                        grid-template-columns: var(--aside-width) 1fr;
-                        grid-template-areas: "logo header" "menu menu" "content content" "footer footer";
-                  }
-               }
-               @media(max-width: 576px) {
-                  .app {
-                        grid-template-rows: var(--logo-height) var(--menu-top-height) 1fr var(--footer-height);
-                        grid-template-columns: 1fr;
-                        grid-template-areas: "logo" "menu" "content" "footer";
-                  }
-               }
-               aside.logo {
-                  background-color: var(--bg-dark);
-                  display: -ms-flexbox;
-                  display: flex;
-                  -ms-flex-pack: center;
-                  justify-content: center;
-                  -ms-flex-align: center;
-                  align-items: center;
-               }
-               aside.logo img {
-                  padding: 0px 15px;
-                  width: 100%;
-               }
-               @media(max-width: 576px) {
-                  aside.logo img {
-                        width: 350px;
-                  }
-               }
-               aside.menu-area {
-                  background-color: var(--bg-dark);
-                  -webkit-box-shadow: 2px 0 10px 0 rgba(0, 0, 0, 0.12), 2px 0 15px 0 rgba(0, 0, 0, 0.09);
-                  box-shadow: 2px 0 10px 0 rgba(0, 0, 0, 0.12), 2px 0 15px 0 rgba(0, 0, 0, 0.09);
-               }
-               .menu a {
-                  display: block;
-                  text-decoration: none;
-                  color: #FFF;
-                  font-weight: 300;
-                  padding: 15px;
-               }
-               .menu a:hover {
-                  background: -webkit-linear-gradient(315deg, #07a7e3 0%, #32dac3 100%);
-                  background: -o-linear-gradient(315deg, #07a7e3 0%, #32dac3 100%);
-                  background: linear-gradient(135deg, #07a7e3 0%, #32dac3 100%);
-               }
-               @media(max-width: 768px) {
-                  .menu {
-                        display: -ms-flexbox;
-                        display: flex;
-                        -ms-flex-pack: start;
-                        justify-content: flex-start;
-                        -ms-flex-align: center;
-                        align-items: center;
-                  }
-                  .menu a {
-                        display: inline;
-                        padding: 10px;
-                        margin: 0px;
-                  }
-                  .menu {
-                        height: 100%;
-                        -ms-flex-pack: distribute;
-                        justify-content: space-around;
-                  }
-               }
-               main > div {
-                  background-color: #FFF;
-                  -webkit-box-shadow: 0px 0px 15px #0004;
-                  box-shadow: 0px 0px 15px #0004;
-               }
-               header.header {
-                  background-color: #FFF;
-                  padding: 0px 15px;
-                  overflow: hidden;
-                  white-space: nowrap;
-                  -webkit-box-shadow: var(--shadow);
-                  box-shadow: var(--shadow);
-               }
-               header.header h1 {
-                  font-size: 1.8em;
-               }
-               footer.footer {
-                  display: -ms-flexbox;
-                  display: flex;
-                  -ms-flex-align: center;
-                  align-items: center;
-                  -ms-flex-pack: end;
-                  justify-content: flex-end;
-                  padding: 0 25px;
-                  background-color: #FFF;
-                  -webkit-box-shadow: var(--shadow);
-                  box-shadow: var(--shadow);
-               }
-               
-        </style>
+   <title>
+      <%=titulo%>
+   </title>
+
+   <style type="text/css">
+      body {
+         margin: 0;
+         padding: 0;
+         font-family: sans-serif;
+      }
+
+      .show-cart li {
+         display: flex;
+      }
+
+      .card {
+         margin-bottom: 20px;
+      }
+
+      .card-img-top {
+         width: 40px;
+         height: 40px;
+         align-self: left;
+      }
+
+      .produtos {         
+         width: 50px;
+      }
+
+
+      :root {
+         --bg-dark: #1A2F3A;
+         --logo-height: 100px;
+         --header-height: 100px;
+         --menu-top-height: 70px;
+         --aside-width: 225px;
+         --footer-height: 40px;
+         --shadow: 0 2px 23px 0 rgba(0, 0, 0, 0.1), 0 2px 49px 0 rgba(0, 0, 0, 0.06);
+      }
+
+      * {
+         -webkit-box-sizing: border-box;
+         box-sizing: border-box;
+         font-family: 'Montserrat', sans-serif;
+      }
+
+      /* Layout em Grid */
+      .app {
+         margin: 0px;
+         display: grid;
+         grid-template-columns: var(--aside-width) 1fr;
+         grid-template-rows: var(--header-height) 1fr var(--footer-height);
+         grid-template-areas: "logo header""menu content""menu footer";
+         height: 100vh;
+         background-color: #F5F5F5;
+      }
+
+      aside.logo {
+         grid-area: logo;
+      }
+
+      header.header {
+         grid-area: header;
+      }
+
+      aside.menu-area {
+         grid-area: menu;
+      }
+
+      main.content {
+         grid-area: content;
+      }
+
+      footer.footer {
+         grid-area: footer;
+      }
+
+      @media(max-width: 768px) {
+         .app {
+            grid-template-rows: var(--header-height) var(--menu-top-height) 1fr var(--footer-height);
+            grid-template-columns: var(--aside-width) 1fr;
+            grid-template-areas: "logo header""menu menu""content content""footer footer";
+         }
+      }
+
+      @media(max-width: 576px) {
+         .app {
+            grid-template-rows: var(--logo-height) var(--menu-top-height) 1fr var(--footer-height);
+            grid-template-columns: 1fr;
+            grid-template-areas: "logo""menu""content""footer";
+         }
+      }
+
+      aside.logo {
+         background-color: var(--bg-dark);
+         display: -ms-flexbox;
+         display: flex;
+         -ms-flex-pack: center;
+         justify-content: center;
+         -ms-flex-align: center;
+         align-items: center;
+      }
+
+      aside.logo img {
+         padding: 0px 15px;
+         width: 100%;
+      }
+
+      @media(max-width: 576px) {
+         aside.logo img {
+            width: 350px;
+         }
+      }
+
+      aside.menu-area {
+         background-color: var(--bg-dark);
+         -webkit-box-shadow: 2px 0 10px 0 rgba(0, 0, 0, 0.12), 2px 0 15px 0 rgba(0, 0, 0, 0.09);
+         box-shadow: 2px 0 10px 0 rgba(0, 0, 0, 0.12), 2px 0 15px 0 rgba(0, 0, 0, 0.09);
+      }
+
+      .menu a {
+         display: block;
+         text-decoration: none;
+         color: #FFF;
+         font-weight: 300;
+         padding: 15px;
+      }
+
+      .menu a:hover {
+         background: -webkit-linear-gradient(315deg, #07a7e3 0%, #32dac3 100%);
+         background: -o-linear-gradient(315deg, #07a7e3 0%, #32dac3 100%);
+         background: linear-gradient(135deg, #07a7e3 0%, #32dac3 100%);
+      }
+
+      @media(max-width: 768px) {
+         .menu {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-pack: start;
+            justify-content: flex-start;
+            -ms-flex-align: center;
+            align-items: center;
+         }
+
+         .menu a {
+            display: inline;
+            padding: 10px;
+            margin: 0px;
+         }
+
+         .menu {
+            height: 100%;
+            -ms-flex-pack: distribute;
+            justify-content: space-around;
+         }
+      }
+
+      main>div {
+         background-color: #FFF;
+         -webkit-box-shadow: 0px 0px 15px #0004;
+         box-shadow: 0px 0px 15px #0004;
+      }
+
+      header.header {
+         background-color: #FFF;
+         padding: 0px 15px;
+         overflow: hidden;
+         white-space: nowrap;
+         -webkit-box-shadow: var(--shadow);
+         box-shadow: var(--shadow);
+      }
+
+      header.header h1 {
+         font-size: 1.8em;
+      }
+
+      footer.footer {
+         display: -ms-flexbox;
+         display: flex;
+         -ms-flex-align: center;
+         align-items: center;
+         -ms-flex-pack: end;
+         justify-content: flex-end;
+         padding: 0 25px;
+         background-color: #FFF;
+         -webkit-box-shadow: var(--shadow);
+         box-shadow: var(--shadow);
+      }
+   </style>
 </head>
