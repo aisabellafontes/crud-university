@@ -1,101 +1,111 @@
 <!doctype html>
 <html lang="en">
-        <% include partials/header.ejs %>
-<body>
-        <div id="root"> 
-            <div class="app">
-                <% include partials/menu.ejs %>
-               
-                <!--- INICIO DO CONTEUDO DA PAGINA -->
-                <main class="content container-fluid">
-                        <% if (message != '') { %>
-                            <p class="text-center text-danger"><%= message %></p>
-                        
-                            <% } %>
-                        <div class="p-3 mt-3">
+<% include partials/header.ejs %>
 
-                           <!-- FORMULARIO PARA ADD -->
-                           <form class="add-player-form" action="<%=action%>" method="post">
-                            <div class="form">
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label>Nome</label>
-                                            <% if(categoria){ %>
-                                                <input type="hidden" name="id_categoria" id="id_categoria" value="<%=categoria.ID%>"/>
-                                                <input type="text" class="form-control" name="nome_categoria" placeholder="Informe o Nome da Categoria..." 
-                                                value="<%=categoria.Nome%>" charCounter maxlength="155">
-                                              <% } else{ %>
-                                                <input type="text" class="form-control" name="nome_categoria" placeholder="Informe o Nome da Categoria..."
-                                                 value="" charCounter maxlength="155">
-                                             <% } %>   
-                                            
-                                        </div>
-                                    </div>                       
-                                    <div class="col-12 col-md-6">
-                                            <div class="form-group"><label>Descrição</label>
-                                                <% if(categoria){ %>
-                                                    <input type="text" class="form-control" name="descricao_categoria" placeholder="Informe a Descrição da Categoria..." 
-                                                    value="<%=categoria.Descricao%>" charCounter maxlength="255">
-                                                  <% } else{ %>  
-                                                    <input type="text" class="form-control" name="descricao_categoria" placeholder="Informe a Descrição da Categoria..." 
-                                                    value="" charCounter maxlength="255">
-                                                 <% } %>   
-                                                </div>
-                                        </div>
+<body>
+    <div id="root">
+        <div class="app">
+            <% include partials/menu.ejs %>
+
+            <!--- INICIO DO CONTEUDO DA PAGINA -->
+            <main class="content container-fluid">
+                <% if (message != '') { %>
+                <p class="text-center text-danger">
+                    <%= message %>
+                </p>
+
+                <% } %>
+                <div class="p-3 mt-3">
+
+                    <!-- FORMULARIO PARA ADD -->
+                    <form class="add-player-form" action="<%=action%>" method="post">
+                        <div class="form">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <label>Nome</label>
+                                        <% if(categoria){ %>
+                                        <input type="hidden" name="id_categoria" id="id_categoria" value="<%=categoria.ID%>" />
+                                        <input type="text" class="form-control" name="nome_categoria" placeholder="Informe o Nome da Categoria..."
+                                            value="<%=categoria.Nome%>" charCounter maxlength="155">
+                                        <% } else{ %>
+                                        <input type="text" class="form-control" name="nome_categoria" placeholder="Informe o Nome da Categoria..."
+                                            value="" charCounter maxlength="155">
+                                        <% } %>
+
                                     </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-12 d-flex justify-content-end">
-                                        <button class="btn btn-success ml-2">Pesquisar</button>
-                                        <button class="btn btn-primary ml-2" type="submit" onclick="submitForm()">Salvar</button>                                        
-                                        <button class="btn ml-2">Limpar</button>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group"><label>Descrição</label>
+                                        <% if(categoria){ %>
+                                        <input type="text" class="form-control" name="descricao_categoria" placeholder="Informe a Descrição da Categoria..."
+                                            value="<%=categoria.Descricao%>" charCounter maxlength="255">
+                                        <% } else{ %>
+                                        <input type="text" class="form-control" name="descricao_categoria" placeholder="Informe a Descrição da Categoria..."
+                                            value="" charCounter maxlength="255">
+                                        <% } %>
                                     </div>
                                 </div>
                             </div>
-                            </form>
-
-                           <!-- LISTAGEM GERAL DE CLIENTES -->
-                           <table class="table mt-5">
-                              <thead>
-                                 <tr>
-                                    <th></th>
-                                    <th>ID</th>
-                                    <th>Nome</th>
-                                    <th>Descrição</th>                                    
-                                    <th>Ações</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                    <% categorias.forEach(function(categoria){ %>
-                                        <tr>                                            
-                                            <td><i class="fas fa-users"></i></td>
-                                            <td><%= categoria.ID %></td>
-                                            <td><%= categoria.Nome %></td>                                            
-                                            <td><%= categoria.Descricao %></td>                                            
-                                            <td>
-                                                <a href="/categorias/editar/<%=categoria.ID%>" class="btn btn-sm btn-primary">Editar</a>
-                                                <a href="/categorias/remover/<%=categoria.ID%>" class="btn btn-sm btn-danger">Remover</a>
-                                            </td>
-                                        </tr>
-                                    <% }); %>
-                              </tbody>
-                           </table>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-end">
+                                    <button class="btn btn-success ml-2">Pesquisar</button>
+                                    <button class="btn btn-primary ml-2" type="submit" onclick="submitForm()">Salvar</button>
+                                    <button class="btn ml-2">Limpar</button>
+                                </div>
+                            </div>
                         </div>
-                     </main>
+                    </form>
 
-                <!-- FIM DO CONTEUDO DA PAGINA -->
-                
-                <% include partials/footer.ejs %>
-            </div>
+                    <!-- LISTAGEM GERAL DE CLIENTES -->
+                    <table class="table mt-5">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Descrição</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% categorias.forEach(function(categoria){ %>
+                            <tr>
+                                <td><i class="fas fa-users"></i></td>
+                                <td>
+                                    <%= categoria.ID %>
+                                </td>
+                                <td>
+                                    <%= categoria.Nome %>
+                                </td>
+                                <td>
+                                    <%= categoria.Descricao %>
+                                </td>
+                                <td>
+                                    <a href="/categorias/editar/<%=categoria.ID%>" class="btn btn-sm btn-primary">Editar</a>
+                                    <a href="/categorias/remover/<%=categoria.ID%>" class="btn btn-sm btn-danger">Remover</a>
+                                </td>
+                            </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+
+            <!-- FIM DO CONTEUDO DA PAGINA -->
+
+            <% include partials/footer.ejs %>
         </div>
+    </div>
 
-        <script>
-               
-                function submitForm() {                    
-                    document.contact-form.submit();
-                    document.contact-form.reset();
-                }
-            </script>
+    <script>
+
+        function submitForm() {
+            document.contact - form.submit();
+            document.contact - form.reset();
+        }
+    </script>
 </body>
+
 </html>

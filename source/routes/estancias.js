@@ -1,7 +1,7 @@
 const fs = require('fs');
 const titulo = 'Estancia';
 const subtitulo = 'Gerenciamento das estâncias dos clientes da loja';
-const icone = 'fas fa-tags';
+const icone = 'fas fa-warehouse';
 const url_add = '/estancias/adicionar/';
 const url_update = '/estancias/editar/';
 const url_list = '/estancias/';
