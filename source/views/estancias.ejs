@@ -38,10 +38,10 @@
                                 <div class="col-sm-10">
                                     <% if(estancia){ %>
                                     <input type="text" class="form-control" name="nome_estancia" placeholder="Informe o nome da estância..."
-                                        value="<%=estancia.Nome_Estancia%>" charCounter" maxlength="155">
+                                        value="<%=estancia.Nome_Estancia%>" charCounter" maxlength="155" readonly required>
                                     <% } else{ %>
                                     <input type="text" class="form-control" name="nome_estancia" placeholder="Informe o nome do estancia..."
-                                        value="" charCounter" maxlength="155">
+                                        value="" charCounter" maxlength="155" required>
                                     <% } %>
                                 </div>
                             </div>
@@ -51,10 +51,10 @@
                                 <div class="col-sm-10">
                                     <% if(estancia){ %>
                                     <input type="number" class="form-control" name="cpf_propietario" placeholder="Informe o CPF do propietario..."
-                                        value="<%=estancia.CPF_propietario%>" charCounter" maxlength="11">
+                                        value="<%=estancia.CPF_propietario%>" charCounter" maxlength="11" required>
                                     <% } else{ %>
                                     <input type="number" class="form-control" name="cpf_propietario" placeholder="Informe o CPF do propietario..."
-                                        value="" charCounter" maxlength="11">
+                                        value="" charCounter" maxlength="11" required>
                                     <% } %>
                                 </div>
                             </div>
@@ -64,10 +64,10 @@
                                 <div class="col-sm-10">
                                     <% if(estancia){ %>
                                     <input type="text" class="form-control" name="referencia_estancia" placeholder="Informe a referência do local..."
-                                        value="<%=estancia.Referencia%>" charCounter" maxlength="155">
+                                        value="<%=estancia.Referencia%>" charCounter" maxlength="155" required>
                                     <% } else{ %>
                                     <input type="text" class="form-control" name="referencia_estancia" placeholder="Informe a referência do local..."
-                                        value="" charCounter" maxlength="155">
+                                        value="" charCounter" maxlength="155" required>
                                     <% } %>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                         <tbody>
                             <% estancias.forEach(function(estancia){ %>
                             <tr>
-                                <td><i class="fas fa-users"></i></td>
+                                <td><i class="fas fa-warehouse"></i></td>
                                 <td>
                                     <%= estancia.Nome_Estancia %>
                                 </td>
