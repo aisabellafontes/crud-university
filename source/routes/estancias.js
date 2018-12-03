@@ -97,11 +97,20 @@ module.exports = {
     },
 
     detalharEstancia: (req, res) => {
-        console.log("Executar açao de listar a estancia cpf = ", req.params.cpf);
-        let cpf = req.params.cpf;
+        console.log("Executar açao de listar a estancia selecionada");
+        let nome_estancia = req.params.nome_estancia;
 
-        var query = "SELECT * FROM Estancia WHERE CPF_propietario = " + cpf;
-        db.query(query, function (erro, resultado) {
+
+        let detalhar_estancia = "SELECT * FROM Estancia";
+        db.query(detalhar_estancia, function (erro, resultado) {
+            if (!erro) {
+                dadosParaPagina.estancias = resultado;
+            }
+        });
+
+        console.log("Nome Estancia =", nome_estancia)
+        let query = "SELECT * FROM Estancia WHERE Nome_Estancia = ?";
+        db.query(query, [nome_estancia], function (erro, resultado) {
             if (erro) {
                 dadosParaPagina.message_erro = "Não foi possivel encontrar estancia.Erro:" + erro;
                 dadosParaPagina.action = url_add;
@@ -114,16 +123,16 @@ module.exports = {
     },
 
     removerEstancia: (req, res) => {        
-        console.log("Executar açao de remover estancia cpf=", req.params.cpf);
-        let cpf = req.params.cpf;
+        console.log("Executar açao de remover estancia Nome=", req.params.nome_estancia);
+        let nome_estancia = req.params.nome_estancia;
 
-        var delete_data = "DELETE FROM Estancia WHERE CPF_propietario = " + cpf;
-        db.query(delete_data, [id], function (erro, resultado) {
+        var delete_data = "DELETE FROM Estancia WHERE Nome_Estancia = ";
+        db.query(delete_data, [nome_estancia], function (erro, resultado) {
             if (erro) {
                 dadosParaPagina.message_erro = "Não foi possivel remover estancia.Erro:" + erro;
                 res.render('estancias.ejs', dadosParaPagina);
             }
-            console.log("Apagado categoria");
+            console.log("Apagado estância");
             res.redirect(url_list);
         });
     }
