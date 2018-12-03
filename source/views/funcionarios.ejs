@@ -39,10 +39,10 @@
                                 <div class="col-sm-10">
                                     <% if(funcionario){ %>
                                     <input type="number" class="form-control" name="cpf_funcionario" placeholder="Informe o CPF do funcionário..."
-                                        value="<%=funcionario.CPF%>" data-ls-module="charCounter" maxlength="11">
+                                        value="<%=funcionario.CPF%>" data-ls-module="charCounter" maxlength="11" readonly required>
                                     <% } else{ %>
                                     <input type="number" class="form-control" name="cpf_funcionario" placeholder="Informe o CPF do funcionário..."
-                                        value="" data-ls-module="charCounter" maxlength="11">
+                                        value="" data-ls-module="charCounter" maxlength="11" required>
                                     <% } %>
                                 </div>
                             </div>
@@ -52,10 +52,10 @@
                                 <div class="col-sm-10">
                                     <% if(funcionario){ %>
                                     <input type="text" class="form-control" name="nome_funcionario" placeholder="Informe o nome do funcionário.."
-                                        value="<%=funcionario.Nome%>" data-ls-module="charCounter" maxlength="155">
+                                        value="<%=funcionario.Nome%>" data-ls-module="charCounter" maxlength="155" required>
                                     <% } else{ %>
                                     <input type="text" class="form-control" name="nome_funcionario" placeholder="Informe o nome do funcionário.."
-                                        value="" data-ls-module="charCounter" maxlength="155">
+                                        value="" data-ls-module="charCounter" maxlength="155" required>
                                     <% } %>
                                 </div>
                             </div>
@@ -64,9 +64,9 @@
                                 <label for="cargos_funcionario" class="col-sm-2 col-form-label">Cargo</label>
                                 <div class="col-sm-10">
                                     <select name="cargos_funcionario">
-                                        <option value="Supervisor">Supervisor</option>
-                                        <option value="Atendente">Atendente</option>
-                                        <option value="Freteiro">Freteiro</option>
+                                        <option value="supervisor">Supervisor</option>
+                                        <option value="atendente">Atendente</option>
+                                        <option value="freteiro">Freteiro</option>
                                     </select>
                                 </div>
                             </div>
@@ -74,8 +74,16 @@
                             <div class="form-group row">
                                 <label for="supervisor_funcionario" class="col-sm-2 col-form-label">Supervisor</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="supervisor_funcionario" placeholder="Informe o CPF do supervisor.."
-                                        value="" data-ls-module="charCounter" maxlength="155">
+                                    <select class="form-control" name="supervisor_funcionario">
+                                        <option value="">Ninguém</option>
+                                        <% supervisores.forEach(function(obj){ %>
+                                        <option value="<%= obj.CPF %>">
+                                            <%= obj.Nome %>
+                                        </option>
+                                        <% }); %>
+                                    </select>
+                                    <!--<input type="text" class="form-control" name="supervisor_funcionario" placeholder="Informe o CPF do supervisor.."
+                                        value="" data-ls-module="charCounter" maxlength="155"> -->
                                 </div>
                             </div>
 
@@ -106,7 +114,7 @@
                         <tbody>
                             <% funcionarios.forEach(function(funcionario){ %>
                             <tr>
-                                <td><i class="fas fa-users"></i></td>
+                                <td><i class="fas fa-user-cog"></i></td>
                                 <td>
                                     <%= funcionario.CPF %>
                                 </td>

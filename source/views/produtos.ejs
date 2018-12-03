@@ -50,9 +50,9 @@
                                 <div class="col-sm-10">
                                     <% if(produto){ %>
                                     <input type="text" class="form-control" name="nome_produto" value="<%=produto.Nome%>"
-                                        placeholder="Digite o nome do produto">
+                                        placeholder="Digite o nome do produto" required>
                                     <% } else{ %>
-                                    <input type="text" class="form-control" name="nome_produto" value="" placeholder="Digite o nome do produto">
+                                    <input type="text" class="form-control" name="nome_produto" value="" placeholder="Digite o nome do produto" required>
                                     <% } %>
                                 </div>
                             </div>
@@ -61,10 +61,10 @@
                                 <div class="col-sm-10">
                                     <% if(produto){ %>
                                     <input type="text" class="form-control" name="descricao_produto" value="<%=produto.Descricao%>"
-                                        placeholder="Digite o nome do produto">
+                                        placeholder="Digite o nome do produto" required>
                                     <% } else{ %>
                                     <input type="text" class="form-control" name="descricao_produto" value=""
-                                        placeholder="Digite o nome do produto">
+                                        placeholder="Digite o nome do produto" required>
                                     <% } %>
                                 </div>
                             </div>
@@ -100,9 +100,9 @@
                                 <div class="col-sm-10">
                                     <% if(produto){ %>
                                     <input type="text" class="form-control" name="preco" value="<%=produto.Preco%>"
-                                        placeholder="Digite o preço do produto">
+                                        placeholder="Digite o preço do produto" required>
                                     <% } else{ %>
-                                    <input type="text" class="form-control" name="preco" value="" placeholder="Digite o preço do produto">
+                                    <input type="text" class="form-control" name="preco" value="" placeholder="Digite o preço do produto" required>
                                     <% } %>
                                 </div>
                             </div>
@@ -112,9 +112,9 @@
                                 <div class="col-sm-10">
                                     <% if(produto){ %>
                                     <input type="number" class="form-control" name="qtd_estoque" value="<%=produto.QTD_Estoque%>"
-                                        placeholder="Digite a quantidade em estoque do produto">
+                                        placeholder="Digite a quantidade em estoque do produto" required>
                                     <% } else{ %>
-                                    <input type="number" class="form-control" name="qtd_estoque" value="" placeholder="Digite a quantidade em estoque do produto">
+                                    <input type="number" class="form-control" name="qtd_estoque" value="" placeholder="Digite a quantidade em estoque do produto" required>
                                     <% } %>
                                 </div>
                             </div>

@@ -154,13 +154,27 @@ module.exports = {
         let cpf = req.params.cpf;
         var telefone = '';
 
+        var query_verifica_venda = "select count(*) as venda from vendas where CPF_cliente = ?";
+        db.query(query_verifica_venda, [cpf], function (erro, resultado){
+            if(resultado){
+                var venda = resultado[0].venda;
+                console.log("venda = ", venda);
 
+                if(parseInt(venda) > 0){
+                    dadosParaPagina.message_erro = "Esse cliente possui vendas e não pode ser apagado!";
+                    res.render('clientes.ejs', dadosParaPagina);
+                }
+            }
+        });
         var select_cliente = "SELECT Num_Telefone FROM Telefone_Cliente WHERE CPF_Cliente = ?";
         db.query(select_cliente, [cpf], function (erro, resultado) {
             if (!erro) {
                 telefone = resultado[0];
             }
         });
+        console.log("Selecionando Estancia Cliente");
+        var delete_estancia_cliente = "DELETE FROM Estancia WHERE CPF_propietario = ?";
+        db.query(delete_estancia_cliente, [cpf]);
         console.log("Selecionando Telefone Cliente");
         var delete_telefone_cliente = "DELETE FROM Telefone_Cliente WHERE CPF_Cliente = ?";
         db.query(delete_telefone_cliente, [cpf]);
