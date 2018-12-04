@@ -72,7 +72,7 @@
                             <div class="form-group row">
                                 <label for="categorias" class="col-sm-2 col-form-label">Selecione a categoria</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" name="categorias">
+                                    <select class="form-control" name="categorias" id="categorias">
                                         <% categorias.forEach(function(categoria){ %>
                                         <option value="<%= categoria.ID %>">
                                             <%= categoria.Nome %>
@@ -85,7 +85,7 @@
                             <div class="form-group row">
                                 <label for="fornecedores" class="col-sm-2 col-form-label">Selecione o fornecedor</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" name="fornecedores" name="fornecedores">
+                                    <select class="form-control" name="fornecedores" id="fornecedores">
                                         <% fornecedores.forEach(function(fornecedor){ %>
                                         <option value="<%= fornecedor.ID %>">
                                             <%= fornecedor.Nome %>

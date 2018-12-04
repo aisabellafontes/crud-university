@@ -8,6 +8,8 @@ const url_list = '/funcionarios/';
 
 const dadosParaPagina = {
     subtitulo: subtitulo,
+    cargo_atual: null,
+    cargo_novo: null,
     titulo: titulo,
     message_erro: '',
     message_sucesso: '',
@@ -124,7 +126,6 @@ module.exports = {
             });
         }
         else if (cargo === "atendente") {
-            console.log(" ENTRA AQUI!!!!");
             var query = "INSERT INTO Atendente SET ? ";
             var dados_atendente = {
                 CPF_Atendente: cpf,
@@ -175,25 +176,28 @@ module.exports = {
         // receber as variaveis do template ejs (html)
         var nome = req.body.nome_funcionario;
         var cpf = req.body.cpf_funcionario;
-        var cargo = req.body.cargos_funcionario;
+        var cargo_novo = req.body.cargos_funcionario;
         var cpf_supervisor = req.body.supervisor_funcionario;
+        var cpf_final = cpf_supervisor;
+
+        if (cpf_supervisor == null) {
+            cpf_final = null;
+        }
 
         //set data
         var data = {
-            CPF: cpf,
             Nome: nome,
-            Tipo: cargo,
-            CPF_Supervisor: cpf_supervisor
+            Tipo: cargo_novo,
+            CPF_Supervisor: cpf_final
         };
-
 
         var query_verifica_supervisor = "select count(*) as supervisor from Funcionarios where CPF_Supervisor = ?";
         db.query(query_verifica_supervisor, [cpf], function (erro, resultado) {
             if (resultado) {
                 var supervisor = resultado[0].supervisor;
                 console.log("supervisor = ", supervisor);
-
                 if (parseInt(supervisor) > 0) {
+                    console.log("parseInt2");
                     dadosParaPagina.message_erro = "Esse funcionário possui supervisionados e não pode ter seu cargo alterado!";
                     res.render('funcionarios.ejs', dadosParaPagina);
                 }
@@ -202,125 +206,81 @@ module.exports = {
 
         var verifica_cargo_atual = "select Tipo from Funcionarios where CPF = ?";
         db.query(verifica_cargo_atual, [cpf], function (erro, resultado) {
+            var cargo_atual = null;
+
             if (resultado) {
-                var cargo_atual = resultado[0];
-                console.log("cargo atual = ", cargo_atual);
+                cargo_atual = resultado[0].Tipo
+                dadosParaPagina.cargo_atual = cargo_atual;
+                dadosParaPagina.cargo_novo = cargo_novo
+                console.log("Dados do funcionario = ", cargo_atual, cargo_novo);
 
-                if (cargo_atual != cargo) {
-                    if (cargo_atual == "atendente") {
-                        var query = "DELETE FROM Atendente WHERE CPF_Atendente= ?";
-                        db.query(query, [cpf], function (erro, resultado) {
-                            if (erro) {
-                                message = "Não foi possivel remover o Atendente" + erro;
-                                dadosParaPagina.message_erro = message;
-                                res.render('funcionarios.ejs', dadosParaPagina);
-                            }
-                            console.log("Removido o atendente com sucesso.");
-                        });
-                    }
-                    else if (cargo_atual == "freteiro") {
-                        var query = "DELETE FROM Freteiro WHERE CPF_Freteiro = ? ";
-                        db.query(query, [cpf], function (erro, resultado) {
-                            if (erro) {
-                                message = "Não foi possivel remover o Freteiro" + erro;
-                                dadosParaPagina.message_erro = message;
-                                res.render('funcionarios.ejs', dadosParaPagina);
-                            }
-                            console.log("Removido o freteiro com sucesso.");
-                        });
-                    }
-
-                    //Adicionando o funcionário na sua nova relação
-                    if (cargo == "atendente") {
-                        var query = "INSERT INTO Atendente SET ? ";
-                        var dados_atendente = {
-                            CPF_Atendente: cpf,
-                            Nro_Vendas: 0
+                if (cargo_atual == cargo_novo) {
+                    console.log("Mesmo cargo");
+                    var q_update = "UPDATE Funcionarios set ? WHERE CPF = ? ";
+                    db.query(q_update, [data, cpf], function (erro, resultado) {
+                        if (erro) {
+                            console.log("deu erro ao dar update!", erro);
+                            dadosParaPagina.message_erro = "Esse funcionário nao pode ser alterado.Erro:" + erro;
+                            res.render('funcionarios.ejs', dadosParaPagina);
+                        } else {
+                            console.log("foi bonitinho. saindo");
+                            res.redirect(url_list);
                         }
-                        db.query(query, dados_atendente, function (erro, resultado) {
-                            if (erro) {
-                                var message = "Não foi possivel adicionar o Atendente";
 
-                                dadosParaPagina.message_erro = message;
-                                res.render('funcionarios.ejs', dadosParaPagina);
-                            }
-                        });
+                    })
+                }
+                else if (cargo_atual == 'freteiro') {
+                    console.log("Vai deixar de ser freteiro para ", cargo_novo);
+
+                    var query_delete_ft = "DELETE from Freteiro where CPF_Freteiro = ?";
+                    db.query(query_delete_ft, [cpf], function (erro, resultado) {
+                    })
+                }
+                else if (cargo_atual == 'atendente') {
+                    console.log("vai deixar de ser atendente para ", cargo_novo);
+
+                    var query_delete_ft = "DELETE from Atendente where CPF_Atendente = ?";
+                    db.query(query_delete_ft, [cpf], function (erro, resultado) {
+                    })
+
+                } else if (cargo_atual == "supervisor") {
+                    console.log("vai deixar de ser chefe! para ", cargo_novo);
+
+                }
+                if (cargo_atual != cargo_novo && cargo_novo == "freteiro") {
+                    console.log(" Cria novo freteiro");
+                    var query = "INSERT INTO Freteiro SET ? ";
+                    var dados_freteiro = {
+                        Nro_Entregas: 0,
+                        CPF_Freteiro: cpf
                     }
-                    else if (cargo == "freteiro") {
-                        var query = "INSERT INTO Freteiro SET ? ";
-                        var dados_freteiro = {
-                            Nro_Entregas: 0,
-                            CPF_Freteiro: cpf
-                        }
-                        db.query(query, dados_freteiro, (erro, resultado) => {
-                            if (erro) {
-                                message = "Não foi possivel adicionar o Freteiro";
+                    db.query(query, dados_freteiro, function (erro, resultado) {
+                    });
 
-                                dadosParaPagina.message_erro = message;
-                                res.render('funcionarios.ejs', dadosParaPagina);
-                            }
-                        });
+                }
+                else if (cargo_atual != cargo_novo && cargo_novo == "atendente") {
+                    console.log(" Cria novo Atendente");
+                    var query = "INSERT INTO Atendente SET ? ";
+                    var dados_atendente = {
+                        CPF_Atendente: cpf,
+                        Nro_Vendas: 0
                     }
+                    db.query(query, dados_atendente, function (erro, resultado) {
+                    });
+
+                } else if (cargo_atual != cargo_novo && cargo_novo == "atendente") {
+                    console.log(" Cria novo Supervisor");
+                    var query = "INSERT INTO Supervisor SET ? ";
+                    var dados_freteiro = {
+                        CPF_Supervisor: cpf_final,
+                        CPF_Supervisionado: cpf
+                    }
+                    db.query(query, dados_freteiro, function(erro, resultado){
+                    });
                 }
             }
-        });
 
-        if (cargo_atual == "supervisor") {
-            var supervisor_supervisionado = "DELETE FROM Supervisor WHERE CPF_Supervisionado = ?";
-            db.query(supervisor_supervisionado, [cpf], function (erro, resultado) {
-                if (erro) {
-                    message = "Não foi possivel remover o Supervisor que é Supervisionado" + erro;
-                    dadosParaPagina.message_erro = message;
-                    res.render('funcionarios.ejs', dadosParaPagina);
-                }
-                console.log("Removido o supervisor que é supervisionado com sucesso.");
             });
-
-            var query = "DELETE FROM Supervisor WHERE CPF_Supervisor = ?";
-            db.query(query, [cpf], function (erro, resultado) {
-                if (erro) {
-                    message = "Não foi possivel remover o Supervisor" + erro;
-                    dadosParaPagina.message_erro = message;
-                    res.render('funcionarios.ejs', dadosParaPagina);
-                }
-                console.log("Removido o supervisor com sucesso.");
-            });
-        }
-
-        if (cargo == "supervisor") {
-            var query = "INSERT INTO Supervisor SET ? ";
-            var dados_freteiro = {
-                CPF_Supervisor: cpf_supervisor,
-                CPF_Supervisionado: cpf
-            }
-            db.query(query, dados_freteiro, (erro, resultado) => {
-                if (erro) {
-                    message = "Não foi possivel adicionar o Supervisor: " + erro;
-
-                    dadosParaPagina.message_erro = message;
-                    dadosParaPagina.action = url_add;
-                    res.render('funcionarios.ejs', dadosParaPagina);
-                }
-            });
-        }
-
-        //Finalmente Atualizando Funcionários
-        var insert = "UPDATE Funcionarios set ? WHERE CPF = ? ";
-        db.query(insert, [data, cpf], (err, result) => {
-            if (err) {
-                message = "Não foi possivel atualizar o funcionário";
-                dadosParaPagina.message_erro = message + err;
-                res.render('vendas.ejs', dadosParaPagina);
-
-            }
-            dadosParaPagina.action = url_add;
-            dadosParaPagina.message_erro = '';
-            dadosParaPagina.message_sucesso = "Funcionário atualizado com sucesso";
-        });
-
-        console.log(data);
-
-        res.redirect(url_list);
     },
 
     detalharFuncionario: (req, res) => {
@@ -333,20 +293,21 @@ module.exports = {
         db.query(query_supervisor, function (erro, resultado) {
             if (resultado) {
                 dadosParaPagina.supervisores = resultado;
-                //console.log("resultado: ", resultado);
             }
         });
 
         var query = "SELECT * FROM Funcionarios WHERE CPF = " + cpf;
         db.query(query, function (erro, resultado) {
             if (erro) {
-                dadosParaPagina.message_erro = "Não foi possivel encontrar fornecedor.Erro:" + erro;
+                dadosParaPagina.message_erro = "Não foi possivel encontrar Funcionarios.Erro:" + erro;
                 dadosParaPagina.action = url_add;
                 res.render('funcionarios.ejs', dadosParaPagina);
+            } else {
+                dadosParaPagina.funcionario = resultado[0];
+                dadosParaPagina.action = url_update;
+                res.render('funcionarios.ejs', dadosParaPagina);
             }
-            dadosParaPagina.funcionario = resultado[0];
-            dadosParaPagina.action = url_update;
-            res.render('funcionarios.ejs', dadosParaPagina);
+
         });
     },
 

@@ -18,10 +18,56 @@ const dadosParaPagina = {
     atendentes: [],
     freteiros: [],
     produtos: [],
+    fornecedores: [],
     action: url_add
 }
 
 module.exports = {
+    pesquisarVenda: (req, res) => {
+        console.log("Executar açao de pesquisar todos as vendas da loja");
+
+        let clientes = "select * from Clientes";
+        db.query(clientes, function(erro, resultado){
+            if(resultado){
+                dadosParaPagina.clientes = resultado;
+            }
+        });
+
+        let atendentes = "select * from Funcionarios where Tipo='atendente'";
+        db.query(atendentes, function(erro, resultado){
+            if(resultado){
+                dadosParaPagina.atendentes = resultado;
+            }
+        });
+
+        let freteiros = "select * from Funcionarios where Tipo='freteiro'";
+        db.query(freteiros, function(erro, resultado){
+            if(resultado){
+                dadosParaPagina.freteiros = resultado;
+            }
+        });
+
+        let produtos = "select * from Produtos";
+        db.query(produtos, function(erro, resultado){
+            if(resultado){
+                dadosParaPagina.produtos = resultado;
+            }
+        });
+
+        let fornecedores = "select * from Fornecedor";
+        db.query(fornecedores, function(erro, resultado){
+            if(resultado){
+                dadosParaPagina.fornecedores = resultado;
+            }
+
+            console.log(dadosParaPagina);
+            res.render('vendaslistagem.ejs', dadosParaPagina);
+            
+        });
+
+        
+    },
+
     listarVenda: (req, res) => {
         console.log("Executar açao de listar todos as vendas da loja");
 
@@ -69,37 +115,47 @@ module.exports = {
     },
 
     adicionarVenda: (req, res) => {
-        console.log("Executar açao de adicionar novo produto");
-        var message = '';
+        console.log("Executar açao de adicionar nova venda");
+        
 
-        /* parametros */
-        var nome = req.body.nome_produto;
-        var descricao = req.body.descricao_produto;
-        var categorias = req.body.categorias;
-        var fornecedores = req.body.fornecedores;
-        var preco = req.body.preco;
-        var qtd_estoque = req.body.qtd_estoque;
+        let CPF_cliente = req.body.CPF_cliente;
+        let CPF_atendente = req.body.CPF_atendente;
+        let CPF_freteiro = req.body.CPF_freteiro;
+        let Dia_venda = req.body.Dia_venda;
+        let produtos = req.body.produtos;
+        
+        console.log(req.body, produtos, CPF_cliente);
+        console.log(typeof(produtos));
+        // return res.redirect(url_list);
 
-        //get data
-        var data = {
-            Nome: nome,
-            Preco: parseFloat(preco),
-            Descricao: descricao,
-            ID_categoria: parseInt(categorias),
-            ID_fornecedor: parseInt(fornecedores),
-            QTD_Estoque: parseInt(qtd_estoque)
-        };
+        // /* parametros */
+        // var nome = req.body.nome_produto;
+        // var descricao = req.body.descricao_produto;
+        // var categorias = req.body.categorias;
+        // var fornecedores = req.body.fornecedores;
+        // var preco = req.body.preco;
+        // var qtd_estoque = req.body.qtd_estoque;
 
-        var query_insert = "INSERT INTO Produtos set ? ";
-        db.query(query_insert, data, function (err, result) {
-            if (!err) {
-                res.redirect(url_list);
-            }
+        // //get data
+        // var data = {
+        //     Nome: nome,
+        //     Preco: parseFloat(preco),
+        //     Descricao: descricao,
+        //     ID_categoria: parseInt(categorias),
+        //     ID_fornecedor: parseInt(fornecedores),
+        //     QTD_Estoque: parseInt(qtd_estoque)
+        // };
 
-            message = "Não foi possivel adicionar produto";
-            dadosParaPagina.message_erro = message;
-            res.render('vendas.ejs', dadosParaPagina);
-        });
+        // var query_insert = "INSERT INTO Produtos set ? ";
+        // db.query(query_insert, data, function (err, result) {
+        //     if (!err) {
+        //         res.redirect(url_list);
+        //     }
+
+        //     message = "Não foi possivel adicionar produto";
+        //     dadosParaPagina.message_erro = message;
+        //     res.render('vendas.ejs', dadosParaPagina);
+        // });
 
     },
 

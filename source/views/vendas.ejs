@@ -16,6 +16,22 @@
 
         var resultado = parseFloat(preco) * parseInt(qtde);
         total.textContent = resultado;
+
+        var tr_label = "produto_" + codigo;
+        var dataset = document.getElementById(tr_label).dataset;
+        dataset.total = resultado;
+        dataset.qtde = qtde;
+
+        var labelTotal = document.getElementById("total_produtos");
+        var labelTotalCompra = document.getElementById("total_compra");
+        var produtos = document.getElementsByClassName("table-success");
+        labelTotal.textContent = produtos.length;
+        var totalCompra = 0;
+
+        for (var i = 0; i < produtos.length; i++) {
+            totalCompra += parseFloat(produtos[i].dataset.total);
+        }
+        labelTotalCompra.textContent = totalCompra;
     }
 
     function addProduto(codigo) {
@@ -25,18 +41,10 @@
         var tr = $('#' + tr_label);
         tr.addClass("table-success");
         tr.removeClass("table-light");
-        
-        var labelTotal = document.getElementById("total_produtos");
-        var produtos = document.getElementsByClassName("table-success");
-        labelTotal.textContent = produtos.length;
 
-        for (var i = 0; i < produtos.length; i++) {
-            var total_produto = document.getElementById("produto_total_"+codigo).textContent;
-            console.log(produtos[i].dataset.total);
-            produtos[i].dataset.total = parseFloat(total_produto);
-            console.log(produtos[i].dataset.qtde);
-        }
-        
+        var tr = document.getElementById(tr_label);
+        tr.dataset.selecionada = 1;
+        calcularTotal(codigo);
     }
 
     function removeProduto(codigo) {
@@ -55,9 +63,47 @@
         });
         labelTotal.textContent = total;
 
+        var tr = document.getElementById(tr_label);
+        tr.dataset.selecionada = 0;
+        calcularTotal(codigo);
     }
 
     function submitForm() {
+        console.log("ENVIAR PRA SALVAR");
+// <!-- 
+//         var data_venda = document.getElementById("data_venda");
+//         var CPF_cliente = document.getElementById("clientes");
+//         var CPF_atendente = document.getElementById("atendentes");
+//         var CPF_freteiro = document.getElementById("freteiros");
+
+//         var codigos_produtos = Array();
+//         var produtos = document.getElementsByClassName("table-success");
+//         for (var i = 0; i < produtos.length; i++) {
+//             var produto = {
+//                 "codigo": produtos[i].dataset.codigo,
+//                 "qtde": produtos[i].dataset.qtde,
+//                 "data_venda": data_venda.value
+//             };
+//             codigos_produtos.push(produto);
+//         }
+
+//         CPF_cliente = CPF_cliente.options[CPF_cliente.selectedIndex].value;
+//         CPF_atendente = CPF_atendente.options[CPF_atendente.selectedIndex].value;
+//         CPF_freteiro = CPF_freteiro.options[CPF_freteiro.selectedIndex].value;
+
+//         var data = {
+//             "produtos": Array.from(codigos_produtos),
+//             "CPF_cliente": CPF_cliente,
+//             "CPF_atendente": CPF_atendente,
+//             "CPF_freteiro": CPF_freteiro,
+//             "Dia_venda": data_venda.value
+//         } -->
+
+        // console.log(url, data);
+        // $.post('http://localhost:8000/vendas/adicionar/', data, function (response) {
+        //     console.log(response);
+        // })
+
         form.submit();
         form.reset();
     }
@@ -95,8 +141,11 @@
                             <div class="form-group row">
                                 <div class="col-12 d-flex justify-content-end">
                                     <button class="btn btn-primary ml-2" type="submit" onclick="submitForm()">
-                                        Realizar venda</button>
-                                    <button class="btn ml-2">Limpar</button>
+                                        Realizar venda
+                                    </button>
+                                    <button class="btn ml-2">
+                                        Limpar
+                                    </button>
                                 </div>
                             </div>
 
@@ -104,9 +153,9 @@
                                 <label for="codigo_venda" class="col-sm-3 col-form-label">Código da venda</label>
                                 <div class="col-sm-9">
                                     <% if(venda){ %>
-                                    <input type="number" class="form-control" name="codigo_venda" readonly value="<%=venda.Codigo%>">
+                                    <input type="number" class="form-control" id="codigo_venda" readonly value="<%=venda.Codigo%>">
                                     <% } else{ %>
-                                    <input type="number" class="form-control" name="codigo_venda" readonly value="">
+                                    <input type="number" class="form-control" id="codigo_venda" readonly value="">
                                     <% } %>
                                 </div>
                             </div>
@@ -115,10 +164,11 @@
                                 <label for="data_venda" class="col-sm-3 col-form-label">Data da venda</label>
                                 <div class="col-sm-9">
                                     <% if(venda){ %>
-                                    <input type="text" class="form-control" name="data_venda" value="<%=venda.Dia_venda%>"
+                                    <input type="date" class="form-control" id="data_venda" value="<%=venda.Dia_venda%>"
                                         placeholder="Digite no formato dd-mm-yyyy">
                                     <% } else{ %>
-                                    <input type="text" class="form-control" name="data_venda" value="" placeholder="Digite no formato dd-mm-yyyy">
+                                    <input type="date" class="form-control" id="data_venda" value="2018-12-04"
+                                        placeholder="Digite no formato dd-mm-yyyy">
                                     <% } %>
                                 </div>
                             </div>
@@ -128,7 +178,7 @@
                                     Selecione cliente
                                 </label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" name="clientes">
+                                    <select class="form-control" id="clientes">
                                         <% clientes.forEach(function(cliente){ %>
                                         <option value="<%= cliente.CPF %>">
                                             <%= cliente.Nome %>
@@ -143,7 +193,7 @@
                                     Selecione atendente
                                 </label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" name="atendentes">
+                                    <select class="form-control" id="atendentes">
                                         <% atendentes.forEach(function(atendente){ %>
                                         <option value="<%= atendente.CPF %>">
                                             <%= atendente.Nome %>
@@ -158,7 +208,7 @@
                                     Selecione o freteiro
                                 </label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" name="freteiros">
+                                    <select class="form-control" id="freteiros">
                                         <% freteiros.forEach(function(freteiro){ %>
                                         <option value="<%= freteiro.CPF %>">
                                             <%= freteiro.Nome %>
@@ -186,67 +236,71 @@
                                     </ul>
                                 </div>
 
+                                <div class="form-group">
+                                    <table class="table  mt-15">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Código</th>
+                                                <th scope="col">Produto</th>
+                                                <th scope="col">Categoria</th>
+                                                <th scope="col">Fornecedor</th>
+                                                <th scope="col">Preço</th>
+                                                <th scope="col">Estoque</th>
+                                                <th scope="col">Qtde a comprar</th>
+                                                <th scope="col">Total</th>
+                                                <th scope="col">Ação </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% produtos.forEach(function(produto){ %>
+                                            <tr id="produto_<%=produto.Codigo%>" data-codigo="<%=produto.Codigo%>"
+                                                data-estoque="<%=produto.QTD_Estoque%>" data-preco="<%=produto.Preco%>"
+                                                data-qtde="0" data-total="0.0" data-selecionado="0">
+                                                <th scope="row">
+                                                    <img class="card-img-top" src="/assets/images/buy.png" alt="Icone do produto">
+                                                    <%=produto.Codigo%>
+                                                </th>
+                                                <td>
+                                                    <%=produto.Nome%>
+                                                </td>
+                                                <td>
+                                                    <%=produto.Nome_Categoria%>
+                                                </td>
+                                                <td>
+                                                    <%=produto.Nome_Fornecedor%>
+                                                </td>
+                                                <td id="produto_preco_<%=produto.Codigo%>">
+                                                    <%=produto.Preco%>
+                                                </td>
+                                                <td id="produto_estoque_<%=produto.Codigo%>">
+                                                    <%=produto.QTD_Estoque%>
+                                                </td>
+                                                <td>
+                                                    <input type="number" id="produto_qtde_<%=produto.Codigo%>" value="1"
+                                                        class="produtos" min="1" max="<%=produto.QTD_Estoque%>"
+                                                        onchange="calcularTotal(<%=produto.Codigo%>)">
+                                                </td>
+                                                <td id="produto_total_<%=produto.Codigo%>">
+                                                    <%=produto.Preco%>
+                                                </td>
+                                                <td>
+                                                    <a href="#" data-name="produto 1" data-price="0.5" class="btn btn-sm btn-info"
+                                                        onclick="addProduto(<%=produto.Codigo%>)">
+                                                        <i class="fas fa-cart-plus"></i>
+                                                    </a>
+                                                    <a href="#" onclick="removeProduto(<%=produto.Codigo%>)" class="btn btn-sm btn-danger">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <% }); %>
 
-                                <table class="table  mt-15">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Código</th>
-                                            <th scope="col">Produto</th>
-                                            <th scope="col">Categoria</th>
-                                            <th scope="col">Fornecedor</th>
-                                            <th scope="col">Preço</th>
-                                            <th scope="col">Estoque</th>
-                                            <th scope="col">Qtde a comprar</th>
-                                            <th scope="col">Total</th>
-                                            <th scope="col">Ação </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% produtos.forEach(function(produto){ %>
-                                        <tr id="produto_<%=produto.Codigo%>" data-codigo="<%=produto.Codigo%>"
-                                            data-estoque="<%=produto.QTD_Estoque%>" data-preco="<%=produto.Preco%>"
-                                            data-qtde="0" data-total="0.0">
-                                            <th scope="row">
-                                                <img class="card-img-top" src="/assets/images/buy.png" alt="Icone do produto">
-                                                <%=produto.Codigo%>
-                                            </th>
-                                            <td>
-                                                <%=produto.Nome%>
-                                            </td>
-                                            <td>
-                                                <%=produto.Nome_Categoria%>
-                                            </td>
-                                            <td>
-                                                <%=produto.Nome_Fornecedor%>
-                                            </td>
-                                            <td id="produto_preco_<%=produto.Codigo%>">
-                                                <%=produto.Preco%>
-                                            </td>
-                                            <td id="produto_estoque_<%=produto.Codigo%>">
-                                                <%=produto.QTD_Estoque%>
-                                            </td>
-                                            <td>
-                                                <input type="number" id="produto_qtde_<%=produto.Codigo%>" value="1"
-                                                    class="produtos" onclick="calcularTotal(<%=produto.Codigo%>)">
-                                            </td>
-                                            <td id="produto_total_<%=produto.Codigo%>">
-                                                <%=produto.Preco%>
-                                            </td>
-                                            <td>
-                                                <a href="#" data-name="produto 1" data-price="0.5" class="btn btn-sm btn-info"
-                                                    onclick="addProduto(<%=produto.Codigo%>)">
-                                                    <i class="fas fa-cart-plus"></i>
-                                                </a>
-                                                <a href="#" onclick="removeProduto(<%=produto.Codigo%>)" class="btn btn-sm btn-danger">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <% }); %>
+
+                                        </tbody>
+                                    </table>
+                                </div>
 
 
-                                    </tbody>
-                                </table>
                             </div>
 
 
