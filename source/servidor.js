@@ -69,9 +69,9 @@ app.get('/fornecedores/remover/:id', removerFornecedor);
 //CRUD Estancia
 app.get('/estancias', listarEstancia);
 app.post('/estancias/adicionar', adicionarEstancia);
-app.get('/estancias/editar/:cpf', detalharEstancia);
+app.get('/estancias/editar/:nome_estancia', detalharEstancia);
 app.post('/estancias/editar/', atualizarEstancia);
-app.get('/estancias/remover/:cpf', removerEstancia);
+app.get('/estancias/remover/:nome_estancia', removerEstancia);
 
 
 //CRUD Produtos
