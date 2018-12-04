@@ -5,7 +5,7 @@ const icone = 'fas fa-money-check-alt';
 const url_add = '/vendas/adicionar/';
 const url_update = '/vendas/editar/';
 const url_list = '/vendas/';
-const url_pesquisa = '/vendas/pesquisar/';
+const url_pesquisa = '/vendas/pesquisar';
 
 const dadosParaPagina = {
     subtitulo: subtitulo,
@@ -25,7 +25,7 @@ const dadosParaPagina = {
 
 module.exports = {
     mostrarListagemVenda: (req, res) => {
-        console.log("Executar açao de mostrar as opcoes de pesquisa de todos as vendas da loja");
+        console.log("[mostrarListagemVenda] Executar açao de mostrar as opcoes de pesquisa de todos as vendas da loja");
 
         dadosParaPagina.message_erro = '';
         dadosParaPagina.message_sucesso = '';
@@ -68,6 +68,40 @@ module.exports = {
         });
 
         let vendas = ' select qv.*, v.*, \
+                        p.Nome as Nome_Produto, \
+                        f.Nome as Nome_Fornecedor, \
+                        c.Nome as Nome_Cliente,\
+                        fa.Nome as Nome_Atentente, \
+                        ft.Nome as Nome_Freteiro\
+                        from vendas v, funcionarios fa, funcionarios ft, clientes c, \
+                        produtos p, qtde_vendida qv, \
+                        fornecedor f \
+                        where v.CPF_cliente = c.CPF \
+                        and v.CPF_atendente = fa.CPF and fa.Tipo = "atendente" \
+                        and v.CPF_freteiro = ft.CPF and ft.Tipo = "freteiro" \
+                        and v.Codigo = qv.Cod_venda \
+                        and p.ID_fornecedor = f.ID \
+                        and p.Codigo = qv.Cod_produto';
+        // console.log(vendas);
+        db.query(vendas, function (erro, resultado) {
+            if(erro){
+                console.log(erro);
+            }
+            if (resultado) {
+                // console.log(resultado);
+                dadosParaPagina.vendas = resultado;
+                res.render('vendaslistagem.ejs', dadosParaPagina);
+
+            }
+        });
+
+
+    },
+
+    pesquisarVenda: (req, res) => {
+        console.log("Executar açao de pesquisar todos as vendas da loja");
+        console.log(req.body);
+        let vendas = ' select qv.*, v.*, \
         p.Nome as Nome_Produto, \
         f.Nome as Nome_Fornecedor, \
         c.Nome as Nome_Cliente,\
@@ -85,20 +119,12 @@ module.exports = {
         // console.log(vendas);
         db.query(vendas, function (erro, resultado) {
             if (resultado) {
-                console.log(resultado);
+                // console.log(resultado);
                 dadosParaPagina.vendas = resultado;
                 res.render('vendaslistagem.ejs', dadosParaPagina);
-                
+
             }
-        })
-
-
-    },
-
-    pesquisarVenda: (req, res) => {
-        console.log("Executar açao de pesquisar todos as vendas da loja");
-        console.log(req.body);
-        res.redirect(url_pesquisa);
+        });
     },
 
     listarVenda: (req, res) => {
@@ -285,34 +311,26 @@ module.exports = {
           - Venda
         */
 
-        var query_vendas = "SELECT COUNT(*) as Total_Vendas FROM QTDE_Vendida WHERE Cod_produto = " + codigo;
-        db.query(query_vendas, function (err, resultado) {
-            if (resultado) {
-                dadosParaPagina.message_erro = "Não será possivel porque foi encontrado "
-                    + resultado[0].Total_Vendas;
-                + " vendas relacionadas";
-            }
-
-            if (err) {
-                message = "Não foi possivel remover o produto " + codigo;
-                dadosParaPagina.message_erro = message + err;
-                res.render('vendas.ejs', dadosParaPagina);
-            }
-
-        });
-
-
-        var query_produto = "DELETE FROM Produtos WHERE Codigo = " + codigo;
-        db.query(query_produto, function (err, resultado) {
-            if (err) {
-                message = "Não foi possivel remover o produto " + codigo;
-                dadosParaPagina.message_erro = message + err;
-                res.render('vendas.ejs', dadosParaPagina);
+        var delete_produtos_venda = " DELETE FROM QTDE_Vendida where Cod_venda = " + codigo;
+        db.query(delete_produtos_venda, function (erro, resultado) {
+            // console.log(erro, resultado);
+            if (erro) {
+                dadosParaPagina.message_erro = "Não foi possivel remover a venda.Erro " + erro;
+                console.log(dadosParaPagina);
+                return res.render('vendaslistagem.ejs', dadosParaPagina);
             } else {
-                dadosParaPagina.message_sucesso = "Produto removido com sucesso";
-                res.redirect(url_list);
+                var query_produto = "DELETE FROM Vendas WHERE Codigo  = " + codigo;
+                db.query(query_produto, function (erro, resultado) {
+                    if (erro) {
+                        dadosParaPagina.message_erro = "Não foi possivel remover a venda.Erro " + erro;
+                        console.log(dadosParaPagina);
+                        return res.render('vendaslistagem.ejs', dadosParaPagina);
+                    } 
+                });
             }
         });
+        res.redirect(url_pesquisa);
+
 
     }
 };
