@@ -82,12 +82,13 @@ module.exports = {
         and v.Codigo = qv.Cod_venda \
         and p.ID_fornecedor = f.ID \
         and p.Codigo = qv.Cod_produto';
-        console.log(vendas);
+        // console.log(vendas);
         db.query(vendas, function (erro, resultado) {
             if (resultado) {
-                // console.log(dadosParaPagina);
-                res.render('vendaslistagem.ejs', dadosParaPagina);
+                console.log(resultado);
                 dadosParaPagina.vendas = resultado;
+                res.render('vendaslistagem.ejs', dadosParaPagina);
+                
             }
         })
 
