@@ -285,31 +285,17 @@ module.exports = {
           - Venda
         */
 
-        var query_vendas = "SELECT COUNT(*) as Total_Vendas FROM QTDE_Vendida WHERE Cod_produto = " + codigo;
-        db.query(query_vendas, function (err, resultado) {
-            if (resultado) {
-                dadosParaPagina.message_erro = "Não será possivel porque foi encontrado "
-                    + resultado[0].Total_Vendas;
-                + " vendas relacionadas";
-            }
-
-            if (err) {
-                message = "Não foi possivel remover o produto " + codigo;
-                dadosParaPagina.message_erro = message + err;
-                res.render('vendas.ejs', dadosParaPagina);
-            }
+        var delete_produtos_venda = " DELETE FROM QTDE_Vendida where Cod_produto = ?";
+        db.query(delete_produtos_venda, codigo, function(erro, resultado){
 
         });
 
-
-        var query_produto = "DELETE FROM Produtos WHERE Codigo = " + codigo;
-        db.query(query_produto, function (err, resultado) {
-            if (err) {
-                message = "Não foi possivel remover o produto " + codigo;
-                dadosParaPagina.message_erro = message + err;
+        var query_produto = "DELETE FROM Vendas WHERE Codigo =  ? ";
+        db.query(query_produto, codigo, function(erro, resultado) {
+            if (erro) {                
+                dadosParaPagina.message_erro = "Não foi possivel remover a venda.Erro " + erro;
                 res.render('vendas.ejs', dadosParaPagina);
             } else {
-                dadosParaPagina.message_sucesso = "Produto removido com sucesso";
                 res.redirect(url_list);
             }
         });
