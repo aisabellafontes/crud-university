@@ -67,7 +67,9 @@ module.exports = {
 
         });
 
-        let vendas = ' select qv.*, v.*, \
+        let vendas = ' select v.*, \
+                        qv.Cod_Produto, qv.Cod_Venda, qv.Qtde, \
+                        DATE_FORMAT(qv.Dia_Venda, "%M %d %Y") as Data_Venda,\
                         p.Nome as Nome_Produto, \
                         f.Nome as Nome_Fornecedor, \
                         c.Nome as Nome_Cliente,\
@@ -84,14 +86,13 @@ module.exports = {
                         and p.Codigo = qv.Cod_produto';
         // console.log(vendas);
         db.query(vendas, function (erro, resultado) {
-            if(erro){
+            if (erro) {
                 console.log(erro);
             }
             if (resultado) {
                 // console.log(resultado);
                 dadosParaPagina.vendas = resultado;
                 res.render('vendaslistagem.ejs', dadosParaPagina);
-
             }
         });
 
@@ -99,25 +100,108 @@ module.exports = {
     },
 
     pesquisarVenda: (req, res) => {
-        console.log("Executar açao de pesquisar todos as vendas da loja");
+        console.log("[pesquisarVenda] Executar açao de pesquisar todos as vendas da loja");
         console.log(req.body);
-        let vendas = ' select qv.*, v.*, \
-        p.Nome as Nome_Produto, \
-        f.Nome as Nome_Fornecedor, \
-        c.Nome as Nome_Cliente,\
-        fa.Nome as Nome_Atentente, \
-        ft.Nome as Nome_Freteiro\
-        from vendas v, funcionarios fa, funcionarios ft, clientes c, \
-        produtos p, qtde_vendida qv, \
-        fornecedor f \
-        where v.CPF_cliente = c.CPF \
-        and v.CPF_atendente = fa.CPF and fa.Tipo = "atendente" \
-        and v.CPF_freteiro = ft.CPF and ft.Tipo = "freteiro" \
-        and v.Codigo = qv.Cod_venda \
-        and p.ID_fornecedor = f.ID \
-        and p.Codigo = qv.Cod_produto';
-        // console.log(vendas);
-        db.query(vendas, function (erro, resultado) {
+
+        dadosParaPagina.message_erro = '';
+        dadosParaPagina.message_sucesso = '';
+        dadosParaPagina.action = url_pesquisa;
+
+        let clientes = "select * from Clientes";
+        db.query(clientes, function (erro, resultado) {
+            if (resultado) {
+                dadosParaPagina.clientes = resultado;
+            }
+        });
+
+        let atendentes = "select * from Funcionarios where Tipo='atendente'";
+        db.query(atendentes, function (erro, resultado) {
+            if (resultado) {
+                dadosParaPagina.atendentes = resultado;
+            }
+        });
+
+        let freteiros = "select * from Funcionarios where Tipo='freteiro'";
+        db.query(freteiros, function (erro, resultado) {
+            if (resultado) {
+                dadosParaPagina.freteiros = resultado;
+            }
+        });
+
+        let produtos = "select * from Produtos";
+        db.query(produtos, function (erro, resultado) {
+            if (resultado) {
+                dadosParaPagina.produtos = resultado;
+            }
+        });
+
+        let fornecedores = "select * from Fornecedor";
+        db.query(fornecedores, function (erro, resultado) {
+            if (resultado) {
+                dadosParaPagina.fornecedores = resultado;
+            }
+
+        });
+
+        //filtro basico
+        var query_vendas = ' select v.*, \
+                        qv.Cod_Produto, qv.Cod_Venda, qv.Qtde, \
+                        DATE_FORMAT(qv.Dia_Venda, "%M %d %Y") as Data_Venda,\
+                        p.Nome as Nome_Produto, \
+                        f.Nome as Nome_Fornecedor, \
+                        c.Nome as Nome_Cliente,\
+                        fa.Nome as Nome_Atentente, \
+                        ft.Nome as Nome_Freteiro\
+                        from vendas v, funcionarios fa, funcionarios ft, clientes c, \
+                        produtos p, qtde_vendida qv, \
+                        fornecedor f \
+                        where v.CPF_cliente = c.CPF \
+                        and v.CPF_atendente = fa.CPF and fa.Tipo = "atendente" \
+                        and v.CPF_freteiro = ft.CPF and ft.Tipo = "freteiro" \
+                        and v.Codigo = qv.Cod_venda \
+                        and p.ID_fornecedor = f.ID \
+                        and p.Codigo = qv.Cod_produto';
+
+        //parametros para o filtro
+        let codigo = req.body.codigo_venda;
+        let cliente = req.body.clientes;
+        let atendente = req.body.atendentes;
+        let freteiro = req.body.freteiros;
+        let produto = req.body.freteiros;
+        let fornecedor = req.body.fornecedores;
+        let data_venda = req.body.data_venda;
+        let qtde = req.body.qtde_comprada;
+
+        if (codigo) {
+            query_vendas += " and v.Codigo = " + parseInt(codigo);
+        }
+
+        else {
+            if(!(cliente == '' || cliente === undefined)){
+                query_vendas += " and c.CPF = " + cliente;
+            } 
+            if(!(atendente == '' || atendente === undefined)){
+                query_vendas += " and fa.CPF = " + atendente;
+            }
+            if(!(freteiro == '' || freteiro === undefined)){
+                query_vendas += " and ft.CPF = " + freteiro;
+            } 
+            if(!(produto == '' || produto === undefined)){
+                query_vendas += " and p.Codigo = " + produto;
+            } 
+            if(!(fornecedor == '' || fornecedor === undefined)){
+                query_vendas += " and f.ID = " + fornecedor;
+            }
+            if(!(data_venda == '' || data_venda === undefined)){
+                query_vendas += " and qv.Dia_Venda = '" + data_venda+ "' ";
+            }
+            if(!(qtde == '' || qtde === undefined)){
+                query_vendas += " and qv.Qtde = " + parseInt(qtde);
+            }
+        }
+
+        console.log(query_vendas);
+        db.query(query_vendas, function (erro, resultado) {
             if (resultado) {
                 // console.log(resultado);
                 dadosParaPagina.vendas = resultado;
@@ -325,7 +409,7 @@ module.exports = {
                         dadosParaPagina.message_erro = "Não foi possivel remover a venda.Erro " + erro;
                         console.log(dadosParaPagina);
                         return res.render('vendaslistagem.ejs', dadosParaPagina);
-                    } 
+                    }
                 });
             }
         });
