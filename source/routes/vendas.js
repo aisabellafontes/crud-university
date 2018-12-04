@@ -137,7 +137,7 @@ module.exports = {
         let produtos = req.body.produtos;
         var erro = false;
 
-        console.log(req.body);
+        // console.log(req.body);
         if (!produtos) {
             dadosParaPagina.message_erro = "Selecione ao menos um produto";
             return res.render('vendas.ejs', dadosParaPagina);
@@ -166,8 +166,9 @@ module.exports = {
                         Dia_venda: Dia_venda,
                         Qtde: 1
                     }
-                    let insert_produtos = "insert into QTDE_Vendida values ?";
+                    let insert_produtos = "insert into QTDE_Vendida set ?";
                     db.query(insert_produtos, [data], function (erro, resultado) {
+                        console.log("foi?", resultado, erro)
                     });                   
                 }                
                 return res.redirect(url_pesquisa);
