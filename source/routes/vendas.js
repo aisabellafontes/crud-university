@@ -67,7 +67,9 @@ module.exports = {
 
         });
 
-        let vendas = ' select qv.*, v.*, \
+        let vendas = ' select v.*, \
+                        qv.Cod_Produto, qv.Cod_Venda, qv.Qtde, \
+                        DATE_FORMAT(qv.Dia_Venda, "%M %d %Y") as Data_Venda,\
                         p.Nome as Nome_Produto, \
                         f.Nome as Nome_Fornecedor, \
                         c.Nome as Nome_Cliente,\
@@ -84,14 +86,13 @@ module.exports = {
                         and p.Codigo = qv.Cod_produto';
         // console.log(vendas);
         db.query(vendas, function (erro, resultado) {
-            if(erro){
+            if (erro) {
                 console.log(erro);
             }
             if (resultado) {
                 // console.log(resultado);
                 dadosParaPagina.vendas = resultado;
                 res.render('vendaslistagem.ejs', dadosParaPagina);
-
             }
         });
 
@@ -99,9 +100,53 @@ module.exports = {
     },
 
     pesquisarVenda: (req, res) => {
-        console.log("Executar açao de pesquisar todos as vendas da loja");
+        console.log("[pesquisarVenda] Executar açao de pesquisar todos as vendas da loja");
         console.log(req.body);
-        let vendas = ' select qv.*, v.*, \
+
+        dadosParaPagina.message_erro = '';
+        dadosParaPagina.message_sucesso = '';
+        dadosParaPagina.action = url_pesquisa;
+
+        let clientes = "select * from Clientes";
+        db.query(clientes, function (erro, resultado) {
+            if (resultado) {
+                dadosParaPagina.clientes = resultado;
+            }
+        });
+
+        let atendentes = "select * from Funcionarios where Tipo='atendente'";
+        db.query(atendentes, function (erro, resultado) {
+            if (resultado) {
+                dadosParaPagina.atendentes = resultado;
+            }
+        });
+
+        let freteiros = "select * from Funcionarios where Tipo='freteiro'";
+        db.query(freteiros, function (erro, resultado) {
+            if (resultado) {
+                dadosParaPagina.freteiros = resultado;
+            }
+        });
+
+        let produtos = "select * from Produtos";
+        db.query(produtos, function (erro, resultado) {
+            if (resultado) {
+                dadosParaPagina.produtos = resultado;
+            }
+        });
+
+        let fornecedores = "select * from Fornecedor";
+        db.query(fornecedores, function (erro, resultado) {
+            if (resultado) {
+                dadosParaPagina.fornecedores = resultado;
+            }
+
+        });
+
+
+        let vendas = ' select v.*, \
+        qv.Cod_Produto, qv.Cod_Venda, qv.Qtde, \
+        DATE_FORMAT(qv.Dia_Venda, "%M %d %Y") as Data_Venda,\
         p.Nome as Nome_Produto, \
         f.Nome as Nome_Fornecedor, \
         c.Nome as Nome_Cliente,\
@@ -325,7 +370,7 @@ module.exports = {
                         dadosParaPagina.message_erro = "Não foi possivel remover a venda.Erro " + erro;
                         console.log(dadosParaPagina);
                         return res.render('vendaslistagem.ejs', dadosParaPagina);
-                    } 
+                    }
                 });
             }
         });
