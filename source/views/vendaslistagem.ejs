@@ -36,8 +36,8 @@
                             <div class="form-group row">
                                 <label for="codigo_venda" class="col-sm-4 col-form-label">Codigo</label>
                                 <div class="col-sm-6">
-                                    <input type="number" class="form-control" name="codigo_venda" id="codigo_venda" value=""
-                                        placeholder="Digite o Codigo da venda">
+                                    <input type="number" class="form-control" name="codigo_venda" id="codigo_venda"
+                                        value="" placeholder="Digite o Codigo da venda">
                                 </div>
                             </div>
 
@@ -147,38 +147,37 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <% vendas.forEach(function(venda){ %>
                             <tr>
                                 <td>
                                     <i class="fas fa-money-check-alt"></i> 1
+                                    <%= venda.Codigo %>
                                 </td>
-                                <td>Data da venda</td>
-                                <td>Cliente</td>
-                                <td>Atendente</td>
-                                <td>Freteiro</td>
-                                <td>Produto</td>
-                                <td>Fornecedor</td>
-                                <td>Qtde pedida</td>
                                 <td>
-                                    <a href="/vendas/editar/15" class="btn btn-sm btn-primary">Editar</a>
-                                    <a href="/vendas/remover/15" class="btn btn-sm btn-danger">Remover</a>
+                                    <%= venda.Dia_venda %>
+                                </td>
+                                <td>
+                                    <%= venda.Nome_Cliente %>
+                                </td>
+                                <td>
+                                    <%= venda.Nome_Atentente %>
+                                </td>
+                                <td>
+                                    <%= venda.Nome_Freteiro %>
+                                </td>
+                                <td>
+                                    <%= venda.Nome_Fornecedor %>
+                                </td>
+                                <td>
+                                    <%= venda.Qtde %>
+                                </td>
+                                <td>
+                                    <a href="/vendas/editar/<%= venda.Codigo %>" class="btn btn-sm btn-primary">Editar</a>
+                                    <a href="/vendas/remover/<%= venda.Codigo %>" class="btn btn-sm btn-danger">Remover</a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <i class="fas fa-money-check-alt"></i> 1
-                                </td>
-                                <td>Data da venda</td>
-                                <td>Cliente</td>
-                                <td>Atendente</td>
-                                <td>Freteiro</td>
-                                <td>Produto</td>
-                                <td>Fornecedor</td>
-                                <td>Qtde pedida</td>
-                                <td>
-                                    <a href="/vendas/editar/15" class="btn btn-sm btn-primary">Editar</a>
-                                    <a href="/vendas/remover/15" class="btn btn-sm btn-danger">Remover</a>
-                                </td>
-                            </tr>
+                            <% }); %>
+                            
                         </tbody>
                     </table>
                     <!-- FIM DA LISTAGEM GERAL DOS DADOS -->
