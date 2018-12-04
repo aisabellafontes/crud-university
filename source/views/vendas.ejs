@@ -278,17 +278,17 @@
                                                 <td>
                                                     <input type="number" id="produto_qtde_<%=produto.Codigo%>" value="1"
                                                         class="produtos" min="1" max="<%=produto.QTD_Estoque%>"
-                                                        onchange="calcularTotal(<%=produto.Codigo%>)">
+                                                        onchange="calcularTotal('<%=produto.Codigo%>')">
                                                 </td>
                                                 <td id="produto_total_<%=produto.Codigo%>">
                                                     <%=produto.Preco%>
                                                 </td>
                                                 <td>
                                                     <a href="#" data-name="produto 1" data-price="0.5" class="btn btn-sm btn-info"
-                                                        onclick="addProduto(<%=produto.Codigo%>)">
+                                                        onclick="addProduto('<%=produto.Codigo%>')">
                                                         <i class="fas fa-cart-plus"></i>
                                                     </a>
-                                                    <a href="#" onclick="removeProduto(<%=produto.Codigo%>)" class="btn btn-sm btn-danger">
+                                                    <a href="#" onclick="removeProduto('<%=produto.Codigo%>')" class="btn btn-sm btn-danger">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
                                                 </td>
