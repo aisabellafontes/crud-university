@@ -5,17 +5,17 @@ const path = require('path');
 const app = express();
 
 const port = 8000; //porta padrão
-const {getTelaInicial} = require('./routes/index');
-const {listarClientes, adicionarCliente, atualizarCliente, detalharCliente, removerCliente, buscarCPF} = require('./routes/clientes');
-const {listarCategoria, adicionarCategoria, atualizarCategoria, detalharCategoria, removerCategoria} = require('./routes/categorias');
-const {listarFornecedor, adicionarFornecedor, atualizarFornecedor, detalharFornecedor, removerFornecedor} = require('./routes/fornecedores');
-const {listarEstancia, adicionarEstancia, atualizarEstancia, detalharEstancia, removerEstancia} = require('./routes/estancias');
-const {listarProduto, adicionarProduto, atualizarProduto, detalharProduto, removerProduto} = require('./routes/produtos');
-const {listarFuncionario, adicionarFuncionario, atualizarFuncionario, detalharFuncionario, removerFuncionario} = require('./routes/funcionarios');
-const {listarVenda, adicionarVenda, atualizarVenda, detalharVenda, removerVenda} = require('./routes/vendas');
+const { getTelaInicial } = require('./routes/index');
+const { listarClientes, adicionarCliente, atualizarCliente, detalharCliente, removerCliente, buscarCPF } = require('./routes/clientes');
+const { listarCategoria, adicionarCategoria, atualizarCategoria, detalharCategoria, removerCategoria } = require('./routes/categorias');
+const { listarFornecedor, adicionarFornecedor, atualizarFornecedor, detalharFornecedor, removerFornecedor } = require('./routes/fornecedores');
+const { listarEstancia, adicionarEstancia, atualizarEstancia, detalharEstancia, removerEstancia } = require('./routes/estancias');
+const { listarProduto, adicionarProduto, atualizarProduto, detalharProduto, removerProduto } = require('./routes/produtos');
+const { listarFuncionario, adicionarFuncionario, atualizarFuncionario, detalharFuncionario, removerFuncionario } = require('./routes/funcionarios');
+const { listarVenda, adicionarVenda, atualizarVenda, detalharVenda, removerVenda } = require('./routes/vendas');
 
 // connect to database
-const db = mysql.createConnection ({
+const db = mysql.createConnection({
     host: 'localhost',
     user: 'agropec.admin',
     password: 'admin',
@@ -69,9 +69,9 @@ app.get('/fornecedores/remover/:id', removerFornecedor);
 //CRUD Estancia
 app.get('/estancias', listarEstancia);
 app.post('/estancias/adicionar', adicionarEstancia);
-app.get('/estancias/editar/:nome_estancia', detalharEstancia);
+app.get('/estancias/editar/:codigo', detalharEstancia);
 app.post('/estancias/editar/', atualizarEstancia);
-app.get('/estancias/remover/:nome_estancia', removerEstancia);
+app.get('/estancias/remover/:codigo', removerEstancia);
 
 
 //CRUD Produtos

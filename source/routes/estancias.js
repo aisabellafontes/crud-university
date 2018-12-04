@@ -12,6 +12,7 @@ const dadosParaPagina = {
     message_erro: '',
     message_sucesso: '',
     icone: icone,
+    clientes: [],
     estancias: [],
     estancia: null,
     action: url_add
@@ -25,7 +26,15 @@ module.exports = {
         dadosParaPagina.message_sucesso = '';
         dadosParaPagina.message_erro = '';
 
-        let query = "SELECT * FROM Estancia";
+        let query_clientes = "select * from Clientes";
+        db.query(query_clientes, function (erro, resultado) {
+            if (resultado) {
+                dadosParaPagina.clientes = resultado;
+            }
+        });
+
+        let query = "select e.*, c.* from estancia e, clientes c\
+                where e.CPF_propietario = c.CPF";
         db.query(query, function (erro, resultado) {
             if (erro) {
                 var message = "Não foi possivel listar estancias. Erro:" + erro;
@@ -42,19 +51,18 @@ module.exports = {
         console.log("Executar açao de adicionar nova estância");
 
         // receber as variaveis do template ejs (html)
-        var message = '';
-        var nome = req.body.nome_estancia;
-        var cpfpropietario = req.body.cpf_propietario;
-        var referencia = req.body.referencia_estancia;
+        let nome = req.body.nome_estancia;
+        let cpfpropietario = req.body.clientes_cpf_proprietario;
+        let referencia = req.body.referencia_estancia;
 
         //set data
-        var data = {
+        let data = {
             Nome_Estancia: nome,
             CPF_Propietario: cpfpropietario,
             Referencia: referencia
         };
 
-        var insert = "INSERT INTO Estancia set ? ";
+        let insert = "INSERT INTO Estancia set ? ";
         db.query(insert, data, function (erro, resultado) {
             if (erro) {
                 var message = "Não foi possivel adicionar a estancia";
@@ -71,22 +79,22 @@ module.exports = {
         console.log("Executar açao de editar estancia");
 
         // receber as variaveis do template ejs (html)
-        let cpf = req.body.cpf_propietario;
-        var message = '';
-        var nome = req.body.nome_estancia;
+        let cpf = req.body.clientes_cpf_proprietario;
+        let codigo = req.body.codigo_estancia;
+        let nome_estancia = req.body.nome_estancia;
         var referencia = req.body.referencia_estancia;
 
         //set data
         var data = {
-            Nome_Estancia: nome,
+            Nome_Estancia: nome_estancia,
             CPF_Propietario: cpf,
             Referencia: referencia
         };
         // console.log(data, id);
         // res.redirect(url);
 
-        var insert = "UPDATE Estancia set ? WHERE CPF_propietario = ? ";
-        db.query(insert, [data, id], function (erro, resultado) {
+        var insert = "UPDATE Estancia set ? WHERE Codigo = ? ";
+        db.query(insert, [data, codigo], function (erro, resultado) {
             if (erro) {
                 dadosParaPagina.message_erro = "Não foi possivel atualizar a estancia.Erro:" + erro;
                 dadosParaPagina.action = url_update;
@@ -98,19 +106,27 @@ module.exports = {
 
     detalharEstancia: (req, res) => {
         console.log("Executar açao de listar a estancia selecionada");
-        let nome_estancia = req.params.nome_estancia;
+        let codigo = req.params.codigo;
+
+        let query_clientes = "select * from Clientes";
+        db.query(query_clientes, function (erro, resultado) {
+            if (resultado) {
+                dadosParaPagina.clientes = resultado;
+            }
+        });
 
 
-        let detalhar_estancia = "SELECT * FROM Estancia";
+        let detalhar_estancia = "select e.*, c.* from estancia e, clientes c\
+                where e.CPF_propietario = c.CPF";
         db.query(detalhar_estancia, function (erro, resultado) {
             if (!erro) {
                 dadosParaPagina.estancias = resultado;
             }
         });
 
-        console.log("Nome Estancia =", nome_estancia)
-        let query = "SELECT * FROM Estancia WHERE Nome_Estancia = ?";
-        db.query(query, [nome_estancia], function (erro, resultado) {
+        console.log("codigo Estancia =", codigo)
+        let query = "SELECT * FROM Estancia WHERE Codigo = ?";
+        db.query(query, [codigo], function (erro, resultado) {
             if (erro) {
                 dadosParaPagina.message_erro = "Não foi possivel encontrar estancia.Erro:" + erro;
                 dadosParaPagina.action = url_add;
@@ -122,18 +138,20 @@ module.exports = {
         });
     },
 
-    removerEstancia: (req, res) => {        
-        console.log("Executar açao de remover estancia Nome=", req.params.nome_estancia);
-        let nome_estancia = req.params.nome_estancia;
+    removerEstancia: (req, res) => {
+        console.log("Executar açao de remover estancia codigo=", req.params.codigo);
+        let codigo = req.params.codigo;
 
-        var delete_data = "DELETE FROM Estancia WHERE Nome_Estancia = ";
-        db.query(delete_data, [nome_estancia], function (erro, resultado) {
-            if (erro) {
+        let delete_data = "DELETE FROM Estancia WHERE Codigo = ?";
+        db.query(delete_data, [codigo], function (erro, resultado) {
+            if (!erro) {
+                console.log("Apagado estância");
+                return res.redirect(url_list);
+            } else {
                 dadosParaPagina.message_erro = "Não foi possivel remover estancia.Erro:" + erro;
                 res.render('estancias.ejs', dadosParaPagina);
             }
-            console.log("Apagado estância");
-            res.redirect(url_list);
+
         });
     }
 };

@@ -31,8 +31,9 @@ CREATE TABLE Clientes(
 );
 
 CREATE TABLE Estancia(
-	Nome_Estancia VARCHAR(155) PRIMARY KEY NOT NULL,
-    CPF_propietario CHAR(11),
+    Codigo INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	Nome_Estancia VARCHAR(155),
+    CPF_propietario CHAR(11) NOT NULL,
 	Referencia VARCHAR(155),
     
     FOREIGN KEY (CPF_propietario) REFERENCES Clientes(CPF)
