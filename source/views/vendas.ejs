@@ -80,11 +80,19 @@
         // var codigos_produtos = Array();
         var produtos = document.getElementsByClassName("table-success");
         for (var i = 0; i < produtos.length; i++) {
+            codigo = produtos[i].dataset.codigo;
             $('<input>').attr({
                 type: 'hidden',
                 id: 'produtos',
                 name: 'produtos',
-                value: produtos[i].dataset.codigo
+                value: codigo
+            }).appendTo('form');
+
+            $('<input>').attr({
+                type: 'hidden',
+                id: 'qtde_produto_'+codigo,
+                name: 'qtde_produto_'+codigo,
+                value: produtos[i].dataset.qtde
             }).appendTo('form');
             // var produto = {
             //     "codigo": produtos[i].dataset.codigo,
@@ -160,9 +168,9 @@
                                 <label for="codigo_venda" class="col-sm-3 col-form-label">Código da venda</label>
                                 <div class="col-sm-9">
                                     <% if(venda){ %>
-                                    <input type="number" class="form-control" id="codigo_venda" readonly value="<%=venda.Codigo%>">
+                                    <input type="number" class="form-control" id="codigo_venda" name="codigo_venda" readonly value="<%=venda.Codigo%>">
                                     <% } else{ %>
-                                    <input type="number" class="form-control" id="codigo_venda" readonly value="">
+                                    <input type="number" class="form-control" id="codigo_venda" name="codigo_venda" readonly value="">
                                     <% } %>
                                 </div>
                             </div>
@@ -171,10 +179,10 @@
                                 <label for="data_venda" class="col-sm-3 col-form-label">Data da venda</label>
                                 <div class="col-sm-9">
                                     <% if(venda){ %>
-                                    <input type="date" class="form-control" id="data_venda" value="<%=venda.Dia_venda%>"
+                                    <input type="date" class="form-control" id="data_venda" name="data_venda" value="<%=venda.Dia_venda%>"
                                         placeholder="Digite no formato dd-mm-yyyy">
                                     <% } else{ %>
-                                    <input type="date" class="form-control" id="data_venda" value="2018-12-04"
+                                    <input type="date" class="form-control" id="data_venda" name="data_venda" value="2018-12-04"
                                         placeholder="Digite no formato dd-mm-yyyy">
                                     <% } %>
                                 </div>
@@ -185,7 +193,7 @@
                                     Selecione cliente
                                 </label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="clientes">
+                                    <select class="form-control" id="clientes" name="clientes">
                                         <% clientes.forEach(function(cliente){ %>
                                         <option value="<%= cliente.CPF %>">
                                             <%= cliente.Nome %>
@@ -200,7 +208,7 @@
                                     Selecione atendente
                                 </label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="atendentes">
+                                    <select class="form-control" id="atendentes" name="atendentes">
                                         <% atendentes.forEach(function(atendente){ %>
                                         <option value="<%= atendente.CPF %>">
                                             <%= atendente.Nome %>
@@ -215,7 +223,7 @@
                                     Selecione o freteiro
                                 </label>
                                 <div class="col-sm-9">
-                                    <select class="form-control" id="freteiros">
+                                    <select class="form-control" id="freteiros" name="freteiros">
                                         <% freteiros.forEach(function(freteiro){ %>
                                         <option value="<%= freteiro.CPF %>">
                                             <%= freteiro.Nome %>

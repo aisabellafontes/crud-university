@@ -32,45 +32,47 @@ module.exports = {
         dadosParaPagina.action = url_pesquisa;
 
         let clientes = "select * from Clientes";
-        db.query(clientes, function(erro, resultado){
-            if(resultado){
+        db.query(clientes, function (erro, resultado) {
+            if (resultado) {
                 dadosParaPagina.clientes = resultado;
             }
         });
 
         let atendentes = "select * from Funcionarios where Tipo='atendente'";
-        db.query(atendentes, function(erro, resultado){
-            if(resultado){
+        db.query(atendentes, function (erro, resultado) {
+            if (resultado) {
                 dadosParaPagina.atendentes = resultado;
             }
         });
 
         let freteiros = "select * from Funcionarios where Tipo='freteiro'";
-        db.query(freteiros, function(erro, resultado){
-            if(resultado){
+        db.query(freteiros, function (erro, resultado) {
+            if (resultado) {
                 dadosParaPagina.freteiros = resultado;
             }
         });
 
         let produtos = "select * from Produtos";
-        db.query(produtos, function(erro, resultado){
-            if(resultado){
+        db.query(produtos, function (erro, resultado) {
+            if (resultado) {
                 dadosParaPagina.produtos = resultado;
             }
         });
 
         let fornecedores = "select * from Fornecedor";
-        db.query(fornecedores, function(erro, resultado){
-            if(resultado){
+        db.query(fornecedores, function (erro, resultado) {
+            if (resultado) {
                 dadosParaPagina.fornecedores = resultado;
             }
 
             // console.log(dadosParaPagina);
             res.render('vendaslistagem.ejs', dadosParaPagina);
-            
+
         });
 
-        
+        let vendas = "CPF_cliente"
+
+
     },
 
     pesquisarVenda: (req, res) => {
@@ -94,8 +96,8 @@ module.exports = {
             }
         });
 
-        let query_atendentes = "select f.*, a.* from funcionarios f , atendente a "+ 
-                                " where f.CPF = a.CPF_Atendente ";
+        let query_atendentes = "select f.*, a.* from funcionarios f , atendente a " +
+            " where f.CPF = a.CPF_Atendente ";
         db.query(query_atendentes, function (err, resultado) {
             if (!err) {
                 // console.log("Atendetes: ", resultado);
@@ -103,8 +105,8 @@ module.exports = {
             }
         });
 
-        let query_freteiros = "select f.*, ft.* from funcionarios f , freteiro ft "+ 
-                                " where f.CPF = ft.CPF_Freteiro ";
+        let query_freteiros = "select f.*, ft.* from funcionarios f , freteiro ft " +
+            " where f.CPF = ft.CPF_Freteiro ";
         db.query(query_freteiros, function (err, resultado) {
             if (!err) {
                 // console.log("Freteiros: ", resultado);
@@ -127,46 +129,51 @@ module.exports = {
 
     adicionarVenda: (req, res) => {
         console.log("Executar açao de adicionar nova venda");
-        
 
-        let CPF_cliente = req.body.CPF_cliente;
-        let CPF_atendente = req.body.CPF_atendente;
-        let CPF_freteiro = req.body.CPF_freteiro;
-        let Dia_venda = req.body.Dia_venda;
+        let CPF_cliente = req.body.clientes;
+        let CPF_atendente = req.body.atendentes;
+        let CPF_freteiro = req.body.freteiros;
+        let Dia_venda = req.body.data_venda;
         let produtos = req.body.produtos;
-        
-        console.log(req.body, produtos, CPF_cliente);
-        console.log(typeof(produtos));
-        // return res.redirect(url_list);
+        var erro = false;
 
-        // /* parametros */
-        // var nome = req.body.nome_produto;
-        // var descricao = req.body.descricao_produto;
-        // var categorias = req.body.categorias;
-        // var fornecedores = req.body.fornecedores;
-        // var preco = req.body.preco;
-        // var qtd_estoque = req.body.qtd_estoque;
+        console.log(req.body);
+        if (!produtos) {
+            dadosParaPagina.message_erro = "Selecione ao menos um produto";
+            return res.render('vendas.ejs', dadosParaPagina);
+        }
 
-        // //get data
-        // var data = {
-        //     Nome: nome,
-        //     Preco: parseFloat(preco),
-        //     Descricao: descricao,
-        //     ID_categoria: parseInt(categorias),
-        //     ID_fornecedor: parseInt(fornecedores),
-        //     QTD_Estoque: parseInt(qtd_estoque)
-        // };
+        let vendas = {
+            CPF_cliente: CPF_cliente,
+            CPF_atendente: CPF_atendente,
+            CPF_freteiro: CPF_freteiro
+        }
+        let insert = "insert into Vendas set ?";
+        db.query(insert, [vendas], function (erro, resultado) {
+            if (erro) {
+                console.log(erro, resultado);
+                dadosParaPagina.message_erro = "Nao foi possivel add a venda. Erro: " + erro;
+                res.render('vendas.ejs', dadosParaPagina);
+            } else {
+                var codigo_venda = resultado.insertId;
+                for (var i = 0; i < produtos.length; i++) {
+                    var codigo_produto = parseInt(produtos[i]);
+                    var valor = 'qtde_produto_' + codigo_produto;
 
-        // var query_insert = "INSERT INTO Produtos set ? ";
-        // db.query(query_insert, data, function (err, result) {
-        //     if (!err) {
-        //         res.redirect(url_list);
-        //     }
+                    var data = {
+                        Cod_produto: codigo_produto,
+                        Cod_venda: codigo_venda,
+                        Dia_venda: Dia_venda,
+                        Qtde: 1
+                    }
+                    let insert_produtos = "insert into QTDE_Vendida values ?";
+                    db.query(insert_produtos, [data], function (erro, resultado) {
+                    });                   
+                }                
+                return res.redirect(url_pesquisa);
+            }
+        });
 
-        //     message = "Não foi possivel adicionar produto";
-        //     dadosParaPagina.message_erro = message;
-        //     res.render('vendas.ejs', dadosParaPagina);
-        // });
 
     },
 
