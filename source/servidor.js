@@ -93,9 +93,9 @@ app.get('/vendas', listarVenda);
 app.get('/vendas/pesquisar', mostrarListagemVenda);
 app.post('/vendas/pesquisar', pesquisarVenda);
 app.post('/vendas/adicionar', adicionarVenda);
-app.get('/vendas/editar/:cpf', atualizarVenda);
+app.get('/vendas/editar/:codigo', atualizarVenda);
 app.post('/vendas/editar/', detalharVenda);
-app.get('/vendas/remover/:cpf', removerVenda);
+app.get('/vendas/remover/:codigo', removerVenda);
 
 
 // set the app to listen on the port
