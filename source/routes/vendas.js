@@ -65,12 +65,31 @@ module.exports = {
                 dadosParaPagina.fornecedores = resultado;
             }
 
-            // console.log(dadosParaPagina);
-            res.render('vendaslistagem.ejs', dadosParaPagina);
-
         });
 
-        let vendas = "CPF_cliente"
+        let vendas = ' select qv.*, v.*, \
+        p.Nome as Nome_Produto, \
+        f.Nome as Nome_Fornecedor, \
+        c.Nome as Nome_Cliente,\
+        fa.Nome as Nome_Atentente, \
+        ft.Nome as Nome_Freteiro\
+        from vendas v, funcionarios fa, funcionarios ft, clientes c, \
+        produtos p, qtde_vendida qv, \
+        fornecedor f \
+        where v.CPF_cliente = c.CPF \
+        and v.CPF_atendente = fa.CPF and fa.Tipo = "atendente" \
+        and v.CPF_freteiro = ft.CPF and ft.Tipo = "freteiro" \
+        and v.Codigo = qv.Cod_venda \
+        and p.ID_fornecedor = f.ID \
+        and p.Codigo = qv.Cod_produto';
+        console.log(vendas);
+        db.query(vendas, function (erro, resultado) {
+            if (resultado) {
+                // console.log(dadosParaPagina);
+                res.render('vendaslistagem.ejs', dadosParaPagina);
+                dadosParaPagina.vendas = resultado;
+            }
+        })
 
 
     },
@@ -169,8 +188,8 @@ module.exports = {
                     let insert_produtos = "insert into QTDE_Vendida set ?";
                     db.query(insert_produtos, [data], function (erro, resultado) {
                         console.log("foi?", resultado, erro)
-                    });                   
-                }                
+                    });
+                }
                 return res.redirect(url_pesquisa);
             }
         });
