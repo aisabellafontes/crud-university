@@ -5,6 +5,7 @@ const icone = 'fas fa-money-check-alt';
 const url_add = '/vendas/adicionar/';
 const url_update = '/vendas/editar/';
 const url_list = '/vendas/';
+const url_pesquisa = '/vendas/pesquisar/';
 
 const dadosParaPagina = {
     subtitulo: subtitulo,
@@ -23,8 +24,12 @@ const dadosParaPagina = {
 }
 
 module.exports = {
-    pesquisarVenda: (req, res) => {
-        console.log("Executar açao de pesquisar todos as vendas da loja");
+    mostrarListagemVenda: (req, res) => {
+        console.log("Executar açao de mostrar as opcoes de pesquisa de todos as vendas da loja");
+
+        dadosParaPagina.message_erro = '';
+        dadosParaPagina.message_sucesso = '';
+        dadosParaPagina.action = url_pesquisa;
 
         let clientes = "select * from Clientes";
         db.query(clientes, function(erro, resultado){
@@ -60,12 +65,18 @@ module.exports = {
                 dadosParaPagina.fornecedores = resultado;
             }
 
-            console.log(dadosParaPagina);
+            // console.log(dadosParaPagina);
             res.render('vendaslistagem.ejs', dadosParaPagina);
             
         });
 
         
+    },
+
+    pesquisarVenda: (req, res) => {
+        console.log("Executar açao de pesquisar todos as vendas da loja");
+        console.log(req.body);
+        res.redirect(url_pesquisa);
     },
 
     listarVenda: (req, res) => {

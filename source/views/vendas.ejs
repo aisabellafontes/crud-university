@@ -70,42 +70,49 @@
 
     function submitForm() {
         console.log("ENVIAR PRA SALVAR");
-// <!-- 
-//         var data_venda = document.getElementById("data_venda");
-//         var CPF_cliente = document.getElementById("clientes");
-//         var CPF_atendente = document.getElementById("atendentes");
-//         var CPF_freteiro = document.getElementById("freteiros");
+        alert("faaaz!");
+        // <!-- 
+        //         var data_venda = document.getElementById("data_venda");
+        //         var CPF_cliente = document.getElementById("clientes");
+        //         var CPF_atendente = document.getElementById("atendentes");
+        //         var CPF_freteiro = document.getElementById("freteiros");
 
-//         var codigos_produtos = Array();
-//         var produtos = document.getElementsByClassName("table-success");
-//         for (var i = 0; i < produtos.length; i++) {
-//             var produto = {
-//                 "codigo": produtos[i].dataset.codigo,
-//                 "qtde": produtos[i].dataset.qtde,
-//                 "data_venda": data_venda.value
-//             };
-//             codigos_produtos.push(produto);
-//         }
+        // var codigos_produtos = Array();
+        var produtos = document.getElementsByClassName("table-success");
+        for (var i = 0; i < produtos.length; i++) {
+            $('<input>').attr({
+                type: 'hidden',
+                id: 'produtos',
+                name: 'produtos',
+                value: produtos[i].dataset.codigo
+            }).appendTo('form');
+            // var produto = {
+            //     "codigo": produtos[i].dataset.codigo,
+            //     "qtde": produtos[i].dataset.qtde,
+            //     "data_venda": data_venda.value
+            // };
+            // codigos_produtos.push(produto);
+        }
 
-//         CPF_cliente = CPF_cliente.options[CPF_cliente.selectedIndex].value;
-//         CPF_atendente = CPF_atendente.options[CPF_atendente.selectedIndex].value;
-//         CPF_freteiro = CPF_freteiro.options[CPF_freteiro.selectedIndex].value;
+        //         CPF_cliente = CPF_cliente.options[CPF_cliente.selectedIndex].value;
+        //         CPF_atendente = CPF_atendente.options[CPF_atendente.selectedIndex].value;
+        //         CPF_freteiro = CPF_freteiro.options[CPF_freteiro.selectedIndex].value;
 
-//         var data = {
-//             "produtos": Array.from(codigos_produtos),
-//             "CPF_cliente": CPF_cliente,
-//             "CPF_atendente": CPF_atendente,
-//             "CPF_freteiro": CPF_freteiro,
-//             "Dia_venda": data_venda.value
-//         } -->
+        //         var data = {
+        //             "produtos": Array.from(codigos_produtos),
+        //             "CPF_cliente": CPF_cliente,
+        //             "CPF_atendente": CPF_atendente,
+        //             "CPF_freteiro": CPF_freteiro,
+        //             "Dia_venda": data_venda.value
+        //         } -->
 
         // console.log(url, data);
         // $.post('http://localhost:8000/vendas/adicionar/', data, function (response) {
         //     console.log(response);
         // })
 
-        form.submit();
-        form.reset();
+        // form.submit();
+        // form.reset();
     }
 </script>
 

@@ -12,7 +12,7 @@ const { listarFornecedor, adicionarFornecedor, atualizarFornecedor, detalharForn
 const { listarEstancia, adicionarEstancia, atualizarEstancia, detalharEstancia, removerEstancia } = require('./routes/estancias');
 const { listarProduto, adicionarProduto, atualizarProduto, detalharProduto, removerProduto } = require('./routes/produtos');
 const { listarFuncionario, adicionarFuncionario, atualizarFuncionario, detalharFuncionario, removerFuncionario } = require('./routes/funcionarios');
-const { pesquisarVenda, listarVenda, adicionarVenda, atualizarVenda, detalharVenda, removerVenda } = require('./routes/vendas');
+const { mostrarListagemVenda, pesquisarVenda, listarVenda, adicionarVenda, atualizarVenda, detalharVenda, removerVenda } = require('./routes/vendas');
 
 // connect to database
 const db = mysql.createConnection({
@@ -90,7 +90,8 @@ app.get('/funcionarios/remover/:cpf', removerFuncionario);
 
 //CRUD Vendas
 app.get('/vendas', listarVenda);
-app.get('/vendas/pesquisar', pesquisarVenda);
+app.get('/vendas/pesquisar', mostrarListagemVenda);
+app.post('/vendas/pesquisar', pesquisarVenda);
 app.post('/vendas/adicionar', adicionarVenda);
 app.get('/vendas/editar/:cpf', atualizarVenda);
 app.post('/vendas/editar/', detalharVenda);
